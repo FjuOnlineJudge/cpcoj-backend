@@ -1,0 +1,10 @@
+flask
+Flask-MySQLdb
+flask-sqlalchemy
+sqlalchemy
+flask-login
+flask_bootstrap
+flask_wtf
+wtforms
+flask-script
+flask-migrate
