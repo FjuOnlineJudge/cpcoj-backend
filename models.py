@@ -7,9 +7,9 @@ from flask_login import LoginManager, UserMixin
 class Problem(db.Model):
 	__tablename__  = 'problem'
 	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
-	problemName = db.Column(db.String(100), primary_key=True)
-	problemId = db.Column(db.Integer, nullable=False, unique=True)
-	uid = db.Column(db.Integer, nullable=False, unique=True)
+	problemId = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
+	problemName = db.Column(db.String(100), nullable=False, unique=True)
+	uid = db.Column(db.Integer, nullable=False)
 
 class Account(UserMixin, db.Model):
 	__tablename__  = 'account'
@@ -48,7 +48,9 @@ class Account_valid(db.Model):
 class Submission(db.Model):
 	__tablename__  = 'submission'
 	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
-	uid = db.Column(db.Integer, primary_key=True, nullable=False)# 提交題號
+	uid = db.Column(db.Integer, primary_key=True, nullable=False)# 繳交編號
+	userid = db.Column(db.Integer, primary_key=False, nullable=False)# 繳交人id
+	problemId = db.Column(db.Integer, nullable=False)# 提交題號
 	result = db.Column(db.String(10), nullable=False)# 結果
 	resTime = db.Column(db.Float, nullable=False)# 執行時間
 	resMem = db.Column(db.Float, nullable=False)# 執行記憶體
