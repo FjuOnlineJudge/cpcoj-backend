@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from form import FormRegister
 from models import Problem, Account, Submission
@@ -21,24 +20,23 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 
-
 @login.user_loader
 def load_user(user_id):
 	return Account.query.get(int(user_id))
+
+
 
 @app.route('/question_list', methods=['GET', 'POST'])
 def question_list():
 	return render_template('question_list.html')
 
 @app.route('/question', methods=['GET', 'POST'])
-
 def question():
 	return render_template('question.html')
 
-@app.route('/submit/', methods=['GET','POST'])
+@app.route('/submit', methods=['GET','POST'])
 @login_required
 def submit():
-	global submit_id
 	if request.method == 'GET':
 		return render_template('submit.html')
 	else:
@@ -78,6 +76,7 @@ def register():
 
 		print("{} | {}".format(form.password.data, form.confirm.data))
 
+
 		if username or email:
 			return 'Username or Email collision'
 		elif form.password.data != form.confirm.data:
@@ -102,22 +101,20 @@ def login():
 	form = FormLogin()
 	if form.validate_on_submit():
 		#  當使用者按下login之後，先檢核帳號是否存在系統內。
-		print("validate")
+
 		user = Account.query.filter_by(username=form.username.data).first()
-		print("{}: {}".format(login, user))
 		if user:
 			#  當使用者存在資料庫內再核對密碼是否正確。
 			if user.check_password(form.password.data):
 				login_user(user, form.remember_me.data)
-				flash('Success')
 				return redirect(url_for('index'))
+
 			else:
 				#  如果密碼驗證錯誤，就顯示錯誤訊息。
 				flash('Wrong Email or Password')
 		else:
 			#  如果資料庫無此帳號，就顯示錯誤訊息。
 			print("wrong email")
-			flash('Wrong Email or Password')
 	return render_template('login.html', form=form)
 
 

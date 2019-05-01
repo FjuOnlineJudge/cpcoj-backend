@@ -2,7 +2,7 @@
 <html>
 {% import "bootstrap/wtf.html" as wtf %}
 <head>
-	<title>{% block title %}{% endblock %}</title>
+	<!-- <title>{% block title %}{% endblock %}</title>
 	{% with messages = get_flashed_messages() %}
 		{% if messages %}
 			{% for messages in messages %}
@@ -10,7 +10,7 @@
 				<script type="text/javascript">alert(1)</script>
 			{% endfor %}
 		{% endif %}
-	{% endwith %}
+	{% endwith %} -->
 </head>
 
 {% block Css %}{% endblock %}
@@ -42,7 +42,7 @@
 						<a class="nav-link" href="{{ url_for('submit') }}">提交</a>
 					</li>
 				</ul>
-				{% if current_user.is_authenticated %}
+				 {% if current_user.is_authenticated %}
 					<hr class="d-sm-flex d-md-flex d-lg-none">
 					<ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
 						<li class="nav-item">
@@ -65,7 +65,7 @@
 				{% endif %}
 			</div>
 		</div>
-		
+
 	</nav>
 
 	{% block main %}{% endblock %}

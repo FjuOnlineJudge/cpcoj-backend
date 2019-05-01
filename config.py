@@ -1,7 +1,7 @@
 import os
 
 DEBUG = True
-# SESSION_PROTECTION = ''
+SESSION_PROTECTION = 'strong'
 SECRET_KEY = os.urandom(24)
 
 DIALECT = 'mysql'
@@ -14,4 +14,4 @@ DATABASE = 'oj_0'
 
 DB_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8mb4".format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE)
 SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8mb4".format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE)
-SQLALCHEMY_TRACK_MODIFICATIONS = False 
+SQLALCHEMY_TRACK_MODIFICATIONS = False
