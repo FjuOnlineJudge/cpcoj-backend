@@ -8,3 +8,19 @@
 {% block title %}
 Setting
 {% endblock %}
+
+
+{% block main %}
+
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for messages in messages %}
+				<div class="container topdis">
+					{{ messages }}
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+
+
+{% endblock %}

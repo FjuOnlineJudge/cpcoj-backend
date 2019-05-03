@@ -65,28 +65,36 @@ def index():
 def register():
 	form =FormRegister()
 
-	if form.validate_on_submit():
-		print("in")
-		# catch time
-		date_time = datetime.datetime.now()
+	print("{} | {}".format("email", form.email.data))
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			print("validate Success")
+			# catch time
+			date_time = datetime.datetime.now()
 
-		# user & email collision
-		username = Account.query.filter(Account.username == form.username.data).first()
-		email = Account.query.filter(Account.email == form.email.data).first()
-
-		print("{} | {}".format(form.password.data, form.confirm.data))
+			# user & email collision
+			username = Account.query.filter(Account.username == form.username.data).first()
+			email = Account.query.filter(Account.email == form.email.data).first()
 
 
-		if username or email:
-			return 'Username or Email collision'
-		elif form.password.data != form.confirm.data:
-			return 'two password is different'
+			if username or email:
+				print("Username or Email collision")
+				flash('Username or Email collision')
+				# return 'Username or Email collision'
+			elif form.password.data != form.confirm.data:
+				########for test
+				print(" two password is different")
+				flash('two password is different')
+				#######
+				# return 'two password is different'
+			else:
+				account = Account(uid=0, username=form.username.data, nickname=form.nickname.data, password=generate_password_hash(form.password.data), email=form.email.data, permLevel=False, signUpTime=date_time, lastLoginTime=date_time, icon=False)
+				db.session.add(account)
+				db.session.commit()
+				# flash('Success Thank You')
+				return redirect(url_for('login'))
 		else:
-			account = Account(uid=0, username=form.username.data, nickname=form.nickname.data, password=generate_password_hash(form.password.data), email=form.email.data, permLevel=False, signUpTime=date_time, lastLoginTime=date_time, icon=False)
-			db.session.add(account)
-			db.session.commit()
-			flash('Success Thank You')
-			return redirect(url_for('login'))
+			flash('Email is worng')
 
 
 	return render_template('register.html', form=form)
@@ -111,10 +119,10 @@ def login():
 
 			else:
 				#  如果密碼驗證錯誤，就顯示錯誤訊息。
-				flash('Wrong Email or Password')
+				flash('Wrong Email/Username or Password')
 		else:
 			#  如果資料庫無此帳號，就顯示錯誤訊息。
-			print("wrong email")
+			flash('Wrong Email/Username or Password')
 	return render_template('login.html', form=form)
 
 
@@ -123,8 +131,8 @@ def login():
 @login_required
 def logout():
 	logout_user()
-	flash('Log Out See You.')
-	return redirect(url_for('login'))
+	# flash('Log Out See You.')
+	return redirect(url_for('index'))
 
 
 @app.route('/setting')

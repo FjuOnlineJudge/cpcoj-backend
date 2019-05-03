@@ -23,6 +23,18 @@ Login
 			{{ form.password(class="form-control", id="password", placeholder="password") }}
 		</div>
 
+		<div class="row error_pos">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for messages in messages %}
+						<li class="text_small text-left">
+							{{ messages }}
+						</li>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+
 		<div class="row checkbox_pos">
 			<div class="custom-control form-control-lg custom-checkbox">
 

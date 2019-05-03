@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 mysql -u root -proot << EOFMYSQL
 use oj_0;
 drop table account;
