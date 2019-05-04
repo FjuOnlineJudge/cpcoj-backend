@@ -1,3 +1,7 @@
+# Custom
+judger/meta/
+judger/res/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

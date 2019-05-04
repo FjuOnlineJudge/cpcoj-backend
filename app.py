@@ -10,21 +10,31 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import config
 from flask_login import login_user, current_user, login_required, LoginManager, logout_user
 
+# Dealing with the path problem
+import sys
+sys.path.append('page')
+sys.path.append('judger')
+
 LISTEN_ALL = True
 
+# Init flask app
 app = Flask(__name__)
 app.config.from_object(config)
+
+# Register blueprints
+from submit import submit
+app.register_blueprint(submit.submit_page)
+
 db.init_app(app)
+
 bootstrap=Bootstrap(app)
+
 login = LoginManager(app)
 login.login_view = 'login'
-
 
 @login.user_loader
 def load_user(user_id):
 	return Account.query.get(int(user_id))
-
-
 
 @app.route('/question_list', methods=['GET', 'POST'])
 def question_list():
@@ -33,29 +43,6 @@ def question_list():
 @app.route('/question', methods=['GET', 'POST'])
 def question():
 	return render_template('question.html')
-
-@app.route('/submit', methods=['GET','POST'])
-@login_required
-def submit():
-	if request.method == 'GET':
-		return render_template('submit.html')
-	else:
-		Problem = request.form.get("problem")
-		Code = request.form.get("code")
-		state = Judger(Code, submit_id)
-		submit_id += 1
-
-		if state == 'AC':
-			return 'Accepted'
-		elif state == 'WA':
-			return 'Wrong Answer'
-		elif state == 'CE':
-			return 'Compile Error'
-		elif state == "RE":
-			return 'Runtime Error'
-		else:
-			pass
-
 
 @app.route('/')
 def index():
@@ -103,7 +90,6 @@ def register():
 def test():
 	return render_template('index.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = FormLogin()
@@ -125,8 +111,6 @@ def login():
 			flash('Wrong Email/Username or Password')
 	return render_template('login.html', form=form)
 
-
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -134,18 +118,15 @@ def logout():
 	# flash('Log Out See You.')
 	return redirect(url_for('index'))
 
-
 @app.route('/setting')
 @login_required
 def setting():
 	flash('This is setting.')
 	return render_template('setting.html')
 
-
 @app.route('/userinfo')
 def userinfo():
 	return 'Here is UserINFO'
-
 
 if __name__ == '__main__':
 	if LISTEN_ALL:

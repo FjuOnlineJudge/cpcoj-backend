@@ -10,12 +10,24 @@ Sumbit
 
 
 {% block main %}
-
-
-
-
 <div class="submit_block_cover submitdis">
 	<div class="container-fluid">
+		{% with msg_list = get_flashed_messages() %}
+		{% if msg_list %}
+		<div class="row" style="font-size: 2rem;">
+		<div class="col-md-12">
+			<div class="card">
+			<div class="card-body" style="margin-left: 0.005em;">
+				<div class="card-title">Result</div>
+				{% for i in msg_list %}
+				<div class="card-text" style="font-size: 1rem;">{{ i }}</div>
+				{% endfor %}
+			</div>
+			</div>
+		</div>
+		</div>
+		{% endif %}
+		{% endwith %}
 		<div class="row">
 			<div class="col-md-12">
 				<form method="POST">
@@ -30,17 +42,17 @@ Sumbit
 							Language
 						</label>
 						<div class="form-check option_text">
-							<input type="radio" name="lang" id="lang_cpp" value="cpp" class="form-check-input">
+							<input type="radio" name="lang" id="lang_cpp" value="cpp" class="form-check-input" required>
 							<label class="form-check-label" for="lang_cpp">C++</label>
 						</div>
 						<div class="form-check option_text">
-							<input type="radio" name="lang" id="lang_c" value="c" class="form-check-input">
+							<input type="radio" name="lang" id="lang_c" value="c" class="form-check-input" disabled>
 							<label class="form-check-label" for="lang_c">C</label>
 						</div>
 					</div>
 					<div class="form-group page-title">
 						<label for="codeArea">
-							Code:							
+							Code:
 						</label>
 						<textarea class="form-control" name="code" id="codeArea" rows="10"></textarea>
 					</div>
@@ -49,9 +61,5 @@ Sumbit
 			</div>
 		</div>
 	</div>
-
-
 </div>
-
-
 {% endblock %}
