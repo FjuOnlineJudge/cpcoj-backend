@@ -1,5 +1,57 @@
 {% extends 'base.html' %}
 
+{% block title %}
+Sumbit
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="/static/css/submit.css">
+{% endblock %}
+
+
 {% block main %}
-<h1>fucker</h1>
+
+
+
+
+<div class="submit_block_cover submitdis">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<form method="POST">
+					<div class="form-group dis page-title">
+						<label for="probID">
+							Problem ID
+						</label>
+						<input type="text" name="probID" id="probID" class="col-md-2 form-control" >
+					</div>
+					<div class="form-group dis page-title">
+						<label>
+							Language
+						</label>
+						<div class="form-check option_text">
+							<input type="radio" name="lang" id="lang_cpp" value="cpp" class="form-check-input">
+							<label class="form-check-label" for="lang_cpp">C++</label>
+						</div>
+						<div class="form-check option_text">
+							<input type="radio" name="lang" id="lang_c" value="c" class="form-check-input">
+							<label class="form-check-label" for="lang_c">C</label>
+						</div>
+					</div>
+					<div class="form-group page-title">
+						<label for="codeArea">
+							Code:							
+						</label>
+						<textarea class="form-control" name="code" id="codeArea" rows="10"></textarea>
+					</div>
+					<input type="submit" class="btn btn-primary code-form-margin-bottom" value="Sumbit">
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
 {% endblock %}
