@@ -46,7 +46,23 @@ def question():
 
 @app.route('/')
 def index():
-	return render_template('index.html')
+	# 公告
+
+
+
+	# 最新問題，目前列出前五個最新的問題
+	uid_change_name = []
+	questions = Problem.query.order_by(Problem.uid.desc()).all()
+	for ques_iter in questions:
+		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
+		uid_change_name.append(Account_search.username)
+
+	# Ranklist
+
+
+
+
+	return render_template('index.html', questions=questions, name=uid_change_name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
