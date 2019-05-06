@@ -56,6 +56,10 @@ def submit():
 		else:
 			pass
 
+@app.route('/submission', methods=['GET', 'POST'])
+def submission():
+	return render_template('submission.html')
+
 
 @app.route('/')
 def index():
