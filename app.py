@@ -44,6 +44,10 @@ def question_list():
 def question():
 	return render_template('question.html')
 
+@app.route('/submission', methods=['GET', 'POST'])
+def submission():
+	return render_template('submission.html')
+
 @app.route('/')
 def index():
 	# 公告
@@ -133,8 +137,14 @@ def logout():
 @app.route('/setting')
 @login_required
 def setting():
-	flash('This is setting.')
+	# flash('This is setting.')
 	return render_template('setting.html')
+
+
+@app.route('/edit')
+def edit():
+	return render_template('edit.html')
+
 
 @app.route('/userinfo')
 def userinfo():

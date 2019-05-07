@@ -1,0 +1,38 @@
+.submission_dis{
+
+	margin-top: 5em;
+}
+
+.title_submission{
+
+	font-size: 2.5em;
+}
+.pagination {
+	display: inline-block;
+}
+
+.pagination a {
+	color: black;
+	float: left;
+	padding: 0.5em 1em;
+	text-decoration: none;
+	border: 0.1em solid #ddd;
+}
+
+.pagination a.active {
+	background-color: rgba(102, 255, 102, 0.4);
+	color: black;
+	/*border: 1px solid #4CAF50;*/
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.pagination a:first-child {
+	border-top-left-radius: 2.5em;
+	border-bottom-left-radius: 2.5em;
+}
+
+.pagination a:last-child {
+ 	border-top-right-radius: 2.5em;
+ 	border-bottom-right-radius: 2.5em;
+}

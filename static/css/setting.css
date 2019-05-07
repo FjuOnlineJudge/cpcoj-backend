@@ -1,0 +1,26 @@
+.col-md-3 img{
+
+	width: 70%;
+}
+
+.username{
+
+	font-size: 2.5em;
+	font-weight: bold;
+}
+
+.nickname{
+
+	font-size: 1.5em;
+}
+
+.font_bold{
+
+	font-weight: bold;
+}
+
+.col-md-3 .clear_left_padding{
+
+	padding-left: 0;
+}
+

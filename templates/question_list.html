@@ -1,1 +1,160 @@
 {% extends 'base.html' %}
+
+{% block title %}
+Question_list
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid" style="margin-top: 5em">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header title">
+					Popular Question
+				</div>
+				<div class="card-body text">
+					<table class="table table-hover table-condensed table-striped">
+						<thead>
+							<tr>
+								<th scope="col-md-1"></th>
+								<th scope="col-md-5">TITLE</th>
+								<th scope="col-md-2">Time Limit</th>
+								<th scope="col-md-3">Solve/Submit</th>
+								<th scope="col-md-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td>
+									<a href="./Halloworld.html">HalloWorld</a>
+								</td>
+								<td>3s</td>
+								<td>2276/2456</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>Question2</td>
+								<td>3s</td>
+								<td>1234/1385</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>Question3</td>
+								<td>3s</td>
+								<td>1111/1203</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>Question4</td>
+								<td>3s</td>
+								<td>1023/1099</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>Question5</td>
+								<td>3s</td>
+								<td>923/999</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 dis">
+			<div class="card">
+				<div class="card-header title">
+					Difficult Grading
+				</div>
+				<div class="card-body text">
+					<table class="table table-hover table-condensed table-striped">
+						<thead>
+							<tr>
+								<th>Star</th>
+								<th>number</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>one</th>
+								<th>123</th>
+							</tr>
+							<tr>
+								<td>two</td>
+								<td>3453</td>
+							</tr>
+							<tr>
+								<td>three</td>
+								<td>34535</td>
+							</tr>
+							<tr>
+								<td>four</td>
+								<td>4343</td>
+							</tr>
+							<tr>
+								<td>five</td>
+								<td>8765</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6 dis">
+			<div class="card">
+				<div class="card-header title">
+					Algorithm
+				</div>
+				<div class="card-body text">
+					<table class="table table-hover table-condensed table-striped">
+						<thead>
+							<tr>
+								<th>Type</th>
+								<th>number</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>DP</td>
+								<td>963</td>
+							</tr>
+							<tr>
+								<td>Graph</td>
+								<td>304</td>
+							</tr>
+							<tr>
+								<td>Greedy</td>
+								<td>481</td>
+							</tr>
+							<tr>
+								<td>Math</td>
+								<td>235</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+
+
+
+
+{% endblock %}
+
