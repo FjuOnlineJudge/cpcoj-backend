@@ -25,6 +25,9 @@ app.config.from_object(config)
 from submit import submit
 app.register_blueprint(submit.submit_page)
 
+from oj_test import test
+app.register_blueprint(test.test_page)
+
 db.init_app(app)
 
 bootstrap=Bootstrap(app)
@@ -52,19 +55,13 @@ def submission():
 def index():
 	# 公告
 
-
-
 	# 最新問題，目前列出前五個最新的問題
 	uid_change_name = []
 	questions = Problem.query.order_by(Problem.uid.desc()).all()
 	for ques_iter in questions:
 		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
 		uid_change_name.append(Account_search.username)
-
 	# Ranklist
-
-
-
 
 	return render_template('index.html', questions=questions, name=uid_change_name)
 

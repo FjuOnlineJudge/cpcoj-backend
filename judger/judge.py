@@ -160,8 +160,12 @@ class Isolate:
 			mkdir(meta(self.box_id))
 			mkdir(res_path(self.box_id))
 
+		# debug
+		print(self.NOW_BOX)
+
 	def release_box(self):
 		box_id = self.box_id
+		print('Release box {}'.format(box_id))
 		# isolate --box-id={self.box_id} --cleanup 2>/dev/null >/dev/null
 		ret = runCmd('isolate --box-id={} --cleanup'.format(box_id)).returncode
 		# Failed
@@ -272,10 +276,13 @@ class Judger:
 
 		self.compile(code, lang)
 
+		# If compile error, early out
 		self.parse_meta(META_COMPILE)
 		if self.meta['compile']['exitcode']:
 			self.end()
-			return [RES_CE] * test_case
+			res = [RES_CE] * test_case
+			res = [result_type[x] for x in res]
+			return (res, self.meta)
 
 		# prepare the testdata for copying into the box
 		for i in range(test_case):
@@ -311,7 +318,9 @@ class Judger:
 			else:
 				res[i] = RES_WA
 		self.end()
-		return res
+
+		res = [result_type[x] for x in res]
+		return (res, self.meta)
 
 	# private
 	def compile(self, code, lang):
