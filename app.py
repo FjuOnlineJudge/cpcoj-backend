@@ -28,6 +28,9 @@ app.register_blueprint(submit.submit_page)
 from oj_test import test
 app.register_blueprint(test.test_page)
 
+from submissions import submissions
+app.register_blueprint(submissions.submissions_page)
+
 db.init_app(app)
 
 bootstrap=Bootstrap(app)
@@ -46,10 +49,6 @@ def question_list():
 @app.route('/question', methods=['GET', 'POST'])
 def question():
 	return render_template('question.html')
-
-@app.route('/submission', methods=['GET', 'POST'])
-def submission():
-	return render_template('submission.html')
 
 @app.route('/')
 def index():
