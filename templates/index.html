@@ -89,26 +89,23 @@ Home Page
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>葉佐任教得好嗎?</td>
-								<td>2019-04-27 16:00:23</td>
-								<td>ICEJJ</td>
-							</tr>
-							<tr>
-								<td>周老師太扯</td>
-								<td>2019-04-26 15:00:11</td>
-								<td>Halloworld</td>
-							</tr>
-							<tr>
-								<td>Love Live!!</td>
-								<td>2019-04-23 08:00:11</td>
-								<td>Roy4801</td>
-							</tr>
-							<tr>
-								<td>Ya</td>
-								<td>2017-04-23 08:00:11</td>
-								<td>Suntalk</td>
-							</tr>
+							{% if questions|length < 5 %}
+								{% for i in range(0, questions|length) %}
+								<tr>
+									<td>{{ questions[i].problemName }}</td>
+									<td>{{ questions[i].build_time }}</td>
+									<td>{{ name[i] }} </td>
+								</tr>
+								{% endfor %}
+							{% else %}
+								{% for i in range(0,5) %}
+									<tr>
+										<td>{{ questions[i].problemName }}</td>
+										<td>{{ questions[i].build_time }}</td>
+										<td>{{ name[i] }} </td>
+									</tr>
+								{% endfor %}
+							{% endif %}
 						</tbody>
 					</table>
 				</div>
