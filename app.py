@@ -86,10 +86,6 @@ def register():
 
 	return render_template('register.html', form=form)
 
-@app.route('/test')
-def test():
-	return render_template('index.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = FormLogin()
