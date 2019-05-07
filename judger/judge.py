@@ -97,6 +97,7 @@ def get_checkans_arg(box_id, cur_case, in_file, out_file, ans_file):
 
 	return arg_list
 
+# Run command
 def runCmd(cmd, *args, **kwargs):
 	if isinstance(cmd, str):
 		cmd = cmd.split()
@@ -232,6 +233,18 @@ result_type = { 1 : 'AC' #
 			   ,10: 'SYS_ERR'
 			   ,11: 'RF' }
 
+result2enum = {  'AC' : 1
+			   , 'RE' : 2
+			   , 'CE' : 3
+			   , 'TLE' : 4
+			   , 'MLE' : 5
+			   , 'WA' : 6
+			   , 'PE' : 7
+			   , 'OLE' : 8
+			   , 'OTHER' : 9
+			   , 'SYS_ERR' : 10
+			   , 'RF'  : 11}
+
 META_COMPILE  = 0
 META_RUN      = 1
 META_CHECKANS = 2
@@ -280,8 +293,9 @@ class Judger:
 		self.parse_meta(META_COMPILE)
 		if self.meta['compile']['exitcode']:
 			self.end()
+			# result
 			res = [RES_CE] * test_case
-			res = [result_type[x] for x in res]
+			# res = [result_type[x] for x in res]
 			return (res, self.meta)
 
 		# prepare the testdata for copying into the box
@@ -319,7 +333,7 @@ class Judger:
 				res[i] = RES_WA
 		self.end()
 
-		res = [result_type[x] for x in res]
+		# res = [result_type[x] for x in res]
 		return (res, self.meta)
 
 	# private

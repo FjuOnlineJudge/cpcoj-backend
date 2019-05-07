@@ -17,9 +17,18 @@ sys.path.append('judger')
 
 LISTEN_ALL = True
 
+from ext_app import app
+'''def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+
+    db.init_app(app)
+
+    return app
+
 # Init flask app
-app = Flask(__name__)
-app.config.from_object(config)
+app = create_app()
+app.app_context().push()'''
 
 # Register blueprints
 from submit import submit
@@ -30,8 +39,6 @@ app.register_blueprint(test.test_page)
 
 from submissions import submissions
 app.register_blueprint(submissions.submissions_page)
-
-db.init_app(app)
 
 bootstrap=Bootstrap(app)
 
