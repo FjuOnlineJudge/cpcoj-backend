@@ -1,0 +1,14 @@
+{% macro render_submissions_table(sub) %}
+<tr>
+	<td>{{ sub.submit_id }}</td>
+	<td>{{ sub.problem_id }}</td>
+	<td>{{ sub.submitter }}</td>
+	<td>{{ sub.resTime }}</td>
+	<td>{{ sub.resMem }}</td>
+	<td>{{ sub.result }}</td>
+	<td>{{ sub.lang }}</td>
+	<td>{{ sub.codeLen }}</td>
+	<td>{{ sub.score }}</td>
+	<td>{{ sub.time}}</td>
+</tr>
+{% endmacro %}
