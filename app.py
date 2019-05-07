@@ -142,8 +142,13 @@ def logout():
 @app.route('/setting')
 @login_required
 def setting():
-	flash('This is setting.')
+	# flash('This is setting.')
 	return render_template('setting.html')
+
+
+@app.route('/edit')
+def edit():
+	return render_template('edit.html')
 
 
 @app.route('/userinfo')
