@@ -3,6 +3,23 @@
 	margin-top: 5em;
 }
 
+.btn-Custom-color{
+
+	color: #000 !important;
+/*	background-color: rgba(179, 255, 255, 1);
+	border-color: rgba(179, 255, 255, 1);*/
+	background-color: rgba(102, 163, 255, 0.5) !important;
+	border-color: rgba(102, 163, 255, 0.5) !important;
+}
+
+.btn-Custom-color:hover {
+
+	color: #fff !important;
+	background-color: #00cccc !important;
+	border-color: #009999 !important;
+}
+
+
 .title_submission{
 
 	font-size: 2.5em;
