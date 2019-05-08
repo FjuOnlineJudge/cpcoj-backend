@@ -5,152 +5,211 @@ Question_list
 {% endblock %}
 
 {% block Css %}
-<link rel="stylesheet" type="text/css" href="../static/css/index.css">
-<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+<link rel="stylesheet" type="text/css" href="/static/css/submission.css">
 {% endblock %}
 
 {% block main %}
-<div class="container-fluid" style="margin-top: 5em">
+<div class="container-fluid topdis">
 
 	<div class="row">
-		<div class="col-md-12">
+
+		<div class="col-md-1 dis"></div>
+		<div class="col-md-4 dis">
 			<div class="card">
 				<div class="card-header title">
 					Popular Question
 				</div>
 				<div class="card-body text">
-					<table class="table table-hover table-condensed table-striped">
-						<thead>
-							<tr>
-								<th scope="col-md-1"></th>
-								<th scope="col-md-5">TITLE</th>
-								<th scope="col-md-2">Time Limit</th>
-								<th scope="col-md-3">Solve/Submit</th>
-								<th scope="col-md-1"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td></td>
-								<td>
-									<a href="./Halloworld.html">HalloWorld</a>
-								</td>
-								<td>3s</td>
-								<td>2276/2456</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>Question2</td>
-								<td>3s</td>
-								<td>1234/1385</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>Question3</td>
-								<td>3s</td>
-								<td>1111/1203</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>Question4</td>
-								<td>3s</td>
-								<td>1023/1099</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>Question5</td>
-								<td>3s</td>
-								<td>923/999</td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
+					<button type="button" class="btn btn-outline-success">Helloword</button>
+					<button type="button" class="btn btn-outline-success">Dflipflop</button>
+					<button type="button" class="btn btn-outline-success">Tflipflop</button>
+					<button type="button" class="btn btn-outline-success">uva104</button>
+					<button type="button" class="btn btn-outline-success">Dr.Yeh</button>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6 dis">
+		<div class="col-md-3 dis">
 			<div class="card">
 				<div class="card-header title">
 					Difficult Grading
 				</div>
 				<div class="card-body text">
-					<table class="table table-hover table-condensed table-striped">
-						<thead>
-							<tr>
-								<th>Star</th>
-								<th>number</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>one</th>
-								<th>123</th>
-							</tr>
-							<tr>
-								<td>two</td>
-								<td>3453</td>
-							</tr>
-							<tr>
-								<td>three</td>
-								<td>34535</td>
-							</tr>
-							<tr>
-								<td>four</td>
-								<td>4343</td>
-							</tr>
-							<tr>
-								<td>five</td>
-								<td>8765</td>
-							</tr>
-						</tbody>
-					</table>
+					<button type="button" class="btn btn-dark">One</button>
+					<button type="button" class="btn btn-primary">Two</button>
+					<button type="button" class="btn btn-success">Three</button>
+					<button type="button" class="btn btn-warning">Four</button>
+					<button type="button" class="btn btn-danger">Five</button>
 				</div>
 			</div>
 		</div>
-
-		<div class="col-md-6 dis">
+		<div class="col-md-3 dis">
 			<div class="card">
 				<div class="card-header title">
 					Algorithm
 				</div>
 				<div class="card-body text">
-					<table class="table table-hover table-condensed table-striped">
-						<thead>
-							<tr>
-								<th>Type</th>
-								<th>number</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>DP</td>
-								<td>963</td>
-							</tr>
-							<tr>
-								<td>Graph</td>
-								<td>304</td>
-							</tr>
-							<tr>
-								<td>Greedy</td>
-								<td>481</td>
-							</tr>
-							<tr>
-								<td>Math</td>
-								<td>235</td>
-							</tr>
-						</tbody>
-					</table>
+					<button type="button" class="btn btn-light">DP</button>
+					<button type="button" class="btn btn-light">Greedy</button>
+					<button type="button" class="btn btn-light">Graph</button>
+					<button type="button" class="btn btn-light">Math</button>
 				</div>
 			</div>
 		</div>
+		<div class="col-md-1 dis"></div>
 
+		<div class="col-md-1 dis"></div>
+		<div class="col-md-10 dis">
+			<h2>Normal / OneStar / FourStar / DP / Math / ...</h2>
+		</div>
+		<div class="col-md-1 dis"></div>
+
+		<div class="col-md-1"></div>
+		<div class="col-md-10" style="text-align: right;">
+			<a href="#" class="btn btn-xs btn-default">10</a>
+			<a href="#" class="btn btn-xs btn-default">20</a>
+			<a href="#" class="btn btn-xs btn-default">30</a>
+		</div>
+		<div class="col-md-1"></div>
+
+		<div class="col-md-1 dis"></div>
+		<div class="col-md-10 dis">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>PID</th>
+						<th>PName</th>
+						<th>TimeLimit</th>
+						<th>Author</th>
+						<th>Total AC</th>
+						<th>Total Submit</th>
+						<th>AC Rate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>7</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+					<tr>
+						<td>10</td>
+						<td>14391</td>
+						<td>R0y</td>
+						<td>3s</td>
+						<td>ICEJJ</td>
+						<td>333</td>
+						<td>438</td>
+						<td>76.03%</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-1 dis"></div>
+		
+		<div class="col-md-1 dis"></div>
+		<div class="col-md-10 dis">
+			<div class="pagination">
+				<a href="#">&laquo;</a>
+				<a href="#" class="active">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a>
+				<a href="#">&raquo;</a>
+			</div>
+		</div>
+		<div class="col-md-1 dis"></div>
 
 	</div>
+
 </div>
 
 

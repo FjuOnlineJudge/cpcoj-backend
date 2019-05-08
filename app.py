@@ -140,6 +140,9 @@ def setting():
 	# flash('This is setting.')
 	return render_template('setting.html')
 
+@app.route('/problem')
+def problem_handle():
+	return render_template('problem.html')
 
 @app.route('/edit')
 def edit():
