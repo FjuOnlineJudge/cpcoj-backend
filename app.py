@@ -17,9 +17,18 @@ sys.path.append('judger')
 
 LISTEN_ALL = True
 
+from ext_app import app
+'''def create_app():
+    app = Flask(__name__)
+    app.config.from_object(config)
+
+    db.init_app(app)
+
+    return app
+
 # Init flask app
-app = Flask(__name__)
-app.config.from_object(config)
+app = create_app()
+app.app_context().push()'''
 
 # Register blueprints
 from submit import submit
@@ -28,7 +37,8 @@ app.register_blueprint(submit.submit_page)
 from oj_test import test
 app.register_blueprint(test.test_page)
 
-db.init_app(app)
+from submissions import submissions
+app.register_blueprint(submissions.submissions_page)
 
 bootstrap=Bootstrap(app)
 
@@ -46,10 +56,6 @@ def question_list():
 @app.route('/question', methods=['GET', 'POST'])
 def question():
 	return render_template('question.html')
-
-@app.route('/submission', methods=['GET', 'POST'])
-def submission():
-	return render_template('submission.html')
 
 @app.route('/')
 def index():
