@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "_submissions_macro.html" import render_submissions_table %}
+{% from "_submissions_macro.html" import render_submissions_table, render_pagination %}
 
 {% block title %}
 提交紀錄
@@ -51,28 +51,8 @@
 			{% endif %}
 		</tbody>
 	</table>
-
-	<div class="pagination submission_dis">
-		<a href="#">&laquo;</a>
-		<a href="#" class="active">1</a>
-		<a href="#">2</a>
-		<a href="#">3</a>
-		<a href="#">4</a>
-		<a href="#">5</a>
-		<a href="#">6</a>
-		<a href="#">&raquo;</a>
+	<div class="container-fluid">
+	{{ render_pagination(pagin) }}
 	</div>
-<!-- 	<div>
-		<nav arie-label="Page navigation">
-			<ul class="pagination">
-				<li class="page-item"><a class="page-link" href="#"> << </a></li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#"> >> </a></li>
-			</ul>
-		</nav>
-	</div> -->
-
 </div>
 {% endblock %}

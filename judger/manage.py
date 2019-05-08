@@ -29,7 +29,7 @@ class JudgeThread(threading.Thread):
 			
 			res, meta = judger.judge(att['prob_id'], att['lang'], att['code'], att['time_lim'], att['mem_lim'], att['test_case'])
 
-			print(res, meta) # debug
+			# print(res, meta) # debug
 
 			sub = Submission.query.get(att['submit_id'])
 
@@ -80,7 +80,7 @@ class JudgeThread(threading.Thread):
 			if final_res == judge.RES_AC:
 				sub.resTime = total_time / att['test_case']
 			elif final_res == judge.RES_TLE:
-				sub.resTime = time_wall_max
+				sub.resTime = time_wall_max * 1000.0
 			else:
 				sub.resTime = -1.0
 			# Edit the resMem
