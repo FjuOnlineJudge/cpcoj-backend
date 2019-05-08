@@ -19,8 +19,23 @@
 	font-weight: bold;
 }
 
-.col-md-3 .clear_left_padding{
+.col-md-5 .clear_left_padding{
 
 	padding-left: 0;
+}
+
+.clear_right_padding{
+
+	padding-right: 0 !important;
+}
+
+.font_red{
+
+	color: red;
+}
+
+.font_green{
+
+	color: #2ecc71;
 }
 
