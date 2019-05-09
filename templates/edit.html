@@ -28,6 +28,10 @@ edit
 				{{ form.email(class="form-control", id="Email", type="email", placeholder=current_user.email) }}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
+				<label for="current_password" class="page-text">Current_Password</label>
+				{{ form.current_password(class="form-control", id="password", placeholder="current_password") }}
+			</div>
+			<div class="form-group" style="margin-bottom: 0rem;">
 				<label for="password" class="page-text">Password</label>
 				{{ form.password(class="form-control", id="password", placeholder="password") }}
 			</div>

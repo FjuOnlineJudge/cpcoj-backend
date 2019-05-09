@@ -28,7 +28,7 @@ class JudgeThread(threading.Thread):
 			judger = self.judger
 			# lock
 			lock.acquire()
-			
+
 			res, meta = judger.judge(att['prob_id'], att['lang'], att['code'], att['time_lim'], att['mem_lim'], att['test_case'])
 
 			# print(res, meta) # debug
@@ -64,7 +64,7 @@ class JudgeThread(threading.Thread):
 
 			if final_res == 0 and cnt == att['test_case']:
 				final_res = judge.RES_AC
-			
+
 			sub.result = judge.result_type[final_res]
 
 			total_time = 0
@@ -85,7 +85,7 @@ class JudgeThread(threading.Thread):
 				sub.resTime = total_time / att['test_case']
 			# Edit the resMem
 			sub.resMem = total_mem / att['test_case']
-			
+
 			# db.session.add(sub)
 			db.session.commit()
 
