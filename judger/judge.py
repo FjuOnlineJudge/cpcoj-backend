@@ -1,9 +1,11 @@
 import subprocess as sp
-import os, sys, shutil
+import os, sys, shutil, logging
 import json
 from pathlib import Path
 
 from utils import dump
+
+log = logging.getLogger('Judger')
 
 JUDGE_C   = 0
 JUDGE_CPP = 1
@@ -151,10 +153,10 @@ class Isolate:
 
 		# Failed
 		if ret == 127:
-			print('isolate box {} failed to init'.format(self.box_id))
+			log.debug('isolate box {} failed to init'.format(self.box_id))
 			sys.exit(-1)
 		else:
-			print('isolate box {} inited'.format(self.box_id))
+			log.debug('isolate box {} inited'.format(self.box_id))
 			rmrf(meta(self.box_id))
 			rmrf(res_path(self.box_id))
 
@@ -171,10 +173,10 @@ class Isolate:
 		ret = runCmd('isolate --box-id={} --cleanup'.format(box_id)).returncode
 		# Failed
 		if ret == 127:
-			print('isolate box {} failed to cleanup'.format(box_id))
+			log.debug('isolate box {} failed to cleanup'.format(box_id))
 			sys.exit(-1)
 		else:
-			print('isolate box {} cleanup'.format(box_id))
+			log.debug('isolate box {} cleanup'.format(box_id))
 
 		# Free the box id
 		Isolate.free_box(box_id)
@@ -244,6 +246,10 @@ result2enum = {  'AC' : 1
 			   , 'OTHER' : 9
 			   , 'SYS_ERR' : 10
 			   , 'RF'  : 11}
+
+def debug_out(i, stat, msg):
+	return 'Box {} - {} - {}'.format(i, stat, msg)
+
 
 META_COMPILE  = 0
 META_RUN      = 1
@@ -344,15 +350,19 @@ class Judger:
 		if lang == JUDGE_C:
 			print("Unsupported language")
 			sys.exit(-1)
+
+		log.debug(debug_out(i, 'compile', 'Write `code.cpp`'))
 		# Write to file `code.cpp` inside the box
 		with open(box_path(i, 'code.cpp'), 'w') as f:
 			f.write(code)
 
+		log.debug(debug_out(i, 'compile', 'Run compile cmd'))
 		# Compile the program
 		cmd = ['isolate'] + get_compile_arg_cpp(i)
 		# dump(cmd)
 		runCmd(cmd)
 
+		log.debug(debug_out(i, 'compile', 'Copy the compile msg out'))
 		# Copy the compile msg
 		copy(box_path(i, 'compile_out'), res_path(i, 'compile_out'))
 
@@ -360,13 +370,16 @@ class Judger:
 		box = self.box
 		i = box.get_cur_box_id()
 
+		log.debug(debug_out(i, 'run', 'Copy the testdata {} in'.format(cur_case)))
 		# Copy the in data
 		copy('{}'.format(res_path(i, inp)), '{}/{}'.format(box_path(i), inp))
 		
+		log.debug(debug_out(i, 'run', 'Run'))
 		# Run the program
 		cmd = ['isolate'] + get_run_arg(i, cur_case, time_lim, mem_lim, inp, outp)
 		runCmd(cmd)
 		
+		log.debug(debug_out(i, 'run', 'Copy the output {} out'.format(cur_case)))
 		# Copy the out data
 		copy('{}/{}'.format(box_path(i), outp), '{}'.format(res_path(i, outp)))
 
@@ -374,12 +387,11 @@ class Judger:
 		box = self.box
 		i = box.get_cur_box_id()
 
+		log.debug(debug_out(i, 'checkans', 'Copy files'))
 		# Copy checkans
 		copy(os.path.join(compile_inc_path, 'checkans'), os.path.join(box_path(i), 'checkans'))
-		# runCmd('cp compile/checkans {}/checkans'.format(box_path(i)))
-		
 		copy(res_path(i, ac_out), os.path.join(box_path(i), ac_out))
-		# runCmd('cp {0} {1}/{2}'.format(res_path(i, ac_out), box_path(i), ac_out))
 
+		log.debug(debug_out(i, 'checkans', 'Run checkans'))
 		cmd = ['isolate'] + get_checkans_arg(i, cur_case, prog_in, prog_out, ac_out)
 		runCmd(cmd)

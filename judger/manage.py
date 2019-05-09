@@ -1,4 +1,4 @@
-import threading
+import threading, logging
 
 # oj
 from judger import judge
@@ -12,13 +12,15 @@ MAX_JUDGE = 100
 
 lock = threading.Lock()
 
+log = logging.getLogger('Judger')
+
 class JudgeThread(threading.Thread):
 	def __init__(self, **kwargs):
 		threading.Thread.__init__(self, name='JudgeThread')
 		self.attrib = kwargs
 		self.judger = judge.Judger()
 
-		print('Thread {} created'.format(threading.get_ident()))
+		log.debug('Thread {} created'.format(threading.get_ident()))
 
 	def run(self):
 		with app.app_context():
@@ -90,7 +92,7 @@ class JudgeThread(threading.Thread):
 			# release lock
 			lock.release()
 
-			print('Thread {} exit'.format(threading.get_ident()))
+			log.debug('Thread {} exit'.format(threading.get_ident()))
 
 def add_judger(submit_id, prob_id, lang, code, time_lim, mem_lim, test_case):
 	th = JudgeThread(submit_id=submit_id, prob_id=prob_id, lang=lang, code=code, time_lim=time_lim, mem_lim=mem_lim, test_case=test_case)
