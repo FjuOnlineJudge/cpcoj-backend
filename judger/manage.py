@@ -77,12 +77,10 @@ class JudgeThread(threading.Thread):
 				if 'time-wall' in meta[now] and meta[now]['time-wall'] > time_wall_max:
 					time_wall_max = meta[now]['time-wall']
 			# Edit the resTime
-			if final_res == judge.RES_AC:
-				sub.resTime = total_time / att['test_case']
-			elif final_res == judge.RES_TLE:
+			if final_res == judge.RES_TLE:
 				sub.resTime = time_wall_max * 1000.0
 			else:
-				sub.resTime = -1.0
+				sub.resTime = total_time / att['test_case']
 			# Edit the resMem
 			sub.resMem = total_mem / att['test_case']
 			
