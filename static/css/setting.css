@@ -2,6 +2,18 @@
 
 	width: 70%;
 }
+.col-sm-3 img{
+
+	width: 70%;
+}
+.col-lg-3 img{
+
+	width: 70%;
+}
+.col-xl-3 img{
+
+	width: 70%;
+}
 
 .username{
 
@@ -20,6 +32,21 @@
 }
 
 .col-md-5 .clear_left_padding{
+
+	padding-left: 0;
+}
+
+.col-sm-5 .clear_left_padding{
+
+	padding-left: 0;
+}
+
+.col-lg-5 .clear_left_padding{
+
+	padding-left: 0;
+}
+
+.col-xl-5 .clear_left_padding{
 
 	padding-left: 0;
 }
