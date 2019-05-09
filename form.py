@@ -73,9 +73,13 @@ class FormEdit(Form):
         validators.Length(1, 50),
         validators.Email()
     ])
+    current_password = PasswordField('CurrentPassWord', validators=[
+        validators.DataRequired()
+        # validators.Length(2, 10)
+    ])
     password = PasswordField('PassWord', validators=[
         validators.DataRequired(),
-        validators.Length(2, 10),
+        validators.Length(2, 10)
         # validators.EqualTo('confirm', message='PASSWORD NEED MATCH')
     ])
     confirm = PasswordField('Confirm PassWord', validators=[

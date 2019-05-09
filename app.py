@@ -147,11 +147,15 @@ def edit():
 	form = FormEdit();
 	target = Account.query.filter_by(username=current_user.username).first()
 	if request.method == 'POST':
-		print(form.username.data)
 		if form.validate_on_submit():
 			check_coll = Account.query.filter_by(email=form.email.data).first()
+			# 驗證現在密碼是否正確
+			if current_user.check_password(form.current_password.data):
+				flash("Current_user Password Invalid")
+			# 驗證更改之密碼兩筆confirm是否相同
 			if form.password.data != form.confirm.data:
 				flash("Password Invalid")
+			# 驗證email是否有碰撞
 			if form.email.data == check_coll:
 				flash("Email collision")
 			else:
@@ -166,10 +170,14 @@ def edit():
 	return render_template('edit.html', form=form)
 
 
-@app.route('/userinfo')
-@login_required
-def userinfo():
-	return render_template('userinfo.html')
+@app.route('/userinfo/<string:name>')
+def userinfo(name):
+	target = Account.query.filter_by(username=name).first()
+	if target:
+		return render_template('userinfo.html', info=target)
+	else:
+		#Todo (halloworld) response 404
+		return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	if LISTEN_ALL:

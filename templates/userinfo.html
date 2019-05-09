@@ -20,9 +20,9 @@ Userinfo
 			<br>
 			<br>
 			<!--Username-->
-			<h5 class="username">{{ current_user.username }}</h5>
+			<h5 class="username">{{ info.username }}</h5>
 			<!--Nickname-->
-			<h6 class="nickname">{{ current_user.nickname }}</h6>
+			<h6 class="nickname">{{ info.nickname }}</h6>
 			<br>
 
 			<div class="row">
@@ -40,7 +40,7 @@ Userinfo
 					0
 					<br>
 					<!-- need to modify -->
-					{{ current_user.submission.result }}
+					{{ info.submission.result }}
 				</div>
 			</div>
 
@@ -53,9 +53,9 @@ Userinfo
 					Admin:
 				</div>
 				<div class="col-md-8 text">
-					{{ current_user.email }}
+					{{ info.email }}
 					<br>
-					{% if permLevel == 1 %}
+					{% if info.permLevel == 1 %}
 						True
 					{% else %}
 						False
@@ -64,12 +64,15 @@ Userinfo
 			</div>
 
 			<br>
-			Sign up at : {{ current_user.signUpTime }}
+			Sign up at : {{ info.signUpTime }}
 			<br>
-			Last sign in : {{ current_user.lastLoginTime }}
+			Last sign in : {{ info.lastLoginTime }}
 			<br>
 			<br>
+
+			{% if current_user.is_authenticated and current_user.username == info.username %}
 			<a class="btn btn-primary" href="{{ url_for('edit') }}">Edit Profile</a>
+			{% endif %}
 
 		</div>
 		<div class="col-md-9">
