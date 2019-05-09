@@ -4,7 +4,7 @@ from wtforms.fields.html5 import EmailField
 
 class FormRegister(Form):
     """依照Model來建置相對應的Form
-    
+
     password2: 用來確認兩次的密碼輸入相同
     """
     username = StringField('UserName', validators=[
@@ -33,7 +33,6 @@ class FormRegister(Form):
     submit = SubmitField('Register New Account')
 
 
-
 class FormLogin(Form):
     """
     使用者登入使用
@@ -53,3 +52,33 @@ class FormLogin(Form):
     remember_me = BooleanField('Keep Logged in')
 
     submit = SubmitField('Log in')
+
+
+class FormEdit(Form):
+    """
+    使用者登入使用
+    以email為主要登入帳號，密碼需做解碼驗證
+    記住我的部份透過flask-login來實現
+    """
+
+    username = StringField('UserName')
+
+    nickname = StringField('Nickname', validators=[
+        validators.DataRequired(),
+        validators.Length(1, 30)
+    ])
+
+    email = EmailField('Email', validators=[
+        validators.DataRequired(),
+        validators.Length(1, 50),
+        validators.Email()
+    ])
+    password = PasswordField('PassWord', validators=[
+        validators.DataRequired(),
+        validators.Length(2, 10),
+        # validators.EqualTo('confirm', message='PASSWORD NEED MATCH')
+    ])
+    confirm = PasswordField('Confirm PassWord', validators=[
+        validators.DataRequired()
+    ])
+    submit = SubmitField('Edit Your Profile')

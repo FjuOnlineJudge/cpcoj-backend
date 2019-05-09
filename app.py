@@ -120,6 +120,9 @@ def login():
 			#  當使用者存在資料庫內再核對密碼是否正確。
 			if user.check_password(form.password.data):
 				login_user(user, form.remember_me.data)
+				date_time = datetime.datetime.now()
+				user.lastLoginTime = date_time
+				db.session.commit()
 				return redirect(url_for('index'))
 
 			else:
@@ -137,21 +140,36 @@ def logout():
 	# flash('Log Out See You.')
 	return redirect(url_for('index'))
 
-@app.route('/setting')
+
+@app.route('/edit', methods=['GET', 'POST'])
 @login_required
-def setting():
-	# flash('This is setting.')
-	return render_template('setting.html')
-
-
-@app.route('/edit')
 def edit():
-	return render_template('edit.html')
+	form = FormEdit();
+	target = Account.query.filter_by(username=current_user.username).first()
+	if request.method == 'POST':
+		print(form.username.data)
+		if form.validate_on_submit():
+			check_coll = Account.query.filter_by(email=form.email.data).first()
+			if form.password.data != form.confirm.data:
+				flash("Password Invalid")
+			if form.email.data == check_coll:
+				flash("Email collision")
+			else:
+				target.nickname = form.nickname.data
+				target.email = form.email.data
+				target.password = generate_password_hash(form.password.data)
+				db.session.commit()
+		else:
+			flash("Edit Fail")
+
+
+	return render_template('edit.html', form=form)
 
 
 @app.route('/userinfo')
+@login_required
 def userinfo():
-	return 'Here is UserINFO'
+	return render_template('userinfo.html')
 
 if __name__ == '__main__':
 	if LISTEN_ALL:

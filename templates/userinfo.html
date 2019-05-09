@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-Setting
+Userinfo
 {% endblock %}
 
 
@@ -39,7 +39,8 @@ Setting
 					<br>
 					0
 					<br>
-					0%(0/0)
+					<!-- need to modify -->
+					{{ current_user.submission.result }}
 				</div>
 			</div>
 
@@ -54,14 +55,18 @@ Setting
 				<div class="col-md-8 text">
 					{{ current_user.email }}
 					<br>
-					False
+					{% if permLevel == 1 %}
+						True
+					{% else %}
+						False
+					{% endif %}
 				</div>
 			</div>
 
 			<br>
-			Sign up at : 2019-04-30 11:22:33
+			Sign up at : {{ current_user.signUpTime }}
 			<br>
-			Last sign in : Joseph
+			Last sign in : {{ current_user.lastLoginTime }}
 			<br>
 			<br>
 			<a class="btn btn-primary" href="{{ url_for('edit') }}">Edit Profile</a>
