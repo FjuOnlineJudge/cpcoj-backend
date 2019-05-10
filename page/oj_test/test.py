@@ -51,3 +51,16 @@ def test_query_user(name):
 		s = 'Not Found'
 
 	return '<pre>{}</pre>'.format(escape(s))
+
+@test_page.route('/test/log')
+def test_log():
+	log = None
+	with open('log/oj.log') as f:
+		log = f.readlines()
+
+	for t in log:
+		if 'GET /test/log' in t:
+			log.remove(t)
+	if log:
+		log.reverse()
+	return '<pre>{}</pre>'.format(''.join(log))

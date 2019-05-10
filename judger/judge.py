@@ -258,6 +258,7 @@ class Judger:
 	def __init__(self):
 		self.box = Isolate()
 		self.meta = {}
+		self.out = {}
 
 	def end(self):
 		self.box.release_box()
@@ -302,7 +303,7 @@ class Judger:
 			# result
 			res = [RES_CE] * test_case
 			# res = [result_type[x] for x in res]
-			return (res, self.meta)
+			return (res, self.meta, self.out)
 
 		# prepare the testdata for copying into the box
 		for i in range(test_case):
@@ -340,7 +341,7 @@ class Judger:
 		self.end()
 
 		# res = [result_type[x] for x in res]
-		return (res, self.meta)
+		return (res, self.meta, self.out)
 
 	# private
 	def compile(self, code, lang):
@@ -365,6 +366,11 @@ class Judger:
 		log.debug(debug_out(i, 'compile', 'Copy the compile msg out'))
 		# Copy the compile msg
 		copy(box_path(i, 'compile_out'), res_path(i, 'compile_out'))
+
+		# Copy the compile out to the memory
+		log.debug(debug_out(i, 'compile', 'Copy the compile_out'))
+		with open(res_path(i, 'compile_out'), 'r') as f:
+			self.out['compile_out'] = ''.join(f.readlines())
 
 	def run(self, cur_case, time_lim, mem_lim, inp, outp,):
 		box = self.box

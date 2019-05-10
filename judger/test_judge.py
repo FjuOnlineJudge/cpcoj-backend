@@ -62,7 +62,7 @@ a = Judger()
 
 CASE = 4
 
-res, meta = a.judge(1, JUDGE_CPP, code_2, 3.0, 65536, CASE)
+res, meta, out = a.judge(1, JUDGE_CPP, code_2, 3.0, 65536, CASE)
 
 x = [result_type[i] for i in res]
 print(x)

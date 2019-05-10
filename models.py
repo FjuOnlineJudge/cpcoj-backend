@@ -86,6 +86,7 @@ class Submission(db.Model):
 	account_id = db.Column(db.Integer, db.ForeignKey('account.uid'), nullable=False)
 
 	result  = db.Column(db.String(10), nullable=False)               # 結果
+	result_msg = db.Column(db.Text, nullable=True)                   # 結果訊息
 	resTime = db.Column(db.Float, nullable=False)                    # 執行時間
 	resMem  = db.Column(db.Float, nullable=False)                    # 執行記憶體
 	code    = db.Column(db.Text, nullable=False)                     # 程式碼長度

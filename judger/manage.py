@@ -29,9 +29,9 @@ class JudgeThread(threading.Thread):
 			# lock
 			lock.acquire()
 
-			res, meta = judger.judge(att['prob_id'], att['lang'], att['code'], att['time_lim'], att['mem_lim'], att['test_case'])
+			res, meta, out = judger.judge(att['prob_id'], att['lang'], att['code'], att['time_lim'], att['mem_lim'], att['test_case'])
 
-			# print(res, meta) # debug
+			print(res, meta, out) # debug
 
 			sub = Submission.query.get(att['submit_id'])
 
@@ -64,29 +64,36 @@ class JudgeThread(threading.Thread):
 
 			if final_res == 0 and cnt == att['test_case']:
 				final_res = judge.RES_AC
-
+			# Set the result to sub
 			sub.result = judge.result_type[final_res]
+			log.debug('Result is {}'.format(sub.result))
 
-			total_time = 0
-			total_mem = 0
-			time_wall_max = 0
-			for i in range(att['test_case']):
-				now = 'run_{}'.format(i)
+			# if not compile error
+			if final_res != judge.RES_CE:
+				# Handle the time and mem record
+				total_time = 0
+				total_mem = 0
+				time_wall_max = 0
+				for i in range(att['test_case']):
+					now = 'run_{}'.format(i)
 
-				total_time += meta[now]['time'] * 1000.0 if 'time' in meta[now] else 0.0
-				total_mem += meta[now]['max-rss'] if 'max-rss' in meta[now] else 0.0
-				# Get the maximium of time_wall_max
-				if 'time-wall' in meta[now] and meta[now]['time-wall'] > time_wall_max:
-					time_wall_max = meta[now]['time-wall']
-			# Edit the resTime
-			if final_res == judge.RES_TLE:
-				sub.resTime = time_wall_max * 1000.0
+					total_time += meta[now]['time'] * 1000.0 if 'time' in meta[now] else 0.0
+					total_mem += meta[now]['max-rss'] if 'max-rss' in meta[now] else 0.0
+					# Get the maximium of time_wall_max
+					if 'time-wall' in meta[now] and meta[now]['time-wall'] > time_wall_max:
+						time_wall_max = meta[now]['time-wall']
+				# Edit the resTime
+				if final_res == judge.RES_TLE:
+					sub.resTime = time_wall_max * 1000.0
+				else:
+					sub.resTime = total_time / att['test_case']
+				# Edit the resMem
+				sub.resMem = total_mem / att['test_case']
 			else:
-				sub.resTime = total_time / att['test_case']
-			# Edit the resMem
-			sub.resMem = total_mem / att['test_case']
+				sub.resTime = 0
+				sub.resMem = 0
+				sub.result_msg = 'test'
 
-			# db.session.add(sub)
 			db.session.commit()
 
 			# release lock
