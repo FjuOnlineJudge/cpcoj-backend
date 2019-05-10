@@ -26,13 +26,23 @@
 		<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
 		{% endfor %}
 	{% else %}
-		{% for i in range(pagin.total_page - pagin.next_lim, pagin.total_page+1) %}
-		{% if i == pagin.cur_page %}
-			<a href="#" class="active">{{ pagin.cur_page }}</a>
+		{% if pagin.total_page < pagin.next_lim %}
+			{% for i in range(pagin.total_page) %}
+				{% if i == pagin.cur_page %}
+					<a href="#" class="active">{{ pagin.cur_page }}</a>
+				{% else %}
+					<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
 		{% else %}
-			<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+			{% for i in range(pagin.total_page - pagin.next_lim, pagin.total_page+1) %}
+				{% if i == pagin.cur_page %}
+					<a href="#" class="active">{{ pagin.cur_page }}</a>
+				{% else %}
+					<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
 		{% endif %}
-		{% endfor %}
 	{% endif %}
 	<a href="{{ pagin.gen_url(pagin.total_page) }}">&raquo;</a>
 </div>

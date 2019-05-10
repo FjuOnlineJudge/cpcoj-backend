@@ -9,11 +9,9 @@ Login
 {% endblock %}
 
 {% block main %}
-	<!-- Optional content you want to persist between sections -->
-
 <div class="test">
 	<form method="POST" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizonal">
-		{{ form.csrf_token }}
+		{{ form.hidden_tag() }}
 		<div class="form-group">
 			<label for="username">Username</label>
 			{{ form.username(class="form-control", id="username", type="text", placeholder="Username") }}

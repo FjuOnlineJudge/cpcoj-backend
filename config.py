@@ -3,6 +3,8 @@ import os
 DEBUG = True
 SESSION_PROTECTION = 'strong'
 SECRET_KEY = os.urandom(24)
+# WTF_CSRF_SECRET_KEY = os.urandom(24)
+# CSRF_SESSION_KEY = os.urandom(24)
 
 DIALECT = 'mysql'
 DRIVER = 'mysqldb'

@@ -31,6 +31,7 @@ Sumbit
 		<div class="row">
 			<div class="col-md-12">
 				<form method="POST">
+					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 					<div class="form-group dis page-title">
 						<label for="probID">
 							Problem ID
