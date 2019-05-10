@@ -82,7 +82,6 @@ class FormTestDB_prob(FlaskForm):
 			validators.DataRequired()
 		])
 
-	# build_time = DateTimeField('Build Time')
 	submit = SubmitField('Submit')
 
 	def __repr__(self):
@@ -95,11 +94,32 @@ class FormTestDB_prob(FlaskForm):
 		info += 'info=\n```\n' + str(self.info.data) + '\n```\n'
 		return info
 
-@test_page.route('/test/db/problem', methods=['GET', 'POST'])
-def test_add_db_problem():
-	form = FormTestDB_prob()
-	if request.method == 'POST':
-		if form.validate_on_submit():
-			print(form)
+@test_page.route('/test/db/<path:arg>', methods=['GET', 'POST'])
+def test_handle_db(arg):
+	arg = arg.split('/')
 
-	return render_template('test_db.html', form=form)
+	if arg[0] == 'i':
+		if arg[1] == 'problem':
+			form = FormTestDB_prob()
+			return insert_i_problem(form, request)
+	elif arg[0] == 'l':
+		if arg[1] == 'problem':
+			return render_template('test_db_list.html')
+
+	return 'Usage: /test/db/<operation>/<table>'
+
+def insert_i_problem(form, request):
+	with app.app_context():
+		if request.method == 'POST':
+			if form.validate_on_submit():
+				for _ in range(int(form.num.data)):
+					prob = Problem(problemName=form.problem_name.data
+						, uid=form.uid.data
+						, info=form.info.data)
+					db.session.add(prob)
+					db.session.commit()
+
+	return render_template('test_db.html', form=form, path='i/problem')
+
+def list_db_table():
+	return ''

@@ -1,8 +1,9 @@
-
 from exts import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin
+import datetime
 
+#oj
 import utils
 
 # build the tables
@@ -13,7 +14,7 @@ class Problem(db.Model):
 	problemName = db.Column(db.String(100), nullable=False, unique=True) # 名稱
 	uid = db.Column(db.Integer, nullable=False, unique=False) # problemsetter
 	info = db.Column(db.Text, nullable=False)           # 內容
-	build_time = db.Column(db.DateTime, nullable=False) # 建立時間
+	build_time = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now()) # 建立時間
 
 	# Relation
 	submission = db.relationship('Submission', backref=db.backref('problem', uselist=False))

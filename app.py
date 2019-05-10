@@ -5,7 +5,6 @@ from models import Problem, Account, Submission
 import datetime
 from exts import db
 from form import *
-from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 from flask_login import login_user, current_user, login_required, LoginManager, logout_user
@@ -18,17 +17,6 @@ sys.path.append('judger')
 LISTEN_ALL = True
 
 from ext_app import app
-'''def create_app():
-    app = Flask(__name__)
-    app.config.from_object(config)
-
-    db.init_app(app)
-
-    return app
-
-# Init flask app
-app = create_app()
-app.app_context().push()'''
 
 # Register blueprints
 from submit import submit
@@ -39,8 +27,6 @@ app.register_blueprint(test.test_page)
 
 from submissions import submissions
 app.register_blueprint(submissions.submissions_page)
-
-bootstrap=Bootstrap(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
@@ -98,14 +84,20 @@ def register():
 				#######
 				# return 'two password is different'
 			else:
-				account = Account(uid=0, username=form.username.data, nickname=form.nickname.data, password=generate_password_hash(form.password.data), email=form.email.data, permLevel=False, signUpTime=date_time, lastLoginTime=date_time, icon=False)
+				account = Account(username=form.username.data
+					, nickname=form.nickname.data
+					, password=generate_password_hash(form.password.data)
+					, email=form.email.data
+					, permLevel=2
+					, signUpTime=date_time
+					, lastLoginTime=date_time
+					, icon=False)
 				db.session.add(account)
 				db.session.commit()
 				# flash('Success Thank You')
 				return redirect(url_for('login'))
 		else:
 			flash('Email is worng')
-
 
 	return render_template('register.html', form=form)
 
