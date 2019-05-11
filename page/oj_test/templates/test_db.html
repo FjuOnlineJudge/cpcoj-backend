@@ -11,18 +11,26 @@
 
 <body style="background-color: rgba(204, 255, 204, 0.15)">
 	<div class="container">
-	<div class="row justify-content-start">
-		<div class="col">
+	<div class="row justify-content-start border">
+		<div class="col-md-2">
 			<form method="POST" action="{{ url_for('.test_handle_db', arg=path) }}">
 				{{ form.hidden_tag() }}
 				<div class="form-group">{{ form.num.label }}{{ form.num(class="form-control") }}</div>
+				<div class="form-group">{{ form.problem_id.label }}{{ form.problem_id(class="form-control", value="0") }}</div>
 				<div class="form-group">{{ form.problem_name.label }}{{ form.problem_name(class="form-control") }}</div>
 				<div class="form-group">{{ form.uid.label }}{{ form.uid(class="form-control") }}</div>
 				<div class="form-group">{{ form.info.label }}{{ form.info(class="form-control") }}</div>
 				<div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
 			</form>
 		</div>
-		<div class="col-md-9"></div>
+		<div class="col-md-2">
+			<form method="POST" action="{{ url_for('.test_handle_db', arg=path) }}">
+				{{ form.hidden_tag() }}
+				<div class="form-group">{{ del_form.problem_id.label }}{{ del_form.problem_id(class="form-control") }}</div>
+				<div class="form-group">{{ del_form.del_btn(class="btn btn-primary") }}</div>
+			</form>
+		</div>
+		<div class="col-md-8"></div>
 	</div>
 	</div>
 </body>

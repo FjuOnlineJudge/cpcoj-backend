@@ -11,7 +11,7 @@ class Problem(db.Model):
 	__tablename__  = 'problem'
 	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
 	problem_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
-	problemName = db.Column(db.String(100), nullable=False, unique=True) # 名稱
+	problemName = db.Column(db.String(100), nullable=False, unique=False) # 名稱
 	uid = db.Column(db.Integer, nullable=False, unique=False) # problemsetter
 	info = db.Column(db.Text, nullable=False)           # 內容
 	build_time = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now()) # 建立時間
@@ -83,7 +83,7 @@ class Submission(db.Model):
 	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
 	submit_id     = db.Column(db.Integer, primary_key=True, nullable=False)# 提交題號
 
-	problem_id = db.Column(db.Integer, db.ForeignKey('problem.problem_id'), nullable=False)
+	problem_id = db.Column(db.Integer, db.ForeignKey('problem.problem_id'), nullable=True)
 	account_id = db.Column(db.Integer, db.ForeignKey('account.uid'), nullable=False)
 
 	result  = db.Column(db.String(10), nullable=False)               # 結果

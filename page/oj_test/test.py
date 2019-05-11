@@ -1,13 +1,15 @@
 from flask import Flask, Blueprint, render_template, request, flash, escape
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, TextAreaField, validators
-import os, datetime
+import os, datetime, logging
 
 # oj
 import utils
 from exts import db
 from ext_app import app
 from models import Account, Submission, Problem
+
+log = logging.getLogger('test')
 
 test_page = Blueprint('test_page'
 					, __name__
@@ -67,6 +69,12 @@ class FormTestDB_prob(FlaskForm):
 	num = IntegerField('Times', validators=[
 			validators.DataRequired()
 		])
+
+	problem_id = IntegerField('problemID'
+		, validators=[
+			validators.Optional()
+		])
+
 	problem_name = StringField('ProblemName'
 		, validators=[
 			validators.DataRequired()
@@ -94,32 +102,65 @@ class FormTestDB_prob(FlaskForm):
 		info += 'info=\n```\n' + str(self.info.data) + '\n```\n'
 		return info
 
+class FormTestDB_delProb(FlaskForm):
+	problem_id = StringField('problemID', validators=[
+		validators.DataRequired()
+	])
+
+	del_btn = SubmitField('Delete')
+
 @test_page.route('/test/db/<path:arg>', methods=['GET', 'POST'])
 def test_handle_db(arg):
 	arg = arg.split('/')
 
-	if arg[0] == 'i':
+	if arg[0] == 'e':
 		if arg[1] == 'problem':
 			form = FormTestDB_prob()
-			return insert_i_problem(form, request)
+			del_form = FormTestDB_delProb()
+			return handle_e_problem(form, del_form, request)
 	elif arg[0] == 'l':
 		if arg[1] == 'problem':
-			return render_template('test_db_list.html')
+			return list_db_table(Problem, '/'.join(arg))
+		elif arg[1] == 'submission':
+			return list_db_table(Submission, '/'.join(arg))
 
-	return 'Usage: /test/db/<operation>/<table>'
+	return escape('Usage: /test/db/<operation>/<table>')
 
-def insert_i_problem(form, request):
+def handle_e_problem(form, del_form, request):
 	with app.app_context():
 		if request.method == 'POST':
-			if form.validate_on_submit():
-				for _ in range(int(form.num.data)):
-					prob = Problem(problemName=form.problem_name.data
+			flag = False
+			if not flag and form.validate_on_submit():
+				flag = True
+				for i in range(int(form.num.data)):
+					log.debug('Add problem {} {}/{}'.format(form.problem_name.data, i, form.num.data))
+					prob = Problem(problem_id=form.problem_id.data, problemName=form.problem_name.data
 						, uid=form.uid.data
 						, info=form.info.data)
 					db.session.add(prob)
 					db.session.commit()
+			if not flag and del_form.validate_on_submit():
+				i = del_form.problem_id.data
+				l = 0
+				r = 0
 
-	return render_template('test_db.html', form=form, path='i/problem')
+				if '-' in i:
+					l, r = i.split('-')
+					l = int(l)
+					r = int(r)
+				else:
+					l = int(i)
+					r = l
+				for a in range(l, r+1):
+					prob = Problem.query.get(a)
+					if prob:
+						log.debug('Delete the {} problem'.format(a))
+						db.session.delete(prob)
+						db.session.commit()
 
-def list_db_table():
-	return ''
+	return render_template('test_db.html', form=form, del_form=del_form, path='e/problem')
+
+def list_db_table(database, path):
+	with app.app_context():
+		l = database.query.all()
+	return render_template('test_db_list.html', list=l, path=path)

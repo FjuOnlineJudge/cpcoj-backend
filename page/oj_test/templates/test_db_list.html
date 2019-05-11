@@ -16,8 +16,12 @@
 </head>
 
 <body style="background-color: rgba(204, 255, 204, 0.15)">
+	{% for i in list %}
 	<div class="panel panel-default panel-margin border">
-		<div class="panel-body">A Basic Panel</div>
+		<div class="panel-body">
+			<pre>{{ i }}</pre>
+		</div>
 	</div>
+	{% endfor %}
 </body>
 </html>
