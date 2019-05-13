@@ -3,6 +3,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 <head>
 	<title>{% block title %}{% endblock %}</title>
+	{% block javascript %}{% endblock %}
 	<!-- {% with messages = get_flashed_messages() %}
 		{% if messages %}
 			{% for messages in messages %}

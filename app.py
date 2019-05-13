@@ -48,6 +48,10 @@ def question():
 def submission():
 	return render_template('submission.html')
 
+@app.route('/sub_detail', methods=['GET', 'POST'])
+def submission_detail():
+	return render_template('sub_detail.html')
+
 @app.route('/')
 def index():
 	# 公告
