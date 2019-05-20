@@ -44,7 +44,7 @@ class Account(UserMixin, db.Model):
 	icon = db.Column(db.Boolean, nullable=False) # 保留給頭像用
 
 	# Relation
-	submission = db.relationship('Submission', backref='account') # one to many
+	submission = db.relationship('Submission', backref='account', lazy="dynamic") # one to many
 
 	def check_password(self, password):
 		return check_password_hash(self.password, password)

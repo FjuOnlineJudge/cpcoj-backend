@@ -54,9 +54,27 @@ def index():
 		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
 		if Account_search:
 			uid_change_name.append(Account_search.username)
-	# Ranklist
 
-	return render_template('index.html', questions=questions, name=uid_change_name)
+	# Ranklist
+	all_user = Account.query.all()
+	ranklist = []
+
+	for idx in range(0,len(all_user)):
+		total_submit = all_user[idx].submission.order_by(Submission.problem_id).all()
+		total_ac = all_user[idx].submission.filter_by(result = "AC").all()
+		tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
+		real_ac = all_user[idx].submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
+		ranklist.append((all_user[idx].username , len(total_submit), len(total_ac), len(tried), len(real_ac)))
+
+	# real_ac sort
+	ranklist.sort(key=lambda tup: tup[4], reverse=True)
+	# ranklist-data(python-list): (0)username, (1)total_submit, (2)total_ac, (3)tried, (4)real_ac
+	# for i in ranklist:
+	# 	print(i[0],i[1],i[2],i[3],i[4])
+
+	return render_template('index.html', questions=questions,
+										 name=uid_change_name,
+										 ranklist=ranklist)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -166,8 +184,22 @@ def edit():
 @app.route('/userinfo/<string:name>')
 def userinfo(name):
 	target = Account.query.filter_by(username=name).first()
+
+	total_submit = target.submission.order_by(Submission.problem_id).all()
+	total_ac = real_ac = target.submission.filter_by(result = "AC").all()
+	tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
+	real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
+
+	# print("AC:{}".format(len(real_ac)))
+	# print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
+	# print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
+
 	if target:
-		return render_template('userinfo.html', info=target)
+		return render_template('userinfo.html', info=target
+											  , total_submit=total_submit
+											  , total_ac=total_ac
+											  , tried=tried
+											  , real_ac=real_ac)
 	else:
 		#Todo (halloworld) response 404
 		return redirect(url_for('index'))

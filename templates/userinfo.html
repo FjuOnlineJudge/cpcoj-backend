@@ -35,12 +35,19 @@ Userinfo
 				</div>
 
 				<div class="col-md-3 text clear_left_padding">
-					0
-					<br>
-					0
-					<br>
-					<!-- need to modify -->
-					{{ info.submission.result }}
+					{% if total_ac|length > 0 %}
+						{{ real_ac|length }}
+						<br>
+						{{ tried|length }}
+						<br>
+						{{ total_ac|length/total_submit|length*100 }}% ({{ total_ac|length }}/{{ total_submit|length }})
+					{% else %}
+						{{ real_ac|length }}
+						<br>
+						{{ tried|length }}
+						<br>
+						0.0%(0/0)
+					{% endif %}
 				</div>
 			</div>
 
