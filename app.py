@@ -43,6 +43,10 @@ def question_list():
 def question():
 	return render_template('question.html')
 
+@app.route('/sub_detail', methods=['GET', 'POST'])
+def submission_detail():
+	return render_template('sub_detail.html')
+
 @app.route('/')
 def index():
 	# 公告
@@ -177,6 +181,9 @@ def edit():
 		else:
 			flash("Edit Fail")
 
+@app.route('/problem')
+def problem_handle():
+	return render_template('problem.html')
 
 	return render_template('edit.html', form=form)
 
