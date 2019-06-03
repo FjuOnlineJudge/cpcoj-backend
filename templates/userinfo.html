@@ -84,65 +84,41 @@ Userinfo
 		</div>
 		<div class="col-md-9 col-sm-9 col-lg-9 col-xl-9">
 			<table class="table table-condensed" style="margin-top: 1em;">
-				<thead>
+				
 					<h3>Tried and accept</h3>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-				</thead>
-				<tbody class="font_green">
-					<tr>
-						<td>102</td>
-						<td>104</td>
-						<td>108</td>
-						<td>888</td>
-						<td>889</td>
-						<td>1012</td>
-						<td>1022</td>
-						<td>1044</td>
-						<td>1055</td>
-						<td>11111</td>
-					</tr>
-				</tbody>
+					
+					<thead>
+						{% for i in range(0, real_ac|length) %}
+						<th></th>
+						{% endfor %}
+					</thead>
+					<tbody class="font_green">
+						<tr>
+							{% for i in range(0, real_ac|length) %}
+								<td>{{ real_ac[i].problem_id }}</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+	
 			</table>
 
 			<br>
 
 			<table class="table table-condensed">
-				<thead>
 					<h3>Tried but not yet solved</h3>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-				</thead>
-				<tbody class="font_red">
-					<tr>
-						<td>102</td>
-						<td>104</td>
-						<td>108</td>
-						<td>888</td>
-						<td>889</td>
-						<td>1012</td>
-						<td>1022</td>
-						<td>1044</td>
-						<td>1055</td>
-						<td>11111</td>
-					</tr>
-				</tbody>			
+					<thead>
+						{% for i in range(0, wrong|length) %}
+							<th></th>
+						{% endfor %}
+					</thead>
+					<tbody class="font_red">
+						<tr>
+							{% for i in range(0, wrong|length) %}
+							<td>{{ wrong[i].problem_id }}</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+								
 			</table>
 		</div>
 	</div>

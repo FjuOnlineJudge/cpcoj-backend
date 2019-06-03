@@ -159,7 +159,7 @@ def logout():
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-	form = FormEdit();
+	form = FormEdit()
 	target = Account.query.filter_by(username=current_user.username).first()
 	if request.method == 'POST':
 		if form.validate_on_submit():
@@ -181,32 +181,41 @@ def edit():
 		else:
 			flash("Edit Fail")
 
+	return render_template('edit.html', form=form)
+
+
 @app.route('/problem')
 def problem_handle():
 	return render_template('problem.html')
 
-	return render_template('edit.html', form=form)
+	
 
 
 @app.route('/userinfo/<string:name>')
 def userinfo(name):
 	target = Account.query.filter_by(username=name).first()
-
 	total_submit = target.submission.order_by(Submission.problem_id).all()
-	total_ac = real_ac = target.submission.filter_by(result = "AC").all()
+	total_ac = target.submission.filter_by(result = "AC").all()
 	tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
 	real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
-
+	
 	# print("AC:{}".format(len(real_ac)))
 	# print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
 	# print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
+	wrong = []
+	for tri in tried:
+		for real in real_ac:
+			if real.problem_id != tri.problem_id:
+				wrong.append(tri)
 
+		
 	if target:
 		return render_template('userinfo.html', info=target
 											  , total_submit=total_submit
 											  , total_ac=total_ac
 											  , tried=tried
-											  , real_ac=real_ac)
+											  , real_ac=real_ac
+											  , wrong=wrong)
 	else:
 		#Todo (halloworld) response 404
 		return redirect(url_for('index'))
