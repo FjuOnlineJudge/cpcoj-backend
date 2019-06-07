@@ -35,7 +35,7 @@ login.login_view = 'login'
 def load_user(user_id):
 	return Account.query.get(int(user_id))
 
-@app.route('/question_list', methods=['GET', 'POST'])
+@app.route('/problem_list', methods=['GET', 'POST'])
 def question_list():
 	tag = Tag.query.all()
 	uid_change_name = []
@@ -48,9 +48,9 @@ def question_list():
 	for pro in problem:
 		data = Submission.query.filter_by(
 			problem_id=pro.problem_id).group_by(Submission.account_id).all()
-		ranklist.append((pro.problemName, len(data)))
+		ranklist.append((pro.problemName, pro.problem_id, len(data)))
 
-	ranklist.sort(key=lambda tup: tup[1], reverse=True)
+	ranklist.sort(key=lambda tup: tup[2], reverse=True)
 
 	# Problem List
 	## check state
@@ -83,20 +83,36 @@ def question_list():
 		# real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
 		sub_info.append((len(total_ac), len(total_submit)))
 
+
 	
 		
-	return render_template('question_list.html' , tag=tag
+	return render_template('problem_list.html' , tag=tag
                         						, problem=problem
 			                       				, name=uid_change_name
 												, sub_info=sub_info
 												, state=state
 												, ranklist=ranklist)
 
-	
 
-@app.route('/question', methods=['GET', 'POST'])
-def question():
-	return render_template('question.html')
+@app.route('/problem/<string:pid>', methods=['GET', 'POST'])
+def question(pid):
+	problem = Problem.query.filter_by( problem_id=pid ).first()
+	author = Account.query.filter(Account.uid == problem.uid).first()
+
+	total_submit = Submission.query.filter_by(problem_id=problem.problem_id).all()
+	total_ac = Submission.query.filter_by(problem_id=problem.problem_id).filter_by(result="AC").all()
+	subinfo = (len(total_ac), len(total_submit))
+	tags = problem.problem_tag
+
+	return render_template('problem.html', problem=problem
+										 , author=author
+										 , subinfo=subinfo
+										 , tags=tags)
+
+
+@app.route('/problem/edit', methods=['GET', 'POST'])
+def problem_edit():
+	return render_template('problem_edit.html')
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
 def submission_detail():

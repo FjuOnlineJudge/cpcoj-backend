@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, flash, escape
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, TextAreaField, validators
+from wtforms import StringField, SubmitField, IntegerField, TextAreaField, SelectField, RadioField, SelectMultipleField, validators
 import os, datetime, logging
 
 # oj
@@ -90,6 +90,8 @@ class FormTestDB_prob(FlaskForm):
 			validators.DataRequired()
 		])
 
+	tag = SelectMultipleField('Tag', choices=[('DP', 'DP'), ('Graph', 'Graph')])
+
 	submit = SubmitField('Submit')
 
 	def __repr__(self):
@@ -138,12 +140,14 @@ def handle_e_problem(form, del_form, request):
 						, uid=form.uid.data
 						, info=form.info.data
 					)
+					print(form.tag.data)
 
+					
 					# set tag
-					goal = Tag.query.get(1)
-					prob.problem_tag.append(goal)
-					goal = Tag.query.get(2)
-					prob.problem_tag.append(goal)
+					# goal = Tag.query.get(1)
+					# prob.problem_tag.append(goal)
+					# goal = Tag.query.get(2)
+					# prob.problem_tag.append(goal)
 
 					db.session.add(prob)
 					db.session.commit()

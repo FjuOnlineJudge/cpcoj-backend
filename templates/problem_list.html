@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Question_list
+Problem_list
 {% endblock %}
 
 {% block Css %}
@@ -22,11 +22,11 @@ Question_list
 				<div class="card-body text">
 					{% if ranklist|length <= 5%}
 						{% for i in range(0, ranklist|length) %}
-						<button type="button" class="btn btn-outline-success">{{ ranklist[i][0] }}</button>
+						<button type="button" class="btn btn-outline-success" onclick="location.href='./problem/{{ ranklist[i][1] }}'">{{ ranklist[i][0] }}</button>
 						{% endfor %}
 					{% else %}
 						{% for i in range(0, 5) %}
-						<button type="button" class="btn btn-outline-success">{{ ranklist[i][0] }}</button>
+						<button type="button" class="btn btn-outline-success" onclick="location.href='./problem/{{ ranklist[i][1] }}'">{{ ranklist[i][0] }}</button>
 						{% endfor %}
 					{% endif %}
 				</div>
@@ -55,7 +55,7 @@ Question_list
 				</div>
 				<div class="card-body text">
 					{% for i in range(0, tag|length) %}
-					<form class="form-group" action="/question_list" method="POST">
+					<form class="form-group" action="/problem_list" method="POST">
 						<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 						<input id="temp" type="text" name="tags" value="{{ tag[i].tag_name }}" style="display: none">
 						<input type="submit" class="btn btn-light" value="{{ tag[i].tag_name }}">
@@ -99,9 +99,9 @@ Question_list
 					{% for i in range(0, problem|length) %}
 					<tr>
 						<td>{{ i }}</td>
-						<td>{{ problem[i].problem_id }}</td>
-						<td>{{ problem[i].problemName }}</td>
-						<td>{{ name[i] }}</td>
+						<td><a href="./problem/{{ problem[i].problem_id }}">{{ problem[i].problem_id }}</td>
+						<td><a href="./problem/{{ problem[i].problem_id }}">{{ problem[i].problemName }}</a></td>
+						<td><a href="./userinfo/{{ name[i] }}">{{ name[i] }}</a></td>
 						{% if sub_info[i][1] <= 0 %}
 							<td>0</td>
 							<td>0</td>
