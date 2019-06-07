@@ -111,8 +111,10 @@ def question(pid):
 
 
 @app.route('/problem/edit', methods=['GET', 'POST'])
+@login_required
 def problem_edit():
 	return render_template('problem_edit.html')
+
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
 def submission_detail():
@@ -253,12 +255,6 @@ def edit():
 			flash("Edit Fail")
 
 	return render_template('edit.html', form=form)
-
-
-@app.route('/problem')
-def problem_handle():
-	return render_template('problem.html')
-
 
 
 @app.route('/userinfo/<string:name>')

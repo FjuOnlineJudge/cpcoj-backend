@@ -28,9 +28,6 @@
 						<a class="nav-link" href="/">首頁</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/problem/edit">編輯題目</a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" href="{{ url_for('question_list') }}">題目列表</a>
 					</li>
 					<li class="nav-item">
@@ -44,6 +41,11 @@
 
 					<hr class="d-sm-flex d-md-flex d-lg-none">
 					<ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
+						{% if current_user.permLevel == 1 %}
+						<li class="nav-item">
+							<a class="nav-link" href="/problem/edit">編輯題目</a>
+						</li>
+						{% endif %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ url_for('userinfo', name=current_user.username ) }}">{{ current_user.username }}</a>
 						</li>
