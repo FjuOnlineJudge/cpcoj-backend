@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from form import FormRegister
-from models import Problem, Account, Submission
+from models import Problem, Account, Submission, Tag
 import datetime
 from exts import db
 from form import *
@@ -37,7 +37,62 @@ def load_user(user_id):
 
 @app.route('/question_list', methods=['GET', 'POST'])
 def question_list():
-	return render_template('question_list.html')
+	tag = Tag.query.all()
+	uid_change_name = []
+	problem = Problem.query.order_by().all()
+	state = "all"
+
+	# Popular Question
+	## Sort
+	ranklist = []
+	for pro in problem:
+		data = Submission.query.filter_by(
+			problem_id=pro.problem_id).group_by(Submission.account_id).all()
+		ranklist.append((pro.problemName, len(data)))
+
+	ranklist.sort(key=lambda tup: tup[1], reverse=True)
+
+	# Problem List
+	## check state
+	if request.method == 'POST':
+		for i in tag:
+			if request.values.get("tags") == i.tag_name:
+				state = i.tag_name
+				break
+			else:
+				state = "all"
+
+	## Tag change 
+	for iter_tag in tag:
+		if iter_tag.tag_name == state:
+			problem = iter_tag.problem.all()
+			break
+
+	## Uid change name
+	for ques_iter in problem:
+		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
+		if Account_search:
+			uid_change_name.append(Account_search.username)
+
+	## Submit INFO
+	sub_info = []
+	for pro in problem:
+		# target = Account.query.filter_by(username=name).first()
+		total_submit = Submission.query.filter_by(problem_id=pro.problem_id).all()
+		total_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").all()
+		# real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
+		sub_info.append((len(total_ac), len(total_submit)))
+
+	
+		
+	return render_template('question_list.html' , tag=tag
+                        						, problem=problem
+			                       				, name=uid_change_name
+												, sub_info=sub_info
+												, state=state
+												, ranklist=ranklist)
+
+	
 
 @app.route('/question', methods=['GET', 'POST'])
 def question():
@@ -188,7 +243,6 @@ def edit():
 def problem_handle():
 	return render_template('problem.html')
 
-	
 
 
 @app.route('/userinfo/<string:name>')

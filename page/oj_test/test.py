@@ -7,7 +7,7 @@ import os, datetime, logging
 import utils
 from exts import db
 from ext_app import app
-from models import Account, Submission, Problem
+from models import Account, Submission, Problem, Tag
 
 log = logging.getLogger('test')
 
@@ -136,7 +136,15 @@ def handle_e_problem(form, del_form, request):
 					log.debug('Add problem {} {}/{}'.format(form.problem_name.data, i, form.num.data))
 					prob = Problem(problem_id=form.problem_id.data, problemName=form.problem_name.data
 						, uid=form.uid.data
-						, info=form.info.data)
+						, info=form.info.data
+					)
+
+					# set tag
+					goal = Tag.query.get(1)
+					prob.problem_tag.append(goal)
+					goal = Tag.query.get(2)
+					prob.problem_tag.append(goal)
+
 					db.session.add(prob)
 					db.session.commit()
 			if not flag and del_form.validate_on_submit():
@@ -164,3 +172,46 @@ def list_db_table(database, path):
 	with app.app_context():
 		l = database.query.all()
 	return render_template('test_db_list.html', list=l, path=path)
+
+# tag test
+class FormTestDB_tag(FlaskForm):
+	tag_id = IntegerField('Tag_id', validators=[
+            validators.DataRequired()
+        ])
+
+	tag_name = StringField('Tag_name', validators=[
+            validators.DataRequired()
+        ])
+
+	description = StringField('Description', validators=[
+            validators.DataRequired()
+        ])
+
+	submit = SubmitField('Submit')
+
+
+	def __str__(self):
+		info = self.__repr__() + '\n  '
+		info += 'tag_id=' + str(self.tag_id.data) + '\n  '
+		info += 'tag_name='+str(self.tag_name.data) + '\n  '
+		info += 'description=' + str(self.description.data) + '\n  '
+		return info
+
+@test_page.route('/test/tag', methods=['GET', 'POST'])
+def tag():
+	form = FormTestDB_tag()
+	if request.method == 'POST':
+		tag = Tag(tag_id=form.tag_id.data, tag_name=form.tag_name.data, description=form.description.data)
+		db.session.add(tag)
+		db.session.commit()
+		return 'OK'
+
+	return render_template('test_tag.html', form=form)
+
+
+
+
+
+	
+
+

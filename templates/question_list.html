@@ -20,17 +20,21 @@ Question_list
 					Popular Question
 				</div>
 				<div class="card-body text">
-					<button type="button" class="btn btn-outline-success">Helloword</button>
-					<button type="button" class="btn btn-outline-success">Dflipflop</button>
-					<button type="button" class="btn btn-outline-success">Tflipflop</button>
-					<button type="button" class="btn btn-outline-success">uva104</button>
-					<button type="button" class="btn btn-outline-success">Dr.Yeh</button>
+					{% if ranklist|length <= 5%}
+						{% for i in range(0, ranklist|length) %}
+						<button type="button" class="btn btn-outline-success">{{ ranklist[i][0] }}</button>
+						{% endfor %}
+					{% else %}
+						{% for i in range(0, 5) %}
+						<button type="button" class="btn btn-outline-success">{{ ranklist[i][0] }}</button>
+						{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
-			<div class="card">
+			<!-- <div class="card">
 				<div class="card-header title">
 					Difficult Grading
 				</div>
@@ -41,7 +45,7 @@ Question_list
 					<button type="button" class="btn btn-warning">Four</button>
 					<button type="button" class="btn btn-danger">Five</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
@@ -50,10 +54,13 @@ Question_list
 					Algorithm
 				</div>
 				<div class="card-body text">
-					<button type="button" class="btn btn-light">DP</button>
-					<button type="button" class="btn btn-light">Greedy</button>
-					<button type="button" class="btn btn-light">Graph</button>
-					<button type="button" class="btn btn-light">Math</button>
+					{% for i in range(0, tag|length) %}
+					<form class="form-group" action="/question_list" method="POST">
+						<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+						<input id="temp" type="text" name="tags" value="{{ tag[i].tag_name }}" style="display: none">
+						<input type="submit" class="btn btn-light" value="{{ tag[i].tag_name }}">
+					</form>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
@@ -62,15 +69,15 @@ Question_list
 
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
-			<h2>Normal / OneStar / FourStar / DP / Math / ...</h2>
+			<!-- <h2>Normal / OneStar / FourStar / DP / Math / ...</h2> -->
 		</div>
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1"></div>
 		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10" style="text-align: right;">
-			<a href="#" class="btn btn-xs btn-default">10</a>
+			<!-- <a href="#" class="btn btn-xs btn-default">10</a>
 			<a href="#" class="btn btn-xs btn-default">20</a>
-			<a href="#" class="btn btn-xs btn-default">30</a>
+			<a href="#" class="btn btn-xs btn-default">30</a> -->
 		</div>
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1"></div>
 
@@ -82,7 +89,6 @@ Question_list
 						<th>#</th>
 						<th>PID</th>
 						<th>PName</th>
-						<th>TimeLimit</th>
 						<th>Author</th>
 						<th>Total AC</th>
 						<th>Total Submit</th>
@@ -90,111 +96,27 @@ Question_list
 					</tr>
 				</thead>
 				<tbody>
+					{% for i in range(0, problem|length) %}
 					<tr>
-						<td>1</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
+						<td>{{ i }}</td>
+						<td>{{ problem[i].problem_id }}</td>
+						<td>{{ problem[i].problemName }}</td>
+						<td>{{ name[i] }}</td>
+						{% if sub_info[i][1] <= 0 %}
+							<td>0</td>
+							<td>0</td>
+							<td>0%</td>
+						{% else %}
+							<td>{{ sub_info[i][0] }}</td>
+							<td>{{ sub_info[i][1] }}</td>
+							<td>{{ sub_info[i][0]/sub_info[i][1]*100 }}%</td>
+						{% endif %}
 					</tr>
-					<tr>
-						<td>2</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>14391</td>
-						<td>R0y</td>
-						<td>3s</td>
-						<td>ICEJJ</td>
-						<td>333</td>
-						<td>438</td>
-						<td>76.03%</td>
-					</tr>
-
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<!-- <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
@@ -209,7 +131,7 @@ Question_list
 				<a href="#">&raquo;</a>
 			</div>
 		</div>
-		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div> -->
 
 	<!-- </div> -->
 
