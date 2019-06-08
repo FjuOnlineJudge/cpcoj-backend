@@ -25,14 +25,16 @@ class EditProblemForm(FlaskForm):
     sample_output = TextAreaField('sampleOutput')
 
 @edit_problem_page.route('/problem_edit/<int:pid>', methods=['GET', 'POST'])
-# @login_required # debug
+@login_required
 def problem_edit(pid):
-    current_user = Account.query.first() # debug
+    # current_user = Account.query.first() # debug
 
     cur_problem = Problem.query.get(pid)
     if not cur_problem:
-        return 'Worng pid' # TODO(roy4801): make this auto redirect
+        # TODO(roy4801): make this auto redirect
+        return 'Worng pid'
     if current_user.uid != cur_problem.uid:
+        # TODO(roy4801): make this auto redirect
         return redirect(url_for('index'))
     # Prepare the form
     form = EditProblemForm()
@@ -40,21 +42,27 @@ def problem_edit(pid):
         # problem_name
         cur_problem.problemName = form.problem_name.data
         # tags
+        tag_fail_flag = False
         tags = form.tags.data.split(';')
         for i in tags:
             tag = Tag.query.filter_by(tag_name=i).first()
-            if tag and tag not in cur_problem.problem_tag:
-                cur_problem.problem_tag.append(tag)
+            if tag:
+                if tag not in cur_problem.problem_tag:
+                    cur_problem.problem_tag.append(tag)
+            else:
+                flash('錯誤的tag', 'danger')
+                tag_fail_flag = True
         # other
-        info = json.loads(cur_problem.info)
-        info['description']   = form.description.data
-        info['input_format']  = form.input_format.data
-        info['output_format'] = form.output_format.data
-        info['sample_input']  = form.sample_input.data
-        info['sample_output'] = form.sample_output.data
-        cur_problem.info = json.dumps(info)
-        db.session.commit()
-        flash('修改成功')
+        if not tag_fail_flag:
+            info = json.loads(cur_problem.info)
+            info['description']   = form.description.data
+            info['input_format']  = form.input_format.data
+            info['output_format'] = form.output_format.data
+            info['sample_input']  = form.sample_input.data
+            info['sample_output'] = form.sample_output.data
+            cur_problem.info = json.dumps(info)
+            db.session.commit()
+            flash('修改成功', 'success')
 
     # present the data
     form.problem_name.data = cur_problem.problemName

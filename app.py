@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from form import FormRegister
-from models import Problem, Account, Submission, Tag
-import datetime
-from exts import db
-from form import *
 from werkzeug.security import generate_password_hash, check_password_hash
-import config
 from flask_login import login_user, current_user, login_required, LoginManager, logout_user
+import datetime, json
+
+from form import *
+from exts import db
+from models import Problem, Account, Submission, Tag
+import config
 
 # Dealing with the path problem
 import sys
@@ -94,19 +94,22 @@ def question_list():
 												, ranklist=ranklist)
 
 @app.route('/problem/<int:pid>', methods=['GET', 'POST'])
-def question(pid):
-	problem = Problem.query.filter_by( problem_id=pid ).first()
+def problem(pid):
+	problem = Problem.query.filter_by(problem_id=pid).first()
 	author = Account.query.filter(Account.uid == problem.uid).first()
 
-	total_submit = Submission.query.filter_by(problem_id=problem.problem_id).all()
-	total_ac = Submission.query.filter_by(problem_id=problem.problem_id).filter_by(result="AC").all()
-	subinfo = (len(total_ac), len(total_submit))
+	total_submit = Submission.query.filter_by(problem_id=problem.problem_id).count()
+	total_ac = Submission.query.filter_by(problem_id=problem.problem_id).filter_by(result="AC").count()
+	subinfo = (total_ac, total_submit)
 	tags = problem.problem_tag
+	# TODO(roy4801): maybe there's json injection
+	info = json.loads(problem.info)
 
 	return render_template('problem.html', problem=problem
 										 , author=author
 										 , subinfo=subinfo
-										 , tags=tags)
+										 , tags=tags
+										 , info=info)
 
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
@@ -220,35 +223,38 @@ def logout():
 
 
 @app.route('/edit', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def edit():
+	# current_user = Account.query.first()
+
 	form = FormEdit()
-	target = Account.query.filter_by(username=current_user.username).first()
+	target = current_user
 	if request.method == 'POST':
 		if form.validate_on_submit():
+			pass_flag = True
 			check_coll = Account.query.filter_by(email=form.email.data).first()
+
 			# 驗證現在密碼是否正確
-			if current_user.check_password(form.current_password.data):
-				flash("Current_user Password Invalid")
-			# 驗證更改之密碼兩筆confirm是否相同
-			if form.password.data != form.confirm.data:
-				flash("Password Invalid")
-			# 驗證email是否有碰撞
-			if form.email.data == check_coll:
-				flash("Email collision")
-			else:
-				target.nickname = form.nickname.data
-				target.email = form.email.data
-				target.password = generate_password_hash(form.password.data)
+			if not current_user.check_password(form.current_password.data):
+				pass_flag = False
+				flash('Wrong password', 'danger')
+
+			if pass_flag:
+				# print(request.form)
+				if form.nickname.data != '':
+					target.nickname = form.nickname.data
+				if form.email.data != '':
+					target.email = form.email.data
+				if form.password.data != '':
+					target.password = generate_password_hash(form.password.data)
 				db.session.commit()
-		else:
-			flash("Edit Fail")
+				flash('Succeed', 'success')
 
-	return render_template('edit.html', form=form)
-
+	return render_template('edit.html', form=form, target=target)
 
 @app.route('/userinfo/<string:name>')
 def userinfo(name):
+	# TODO(roy4801): refactoring
 	target = Account.query.filter_by(username=name).first()
 	total_submit = target.submission.order_by(Submission.problem_id).all()
 	total_ac = target.submission.filter_by(result = "AC").all()
@@ -263,7 +269,6 @@ def userinfo(name):
 		for real in real_ac:
 			if real.problem_id != tri.problem_id:
 				wrong.append(tri)
-
 
 	if target:
 		return render_template('userinfo.html', info=target

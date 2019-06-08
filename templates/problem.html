@@ -5,16 +5,14 @@ Problem
 {% endblock %}
 
 {% block Css %}
-<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/common.css">
 <link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
 {% endblock %}
 
 {% block main %}
 <div class="container-fluid topdis">
-
 	<div class="row">
-
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
 			<h1>{{problem.problem_id }} . {{problem.problemName}}</h1>
@@ -34,8 +32,8 @@ Problem
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
 			<div class="card">
-				<div class="card-header title" style="text-align: center;">
-					Author
+				<div class="card-header title align-center" style="text-align: center;">
+					<h3 class="no-margin">Author</h3>
 				</div>
 				<div class="card-body text">
 					{% if author %}
@@ -49,7 +47,7 @@ Problem
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					AC Rate
+					<h3 class="no-margin">AC Rate</h3>
 				</div>
 				<div class="card-body text">
 					{% if subinfo[1] != 0 %}
@@ -57,18 +55,17 @@ Problem
 					{% else %}
 						0%
 					{% endif %}
-						
 				</div>
 			</div>
 		</div>
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Tag
+					<h3 class="no-margin">Tag</h3>
 				</div>
 				<div class="card-body text">
-					{% for i in range(0, tags|length) %}
-						<a href="#" class="btn btn-xs btn-default">{{ tags[i].tag_name }}</a>
+					{% for t in tags %}
+						<a href="#" class="btn btn-xs btn-outline-primary">{{ t.tag_name }}</a>
 					{% endfor%}
 				</div>
 			</div>
@@ -79,11 +76,11 @@ Problem
 		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Description
+					<h3 class="no-margin">Description</h3>
 				</div>
 				<div class="card-body text">
-					{% if problem.info %}
-						{{ problem.info }}
+					{% if 'description' in info %}
+						{{ info['description'] }}
 					{% endif %}
 				</div>
 			</div>
@@ -94,20 +91,24 @@ Problem
 		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Input Formate
+					<h3 class="no-margin">Input Format</h3>
 				</div>
 				<div class="card-body text">
-					123
+					{% if 'input_format' in info %}
+						{{ info['input_format'] }}
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Output Formate
+					<h3 class="no-margin">Output Format</h3>
 				</div>
 				<div class="card-body text">
-					123
+					{% if 'output_format' in info %}
+						{{ info['output_format'] }}
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -117,31 +118,28 @@ Problem
 		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Sample Input
+					<h3 class="no-margin">Sample Input</h3>
 				</div>
 				<div class="card-body text">
-					123
+					{% if 'sample_input' in info %}
+						{{ info['sample_input'] }}
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
 			<div class="card">
 				<div class="card-header title" style="text-align: center;">
-					Sample Output
+					<h3 class="no-margin">Sample Output</h3>
 				</div>
 				<div class="card-body text">
-					123
+					{% if 'sample_output' in info %}
+						{{ info['sample_output'] }}
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
-
 	</div>
-
 </div>
-
-
-
-
 {% endblock %}
-
