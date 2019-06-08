@@ -65,7 +65,9 @@ def test_log():
 
 	return '<div id="data"><pre>{}</pre></div>'.format(''.join(log))
 
+
 class FormTestDB_prob(FlaskForm):
+
 	num = IntegerField('Times', validators=[
 			validators.DataRequired()
 		])
@@ -89,11 +91,13 @@ class FormTestDB_prob(FlaskForm):
 		, validators=[
 			validators.DataRequired()
 		])
-
-	tag = SelectMultipleField('Tag', choices=[('DP', 'DP'), ('Graph', 'Graph')])
+	
+	tag = SelectMultipleField('Tag', choices="")
+	
 
 	submit = SubmitField('Submit')
 
+	
 	def __repr__(self):
 		return '<FormTestDB_prob {}>'.format(hex(id(self)))
 	def __str__(self):
@@ -119,6 +123,7 @@ def test_handle_db(arg):
 		if arg[1] == 'problem':
 			form = FormTestDB_prob()
 			del_form = FormTestDB_delProb()
+			form.tag.choices = [(tag_iter.tag_name, tag_iter.tag_name) for tag_iter in Tag.query.all()]
 			return handle_e_problem(form, del_form, request)
 	elif arg[0] == 'l':
 		if arg[1] == 'problem':
@@ -140,14 +145,10 @@ def handle_e_problem(form, del_form, request):
 						, uid=form.uid.data
 						, info=form.info.data
 					)
-					print(form.tag.data)
 
-					
-					# set tag
-					# goal = Tag.query.get(1)
-					# prob.problem_tag.append(goal)
-					# goal = Tag.query.get(2)
-					# prob.problem_tag.append(goal)
+					for chose in form.tag.data:
+						goal = Tag.query.filter(Tag.tag_name == chose).first()	
+						prob.problem_tag.append(goal)
 
 					db.session.add(prob)
 					db.session.commit()
