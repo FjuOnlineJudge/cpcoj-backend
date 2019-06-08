@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from form import FormRegister
-from models import Problem, Account, Submission
+from models import Problem, Account, Submission, Tag
 import datetime
 from exts import db
 from form import *
@@ -35,13 +35,86 @@ login.login_view = 'login'
 def load_user(user_id):
 	return Account.query.get(int(user_id))
 
-@app.route('/question_list', methods=['GET', 'POST'])
+@app.route('/problem_list', methods=['GET', 'POST'])
 def question_list():
-	return render_template('question_list.html')
+	tag = Tag.query.all()
+	uid_change_name = []
+	problem = Problem.query.order_by().all()
+	state = "all"
 
-@app.route('/question', methods=['GET', 'POST'])
-def question():
-	return render_template('question.html')
+	# Popular Question
+	## Sort
+	ranklist = []
+	for pro in problem:
+		data = Submission.query.filter_by(
+			problem_id=pro.problem_id).group_by(Submission.account_id).all()
+		ranklist.append((pro.problemName, pro.problem_id, len(data)))
+
+	ranklist.sort(key=lambda tup: tup[2], reverse=True)
+
+	# Problem List
+	## check state
+	if request.method == 'POST':
+		for i in tag:
+			if request.values.get("tags") == i.tag_name:
+				state = i.tag_name
+				break
+			else:
+				state = "all"
+
+	## Tag change 
+	for iter_tag in tag:
+		if iter_tag.tag_name == state:
+			problem = iter_tag.problem.all()
+			break
+
+	## Uid change name
+	for ques_iter in problem:
+		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
+		if Account_search:
+			uid_change_name.append(Account_search.username)
+
+	## Submit INFO
+	sub_info = []
+	for pro in problem:
+		# target = Account.query.filter_by(username=name).first()
+		total_submit = Submission.query.filter_by(problem_id=pro.problem_id).all()
+		total_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").all()
+		# real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
+		sub_info.append((len(total_ac), len(total_submit)))
+
+
+	
+		
+	return render_template('problem_list.html' , tag=tag
+                        						, problem=problem
+			                       				, name=uid_change_name
+												, sub_info=sub_info
+												, state=state
+												, ranklist=ranklist)
+
+
+@app.route('/problem/<string:pid>', methods=['GET', 'POST'])
+def question(pid):
+	problem = Problem.query.filter_by( problem_id=pid ).first()
+	author = Account.query.filter(Account.uid == problem.uid).first()
+
+	total_submit = Submission.query.filter_by(problem_id=problem.problem_id).all()
+	total_ac = Submission.query.filter_by(problem_id=problem.problem_id).filter_by(result="AC").all()
+	subinfo = (len(total_ac), len(total_submit))
+	tags = problem.problem_tag
+
+	return render_template('problem.html', problem=problem
+										 , author=author
+										 , subinfo=subinfo
+										 , tags=tags)
+
+
+@app.route('/problem/edit', methods=['GET', 'POST'])
+@login_required
+def problem_edit():
+	return render_template('problem_edit.html')
+
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
 def submission_detail():
@@ -159,7 +232,7 @@ def logout():
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-	form = FormEdit();
+	form = FormEdit()
 	target = Account.query.filter_by(username=current_user.username).first()
 	if request.method == 'POST':
 		if form.validate_on_submit():
@@ -181,32 +254,34 @@ def edit():
 		else:
 			flash("Edit Fail")
 
-@app.route('/problem')
-def problem_handle():
-	return render_template('problem.html')
-
 	return render_template('edit.html', form=form)
 
 
 @app.route('/userinfo/<string:name>')
 def userinfo(name):
 	target = Account.query.filter_by(username=name).first()
-
 	total_submit = target.submission.order_by(Submission.problem_id).all()
-	total_ac = real_ac = target.submission.filter_by(result = "AC").all()
+	total_ac = target.submission.filter_by(result = "AC").all()
 	tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
 	real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
-
+	
 	# print("AC:{}".format(len(real_ac)))
 	# print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
 	# print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
+	wrong = []
+	for tri in tried:
+		for real in real_ac:
+			if real.problem_id != tri.problem_id:
+				wrong.append(tri)
 
+		
 	if target:
 		return render_template('userinfo.html', info=target
 											  , total_submit=total_submit
 											  , total_ac=total_ac
 											  , tried=tried
-											  , real_ac=real_ac)
+											  , real_ac=real_ac
+											  , wrong=wrong)
 	else:
 		#Todo (halloworld) response 404
 		return redirect(url_for('index'))

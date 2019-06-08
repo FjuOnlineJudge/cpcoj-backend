@@ -6,6 +6,15 @@ import datetime
 #oj
 import utils
 
+# more-more relation
+relations = db.Table('relations',
+                    db.Column('problem', db.Integer,
+                              db.ForeignKey('problem.problem_id')),
+                    db.Column('tag', db.Integer,
+                              db.ForeignKey('tag.tag_id'))
+                    )
+
+
 # build the tables
 class Problem(db.Model):
 	__tablename__  = 'problem'
@@ -18,6 +27,9 @@ class Problem(db.Model):
 
 	# Relation
 	submission = db.relationship('Submission', backref=db.backref('problem', uselist=False))
+	# Relation2
+	problem_tag = db.relationship('Tag', secondary=relations, lazy='subquery',backref=db.backref('problem', lazy="dynamic"))
+	
 	# For debug print
 	def __repr__(self):
 		return "<Problem {}>".format(self.problem_id)
@@ -29,6 +41,26 @@ class Problem(db.Model):
 		info += utils.str_row('info', self.info)
 		info += utils.str_row('build_time', self.build_time)
 		return info
+
+class Tag(db.Model):
+	__tablename__  = 'tag'
+	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
+	tag_id = db.Column(db.Integer, primary_key=True, nullable=False)
+	tag_name = db.Column(db.String(30), nullable=False, unique=True)
+	description = db.Column(db.Text, nullable=True)
+
+	# For debug print
+	def __repr__(self):
+		return "<Tag {}>".format(self.tag_id)
+
+	def __str__(self):
+		info = self.__repr__() + '\n'
+		info += utils.str_row('tag_id', self.tag_id)
+		info += utils.str_row('tagName', self.tag_name)
+		info += utils.str_row('description', self.description)
+		return info
+
+
 
 class Account(UserMixin, db.Model):
 	__tablename__  = 'account'
@@ -112,3 +144,4 @@ class Submission(db.Model):
 		info += utils.str_row('code', '')
 		info += self.code
 		return info
+
