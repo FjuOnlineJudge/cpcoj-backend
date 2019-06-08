@@ -6,14 +6,13 @@ import datetime
 #oj
 import utils
 
-# more-more relation
+# TODO(roy4801): Rename this to problem_tag_relation
 relations = db.Table('relations',
                     db.Column('problem', db.Integer,
                               db.ForeignKey('problem.problem_id')),
                     db.Column('tag', db.Integer,
                               db.ForeignKey('tag.tag_id'))
                     )
-
 
 # build the tables
 class Problem(db.Model):
@@ -22,14 +21,13 @@ class Problem(db.Model):
 	problem_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
 	problemName = db.Column(db.String(100), nullable=False, unique=False) # 名稱
 	uid = db.Column(db.Integer, nullable=False, unique=False) # problemsetter
-	info = db.Column(db.Text, nullable=False)           # 內容
+	info = db.Column(db.JSON, nullable=False)           # 內容
 	build_time = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now()) # 建立時間
 
 	# Relation
 	submission = db.relationship('Submission', backref=db.backref('problem', uselist=False))
-	# Relation2
 	problem_tag = db.relationship('Tag', secondary=relations, lazy='subquery',backref=db.backref('problem', lazy="dynamic"))
-	
+
 	# For debug print
 	def __repr__(self):
 		return "<Problem {}>".format(self.problem_id)
@@ -56,11 +54,9 @@ class Tag(db.Model):
 	def __str__(self):
 		info = self.__repr__() + '\n'
 		info += utils.str_row('tag_id', self.tag_id)
-		info += utils.str_row('tagName', self.tag_name)
+		info += utils.str_row('tag_name', self.tag_name)
 		info += utils.str_row('description', self.description)
 		return info
-
-
 
 class Account(UserMixin, db.Model):
 	__tablename__  = 'account'
@@ -109,7 +105,6 @@ class Account(UserMixin, db.Model):
 		info += utils.str_row('submission', self.submission)
 		return info
 
-
 class Submission(db.Model):
 	__tablename__  = 'submission'
 	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
@@ -144,4 +139,3 @@ class Submission(db.Model):
 		info += utils.str_row('code', '')
 		info += self.code
 		return info
-

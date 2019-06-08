@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Question
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{% from "_alert.html" import problem_edit_warning %}
+{% block main %}
+<script>
+function submit_form(s)
+{
+	var el = document.getElementById(s)
+	if(el != null)
+		el.submit();
+}
+</script>
+<div class="container-fluid topdis">
+	{% if get_flashed_messages() or form.errors %}
+	<div class="row">
+		{% for m in get_flashed_messages() %}
+			{{ problem_edit_warning(m) }}
+		{% endfor %}
+		{% for m in form.errors.values() %}
+			{% for i in m %}
+				{{ problem_edit_warning(i) }}
+			{% endfor %}
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	<form id="edit_problem" action="{{ url_for('.problem_edit', pid=pid) }}" method="POST">
+	{{ form.hidden_tag() }}
+	<div class="row">
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Problem Name
+				</div>
+				<!-- <input type="text" id="problemName" name="problemName" class="form-control"> -->
+				{{ form.problem_name(class='form-control') }}
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Tags
+				</div>
+				<!-- <input type="text" id="tags" name="tags" class="form-control"> -->
+				{{ form.tags(class='form-control', placeholder='用;隔開') }}
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Description
+				</div>
+				<!-- <textarea class="form-control" id="description" name="description" rows="10"></textarea> -->
+				{{ form.description(class='form-control', rows='10') }}
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Input Format
+				</div>
+				<!-- <textarea class="form-control" id="inputFormat" name="inputFormat" rows="5"></textarea> -->
+				{{ form.input_format(class='form-control', rows='5') }}
+			</div>
+		</div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Output Format
+				</div>
+				<!-- <textarea class="form-control" id="outputFormat" name="outputFormat" rows="5"></textarea> -->
+				{{ form.output_format(class='form-control', rows='5') }}
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Sample Input
+				</div>
+				<!-- <textarea class="form-control" id="sampleInput" name="sampleInput" rows="5"></textarea> -->
+				{{ form.sample_input(class='form-control', rows='5') }}
+			</div>
+		</div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					Sample Output
+				</div>
+				<!-- <textarea class="form-control" id="sampleOutput" name="sampleOutput" rows="5"></textarea> -->
+				{{ form.sample_output(class='form-control', rows='5') }}
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+			<h3>Testdatas</h3>
+			施工中，增加測資請聯繫管理員
+			<div class="list-group">
+				<div class="list-group-item">
+					<input type="submit" class="btn btn-primary code-form-margin-bottom" value="Upload" disabled>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis"></div>
+		<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+			<div class="list-group d-flex justify-content-bottom">
+				<a href="#" class="list-group-item list-group-item-action list-group-item-success" onclick=submit_form("edit_problem")>Edit</a>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+	</div>
+	</form>
+</div>
+{% endblock %}

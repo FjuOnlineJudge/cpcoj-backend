@@ -28,6 +28,9 @@ app.register_blueprint(test.test_page)
 from submissions import submissions
 app.register_blueprint(submissions.submissions_page)
 
+from edit_problem import edit_problem
+app.register_blueprint(edit_problem.edit_problem_page)
+
 login = LoginManager(app)
 login.login_view = 'login'
 
@@ -62,7 +65,7 @@ def question_list():
 			else:
 				state = "all"
 
-	## Tag change 
+	## Tag change
 	for iter_tag in tag:
 		if iter_tag.tag_name == state:
 			problem = iter_tag.problem.all()
@@ -83,9 +86,6 @@ def question_list():
 		# real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
 		sub_info.append((len(total_ac), len(total_submit)))
 
-
-	
-		
 	return render_template('problem_list.html' , tag=tag
                         						, problem=problem
 			                       				, name=uid_change_name
@@ -93,8 +93,7 @@ def question_list():
 												, state=state
 												, ranklist=ranklist)
 
-
-@app.route('/problem/<string:pid>', methods=['GET', 'POST'])
+@app.route('/problem/<int:pid>', methods=['GET', 'POST'])
 def question(pid):
 	problem = Problem.query.filter_by( problem_id=pid ).first()
 	author = Account.query.filter(Account.uid == problem.uid).first()
@@ -108,12 +107,6 @@ def question(pid):
 										 , author=author
 										 , subinfo=subinfo
 										 , tags=tags)
-
-
-@app.route('/problem/edit', methods=['GET', 'POST'])
-@login_required
-def problem_edit():
-	return render_template('problem_edit.html')
 
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
@@ -137,17 +130,14 @@ def index():
 	ranklist = []
 
 	for idx in range(0,len(all_user)):
-		total_submit = all_user[idx].submission.order_by(Submission.problem_id).all()
-		total_ac = all_user[idx].submission.filter_by(result = "AC").all()
-		tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
-		real_ac = all_user[idx].submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
-		ranklist.append((all_user[idx].username , len(total_submit), len(total_ac), len(tried), len(real_ac)))
+		total_submit = all_user[idx].submission.order_by(Submission.problem_id).count()
+		total_ac = all_user[idx].submission.filter_by(result='AC').count()
+		tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).count()
+		real_ac = all_user[idx].submission.filter_by(result='AC').order_by(Submission.problem_id).group_by(Submission.account_id).count()
+		ranklist.append((all_user[idx].username , total_submit, total_ac, tried, real_ac))
 
 	# real_ac sort
 	ranklist.sort(key=lambda tup: tup[4], reverse=True)
-	# ranklist-data(python-list): (0)username, (1)total_submit, (2)total_ac, (3)tried, (4)real_ac
-	# for i in ranklist:
-	# 	print(i[0],i[1],i[2],i[3],i[4])
 
 	return render_template('index.html', questions=questions,
 										 name=uid_change_name,
@@ -264,7 +254,7 @@ def userinfo(name):
 	total_ac = target.submission.filter_by(result = "AC").all()
 	tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
 	real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
-	
+
 	# print("AC:{}".format(len(real_ac)))
 	# print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
 	# print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
@@ -274,7 +264,7 @@ def userinfo(name):
 			if real.problem_id != tri.problem_id:
 				wrong.append(tri)
 
-		
+
 	if target:
 		return render_template('userinfo.html', info=target
 											  , total_submit=total_submit
@@ -283,7 +273,7 @@ def userinfo(name):
 											  , real_ac=real_ac
 											  , wrong=wrong)
 	else:
-		#Todo (halloworld) response 404
+		#TODO (halloworld) response 404
 		return redirect(url_for('index'))
 
 if __name__ == '__main__':
