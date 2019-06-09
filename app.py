@@ -108,6 +108,10 @@ def problem_list():
 @app.route('/problem/<int:pid>', methods=['GET', 'POST'])
 def problem(pid):
     problem = Problem.query.filter_by(problem_id=pid).first()
+    # If the pid is invalid, go to problem_list
+    if not problem:
+        return redirect(url_for('problem_list'))
+
     author = Account.query.filter(Account.uid == problem.uid).first()
 
     total_submit = Submission.query.filter_by(problem_id=problem.problem_id).count()

@@ -27,7 +27,7 @@
 		{% endfor %}
 	{% else %}
 		{% if pagin.total_page < pagin.next_lim %}
-			{% for i in range(pagin.total_page) %}
+			{% for i in range(1, pagin.total_page+1) %}
 				{% if i == pagin.cur_page %}
 					<a href="#" class="active">{{ pagin.cur_page }}</a>
 				{% else %}

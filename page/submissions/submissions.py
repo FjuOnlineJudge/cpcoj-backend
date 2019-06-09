@@ -15,6 +15,8 @@ page_size = 10
 @submissions_page.route('/submissions', methods=['GET', 'POST'])
 @submissions_page.route('/submissions/<int:page>', methods=['GET', 'POST'])
 def submissions_handle(page=1):
+	if page <= 0:
+		return redirect(url_for('.submissions_handle'))
 	uid = None
 	pid = None
 	# Get submission filter
@@ -29,17 +31,17 @@ def submissions_handle(page=1):
 		if 'pid' in request.form:
 			pid = request.form['pid']
 
-	print(uid, pid)
+	# print(uid, pid)
 
 	total = 0
 	if uid:
 		total = Submission.query.filter_by(account_id=uid).count()
 	else:
 		total = Submission.query.count()
-	
+
 	pagin = {'cur_page': page
 		, 'next_lim': 4
-		, 'total_page': round(total/10)
+		, 'total_page': total//10 +1
 		, 'gen_url': lambda p: url_for('.submissions_handle')+'/{}'.format(p)}
 
 	page -= 1
