@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for
-import os
+import os, random, string
 
 # oj
 import utils
@@ -10,11 +10,16 @@ submissions_page = Blueprint('submissions_page'
 						, __name__
 						, template_folder=os.path.join(utils.cur_path(__file__), 'templates'))
 
+def gen_random_str(size=4):
+	return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
+
 page_size = 10
 
 @submissions_page.route('/submissions', methods=['GET', 'POST'])
 @submissions_page.route('/submissions/<int:page>', methods=['GET', 'POST'])
 def submissions_handle(page=1):
+	if page <= 0:
+		return redirect(url_for('.submissions_handle'))
 	uid = None
 	pid = None
 	# Get submission filter
@@ -29,17 +34,17 @@ def submissions_handle(page=1):
 		if 'pid' in request.form:
 			pid = request.form['pid']
 
-	print(uid, pid)
+	# print(uid, pid)
 
 	total = 0
 	if uid:
 		total = Submission.query.filter_by(account_id=uid).count()
 	else:
 		total = Submission.query.count()
-	
+
 	pagin = {'cur_page': page
 		, 'next_lim': 4
-		, 'total_page': round(total/10)
+		, 'total_page': total//10 +1
 		, 'gen_url': lambda p: url_for('.submissions_handle')+'/{}'.format(p)}
 
 	page -= 1
@@ -72,5 +77,9 @@ def submissions_handle(page=1):
 		# Set `score`
 		# TODO(roy4801): implement score
 		setattr(i, 'score', 'NaN')
+
+		# CE modal
+		if i.result == 'CE':
+			setattr(i, 'ce_id_str', gen_random_str(8))
 
 	return render_template('submissions.html', sub_list=sub_list, pagin=pagin)

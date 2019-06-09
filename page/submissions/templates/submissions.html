@@ -15,6 +15,7 @@
 
 	<div class="row">
 	<form class="form-inline" method="POST" action="{{ url_for('.submissions_handle') }}">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 		<div class="form-group" style="margin-left: 1em;">
 			<input id="filter_username" name="username" class="form-control input-sm flat" type="text" placeholder="Enter Username">
 		</div>
@@ -52,7 +53,7 @@
 		<tbody>
 			{% if sub_list %}
 				{% for i in sub_list %}
-				{{ render_submissions_table(i) }}
+					{{ render_submissions_table(i) }}
 				{% endfor %}
 			{% endif %}
 		</tbody>

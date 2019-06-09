@@ -9,7 +9,7 @@ class FormRegister(FlaskForm):
     """
     username = StringField('UserName', validators=[
         validators.DataRequired(),
-        validators.Length(2, 30)
+        validators.Length(2, 30, message='Length of password must between %(min)d and %(max)d')
     ])
 
     nickname = StringField('Nickname', validators=[
@@ -24,8 +24,8 @@ class FormRegister(FlaskForm):
     ])
     password = PasswordField('PassWord', validators=[
         validators.DataRequired(),
-        validators.Length(2, 10),
-        # validators.EqualTo('confirm', message='PASSWORD NEED MATCH')
+        validators.Length(6, 20, message='Length of password must between %(min)d and %(max)d'),
+        validators.EqualTo('confirm', message='password must be as same as the comfirm password')
     ])
     confirm = PasswordField('Confirm PassWord', validators=[
         validators.DataRequired()

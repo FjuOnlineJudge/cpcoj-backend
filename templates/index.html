@@ -61,7 +61,7 @@ Home Page
 								</tr>
 								{% endfor %}
 							{% endif %}
-							
+
 						</tbody>
 					</table>
 				</div>
@@ -125,12 +125,12 @@ Home Page
 								{% for i in range(0, ranklist|length) %}
 									<tr>
 										<td>{{ i+1 }}</td>
-										<td>{{ ranklist[i][0] }}</td>
+										<td><a href="{{ url_for('userinfo', name=ranklist[i][0]) }}">{{ ranklist[i][0] }}</a></td>
 										<td>{{ ranklist[i][4] }}</td>
 										{% if ranklist[i][1] != 0 %}
-										<td>{{ ranklist[i][2]/ranklist[i][1]*100 }}%</td>
+										<td>{{ ranklist[i][2]/ranklist[i][1] * 10000 // 1 / 100 }}%</td>
 										{% else %}
-										<td>0%</td>
+										<td>0.0%</td>
 										{% endif %}
 									</tr>
 								{% endfor %}
@@ -138,10 +138,10 @@ Home Page
 								{% for i in range(0,10) %}
 									<tr>
 										<td>{{ i+1 }}</td>
-										<td>{{ ranklist[i][0] }}</td>
+										<td><a href="{{ url_for('userinfo', name=ranklist[i][0]) }}">{{ ranklist[i][0] }}</a></td>
 										<td>{{ ranklist[i][4] }}</td>
 										{% if ranklist[i][1] != 0 %}
-										<td>{{ ranklist[i][2]/ranklist[i][1]*100 }}%</td>
+										<td>{{ ranklist[i][2]/ranklist[i][1] * 10000 // 1 / 100 }}%</td>
 										{% else %}
 										<td>0.0%</td>
 										{% endif %}

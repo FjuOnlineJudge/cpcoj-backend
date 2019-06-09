@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
 
+{% block javascript %}
+<script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js" ></script>
+<script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js.map" ></script>
+<script type="text/javascript" src="../static/js/jdenticon-2.1.1.js" ></script>
+{% endblock %}
 
 {% block Css %}
-<link rel="stylesheet" type="text/css" href="/static/css/setting.css">
+<link rel="stylesheet" type="text/css" href="../static/css/setting.css">
 {% endblock %}
 
 {% block title %}
 Userinfo
 {% endblock %}
 
-
 {% block main %}
-
 <div class="container-fluid topdis">
 	<div class="row">
 
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
-			<img class="img-rounded img-thumbnail" src="https://i.imgur.com/YS8in6o.jpg">
+			<canvas width="200" height="200" data-jdenticon-value="HereIsName"></canvas>
 			<br>
 			<br>
 			<!--Username-->
@@ -27,11 +30,11 @@ Userinfo
 
 			<div class="row">
 				<div class="col-md-7 col-sm-7 col-lg-7 col-xl-7 text font_bold clear_right_padding">
-					Tried and Accept:
+					Tried and Accept
 					<br>
-					Tried but not yet solved:
+					Tried but not solved
 					<br>
-					AC Rate:
+					AC Rate
 				</div>
 
 				<div class="col-md-3 text clear_left_padding">
@@ -40,7 +43,7 @@ Userinfo
 						<br>
 						{{ tried|length }}
 						<br>
-						{{ total_ac|length/total_submit|length*100 }}% ({{ total_ac|length }}/{{ total_submit|length }})
+						{{ total_ac|length / total_submit|length * 10000 // 1 / 100 }}% ({{ total_ac|length }}/{{ total_submit|length }})
 					{% else %}
 						{{ real_ac|length }}
 						<br>
@@ -55,14 +58,14 @@ Userinfo
 
 			<div class="row">
 				<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 text font_bold">
-					Email:
+					Email
 					<br>
-					Admin:
+					Admin
 				</div>
 				<div class="col-md-8 text">
 					{{ info.email }}
 					<br>
-					{% if info.permLevel == 1 %}
+					{% if info.permLevel <= 0 %}
 						True
 					{% else %}
 						False

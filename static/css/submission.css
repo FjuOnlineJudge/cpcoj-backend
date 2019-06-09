@@ -1,6 +1,6 @@
 .submission_dis{
 
-	margin-top: 1em;
+	margin-top: 6em;
 	/*margin-bottom: 5em;*/
 }
 
@@ -52,4 +52,19 @@
 .pagination a:last-child {
  	border-top-right-radius: 2.5em;
  	border-bottom-right-radius: 2.5em;
+}
+
+.ac-style {
+	color: green;
+	font-weight: bold;
+}
+
+.wa-style {
+	color: red;
+}
+
+.ce-style {
+	color: blue;
+	cursor: grab;
+	text-decoration: underline;
 }
