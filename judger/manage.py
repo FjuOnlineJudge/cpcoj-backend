@@ -31,7 +31,12 @@ class JudgeThread(threading.Thread):
 
 			res, meta, out = judger.judge(att['prob_id'], att['lang'], att['code'], att['time_lim'], att['mem_lim'], att['test_case'])
 
-			print(res, meta, out) # debug
+			# print(res, meta, out) # debug
+			print(res)
+			print('------')
+			print(meta)
+			print('------')
+			print(out)
 
 			sub = Submission.query.get(att['submit_id'])
 
@@ -92,7 +97,7 @@ class JudgeThread(threading.Thread):
 			else:
 				sub.resTime = 0
 				sub.resMem = 0
-				sub.result_msg = 'test'
+				sub.result_msg = out['compile_out']
 
 			db.session.commit()
 

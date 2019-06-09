@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for
-import os
+import os, random, string
 
 # oj
 import utils
@@ -9,6 +9,9 @@ from models import Submission, Account, Problem
 submissions_page = Blueprint('submissions_page'
 						, __name__
 						, template_folder=os.path.join(utils.cur_path(__file__), 'templates'))
+
+def gen_random_str(size=4):
+	return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
 
 page_size = 10
 
@@ -74,5 +77,9 @@ def submissions_handle(page=1):
 		# Set `score`
 		# TODO(roy4801): implement score
 		setattr(i, 'score', 'NaN')
+
+		# CE modal
+		if i.result == 'CE':
+			setattr(i, 'ce_id_str', gen_random_str(8))
 
 	return render_template('submissions.html', sub_list=sub_list, pagin=pagin)

@@ -9,7 +9,39 @@
 	{% else %}
 		<td>{{ sub.resMem }} KiB</td>
 	{% endif %}
-	<td>{{ sub.result }}</td>
+	{% if sub.result == 'Wait' %}
+		<td class="spinner-border spinner-border-sm text-success m-2" role="status"></td>
+	{% else %}
+		{% if sub.result == 'AC' %}
+		<td class="ac-style">{{ sub.result }}</td>
+		{% elif sub.result == 'WA' %}
+		<td class="wa-style">{{ sub.result }}</td>
+		{% elif sub.result == 'CE' %}
+		<td class="ce-style" data-toggle="modal" data-target="#CEModal-{{sub.submit_id}}">{{ sub.result }}</td>
+
+		<div class="modal fade" id="CEModal-{{sub.submit_id}}" tabindex="-1" role="dialog" aria-labelledby="CEModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="CEModalLabel">Submission #{{ sub.submit_id }}</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<pre>{{ sub.result_msg }}</pre>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% else %}
+		<td>{{ sub.result }}</td>
+		{% endif %}
+	{% endif %}
 	<td>{{ sub.lang }}</td>
 	<td>{{ sub.codeLen }}</td>
 	<td>{{ sub.score }}</td>
