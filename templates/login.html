@@ -22,15 +22,16 @@ Login
 		</div>
 
 		<div class="row error_pos">
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					{% for messages in messages %}
-						<li class="text_small text-left">
-							{{ messages }}
-						</li>
+					<ul>
+					{% for messages in get_flashed_messages() %}
+						<li class="text_small text-left">{{ messages }}</li>
 					{% endfor %}
-				{% endif %}
-			{% endwith %}
+					{% for m in form.errors.values() %}
+						{% for i in m %}
+						<li class="text_small text-left">{{ i }}</li>
+						{% endfor %}
+					{% endfor %}
+					</ul>
 		</div>
 
 		<div class="row checkbox_pos">

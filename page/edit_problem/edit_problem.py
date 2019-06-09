@@ -46,6 +46,8 @@ def problem_edit(pid):
         tag_fail_flag = False
         tags = form.tags.data.split(';')
         for i in tags:
+            if i == '':
+                continue
             tag = Tag.query.filter_by(tag_name=i).first()
             if tag:
                 if tag not in cur_problem.problem_tag:
@@ -104,7 +106,7 @@ def new_problem():
             if db_tag:
                 appen_tag.append(db_tag)
         # info
-        info = {'description': '', 'input_format': '', 'output_format': '', 'sample_input': '', 'sample_output': '', 'hint': '', 'source': '', 'td_description': '', 'td_num': ''}
+        info = {'description': '', 'input_format': '', 'output_format': '', 'sample_input': '', 'sample_output': '', 'hint': '', 'source': '', 'td_description': '', 'td_num': 0}
         info['description']   = form.description.data
         info['input_format']  = form.input_format.data
         info['output_format'] = form.output_format.data

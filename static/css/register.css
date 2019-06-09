@@ -23,7 +23,7 @@
 	width: 6em;
 	height: 3em;
 
-	position: fixed; 
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
@@ -65,7 +65,7 @@
 .content{
 
     @extend %fixedbox;
-  
+
     font-weight: bold;
     text-align: center;
     z-index: 1000;
@@ -92,7 +92,7 @@ section {
 
 	clip: rect(auto auto auto auto);
 
-	position: absolute; 
+	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -100,10 +100,10 @@ section {
 
 	&:before {
 		content: " ";
-	    
+
 	    @extend %fixedbox;
 	    padding: 2em 3.5em;
-	    
+
 	    mix-blend-mode: darken;
 
   }
