@@ -133,7 +133,6 @@ def problem(pid):
 def submission_detail():
 	return render_template('sub_detail.html')
 
-
 @app.route('/announce', methods=['GET', 'POST'])
 @login_required
 def announce():
@@ -298,12 +297,10 @@ def logout():
 	# flash('Log Out See You.')
 	return redirect(url_for('index'))
 
-
 @app.route('/edit', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def edit():
 	# current_user = Account.query.first()
-
 	form = FormEdit()
 	target = current_user
 	if request.method == 'POST':
