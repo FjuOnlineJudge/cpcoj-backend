@@ -39,58 +39,54 @@ def load_user(user_id):
 	return Account.query.get(int(user_id))
 
 @app.route('/problem_list', methods=['GET', 'POST'])
-def question_list():
+def problem_list():
 	tag = Tag.query.all()
-	uid_change_name = []
+	author = []
 	problem = Problem.query.order_by().all()
-	state = "all"
 
 	# Popular Question
 	## Sort
 	ranklist = []
 	for pro in problem:
-		data = Submission.query.filter_by(
-			problem_id=pro.problem_id).group_by(Submission.account_id).all()
-		ranklist.append((pro.problemName, pro.problem_id, len(data)))
-
+		data = Submission.query.filter_by(problem_id=pro.problem_id).group_by(Submission.account_id).count()
+		ranklist.append((pro.problemName, pro.problem_id, data))
 	ranklist.sort(key=lambda tup: tup[2], reverse=True)
 
 	# Problem List
 	## check state
+	checked_tag = []
 	if request.method == 'POST':
 		for i in tag:
-			if request.values.get("tags") == i.tag_name:
-				state = i.tag_name
-				break
-			else:
-				state = "all"
+			if i.tag_name in request.form:
+				checked_tag.append(i)
 
-	## Tag change
-	for iter_tag in tag:
-		if iter_tag.tag_name == state:
-			problem = iter_tag.problem.all()
-			break
+	## Gathering problems by tag
+	picked_problem = []
+	for i in checked_tag:
+		picked_problem += i.problem.all()
 
-	## Uid change name
-	for ques_iter in problem:
-		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
+	if picked_problem != []:
+		problem = picked_problem
+
+	## Author's name of the problems
+	for prob_iter in problem:
+		Account_search = Account.query.filter(Account.uid==prob_iter.uid).first()
 		if Account_search:
-			uid_change_name.append(Account_search.username)
+			author.append(Account_search.username)
 
-	## Submit INFO
+	## Submitmission INFO
 	sub_info = []
 	for pro in problem:
 		# target = Account.query.filter_by(username=name).first()
-		total_submit = Submission.query.filter_by(problem_id=pro.problem_id).all()
-		total_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").all()
+		total_submit = Submission.query.filter_by(problem_id=pro.problem_id).count()
+		total_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").count()
 		# real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
-		sub_info.append((len(total_ac), len(total_submit)))
+		sub_info.append((total_ac, total_submit))
 
 	return render_template('problem_list.html' , tag=tag
                         						, problem=problem
-			                       				, name=uid_change_name
+			                       				, name=author
 												, sub_info=sub_info
-												, state=state
 												, ranklist=ranklist)
 
 @app.route('/problem/<int:pid>', methods=['GET', 'POST'])
@@ -118,15 +114,16 @@ def submission_detail():
 
 @app.route('/')
 def index():
+	# TODO: refactoring
 	# 公告
 
 	# 最新問題，目前列出前五個最新的問題
-	uid_change_name = []
+	author = []
 	questions = Problem.query.order_by(Problem.uid.desc()).all()
-	for ques_iter in questions:
-		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
+	for prob_iter in questions:
+		Account_search = Account.query.filter(Account.uid==prob_iter.uid).first()
 		if Account_search:
-			uid_change_name.append(Account_search.username)
+			author.append(Account_search.username)
 
 	# Ranklist
 	all_user = Account.query.all()
@@ -143,7 +140,7 @@ def index():
 	ranklist.sort(key=lambda tup: tup[4], reverse=True)
 
 	return render_template('index.html', questions=questions,
-										 name=uid_change_name,
+										 name=author,
 										 ranklist=ranklist)
 
 @app.route('/register', methods=['GET', 'POST'])
