@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Question
+Problem
 {% endblock %}
 
 {% block Css %}
@@ -55,7 +55,7 @@ function submit_form(s)
 	</div>
 	{% endif %}
 
-	<form id="edit_problem" action="{{ url_for('.problem_edit', pid=pid) }}" method="POST">
+	<form id="edit_problem" action="{{ form_action }}" method="POST">
 	{{ form.hidden_tag() }}
 	<div class="row">
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>

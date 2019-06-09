@@ -116,12 +116,18 @@ def problem(pid):
 	# TODO(roy4801): maybe there's json injection
 	info = json.loads(problem.info)
 
-	return render_template('problem.html', problem=problem
-										 , author=author
-										 , subinfo=subinfo
-										 , tags=tags
-										 , info=info)
+	# if the current_user is able to edit the problem
+	editable = False
+	if hasattr(current_user, 'uid') and current_user.uid == problem.uid:
+		editable = True
 
+	return render_template('problem.html'
+						, problem=problem
+						, author=author
+						, subinfo=subinfo
+						, tags=tags
+						, info=info
+                        , editable=editable)
 
 @app.route('/sub_detail', methods=['GET', 'POST'])
 def submission_detail():
@@ -150,7 +156,7 @@ def announce():
 @app.route('/announce/<int:aid>', methods=['GET'])
 def announce_id(aid):
 	ann = Announce.query.filter(Announce.announce_id == aid).first()
-	print(ann)
+	# print(ann)
 	if ann:
 		# ann.content = escape(ann.content)
 		return render_template('announce_show.html', announce=ann)

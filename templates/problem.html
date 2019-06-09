@@ -15,14 +15,22 @@ Problem
 	<div class="row">
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
 		<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
-			<h1>{{problem.problem_id }} . {{problem.problemName}}</h1>
+			<h1>{{problem.problem_id}} . {{problem.problemName}}</h1>
 		</div>
-		<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+			{% if editable %}
+			<div class="list-group">
+				<a href="{{url_for('edit_problem_page.problem_edit', pid=problem.problem_id)}}" class="list-group-item list-group-item-action list-group-item-primary">Edit</a>
+			</div>
+			{% endif %}
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
 			<div class="list-group">
 				<a href="/submit" class="list-group-item list-group-item-action list-group-item-success">Submit</a>
 			</div>
 		</div>
-		<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
 			<div class="list-group">
 				<a href="/submissions" class="list-group-item list-group-item-action list-group-item-warning">Status</a>
 			</div>
@@ -122,7 +130,7 @@ Problem
 				</div>
 				<div class="card-body text">
 					{% if 'sample_input' in info %}
-						{{ info['sample_input'] }}
+						<pre>{{ info['sample_input'] }}</pre>
 					{% endif %}
 				</div>
 			</div>
@@ -134,7 +142,7 @@ Problem
 				</div>
 				<div class="card-body text">
 					{% if 'sample_output' in info %}
-						{{ info['sample_output'] }}
+						<pre>{{ info['sample_output'] }}</pre>
 					{% endif %}
 				</div>
 			</div>

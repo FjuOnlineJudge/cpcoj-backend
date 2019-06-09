@@ -24,6 +24,7 @@ class EditProblemForm(FlaskForm):
     sample_input = TextAreaField('sampleInput')
     sample_output = TextAreaField('sampleOutput')
 
+# TODO(roy4801): handle the other data (hint, source, td_description, td_num)
 @edit_problem_page.route('/problem_edit/<int:pid>', methods=['GET', 'POST'])
 @login_required
 def problem_edit(pid):
@@ -83,5 +84,39 @@ def problem_edit(pid):
     form.sample_output.data = info['sample_output']
 
     return render_template('problem_edit.html'
-        , pid=pid
-        , form=form)
+        , form=form
+        , form_action=url_for('.problem_edit', pid=pid))
+
+# TODO(roy4801): handle the other data (hint, source, td_description, td_num)
+@edit_problem_page.route('/new_problem', methods=['GET', 'POST'])
+@login_required
+def new_problem():
+    # current_user = Account.query.first() #debug
+    if current_user.permLevel > 1:
+        return redirect(url_for('index'))
+    form = EditProblemForm()
+    if form.validate_on_submit():
+        # tag
+        appen_tag = []
+        tags = form.tags.data.split(';')
+        for t in tags:
+            db_tag = Tag.query.filter_by(tag_name=t).first()
+            if db_tag:
+                appen_tag.append(db_tag)
+        # info
+        info = {'description': '', 'input_format': '', 'output_format': '', 'sample_input': '', 'sample_output': '', 'hint': '', 'source': '', 'td_description': '', 'td_num': ''}
+        info['description']   = form.description.data
+        info['input_format']  = form.input_format.data
+        info['output_format'] = form.output_format.data
+        info['sample_input']  = form.sample_input.data
+        info['sample_output'] = form.sample_output.data
+        new_prob = Problem(problemName=form.problem_name.data
+                           , uid=current_user.uid
+                           , info=json.dumps(info))
+        new_prob.problem_tag = appen_tag
+        db.session.add(new_prob)
+        db.session.commit()
+        flash('新增成功', 'success')
+    return render_template('problem_edit.html'
+        , form=form
+        , form_action=url_for('.new_problem'))
