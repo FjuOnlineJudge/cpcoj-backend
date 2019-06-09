@@ -41,12 +41,16 @@
 					</li>
 				</ul>
 				{% if current_user.is_authenticated %}
-
 					<hr class="d-sm-flex d-md-flex d-lg-none">
 					<ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
-						{% if current_user.permLevel == 1 %}
+						{% if current_user.permLevel <= 0 %} {# Admin #}
 						<li class="nav-item">
-							<a class="nav-link" href="{{ url_for('announce') }}">發佈/編輯公告</a>
+							<a class="nav-link" href="{{ url_for('announce') }}">發佈公告</a>
+						</li>
+						{% endif %}
+						{% if current_user.permLevel <= 1 %} {# problemsetter #}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ url_for('edit_problem_page.new_problem') }}">發布新題目</a>
 						</li>
 						{% endif %}
 						<li class="nav-item">

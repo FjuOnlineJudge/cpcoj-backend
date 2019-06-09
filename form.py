@@ -56,9 +56,6 @@ class FormLogin(FlaskForm):
 
 class FormEdit(FlaskForm):
     """
-    使用者登入使用
-    以email為主要登入帳號，密碼需做解碼驗證
-    記住我的部份透過flask-login來實現
     """
 
     username = StringField('UserName')
@@ -90,17 +87,11 @@ class FormEdit(FlaskForm):
 
 class FormAnnounce(FlaskForm):
     """
-    使用者登入使用
-    以email為主要登入帳號，密碼需做解碼驗證
-    記住我的部份透過flask-login來實現
     """
 
     title = StringField('Title', validators = [
         validators.DataRequired(),
         validators.Length(1, 100)
-    ])
-    
-    name = StringField('Name', validators=[
     ])
 
     content = TextAreaField('Announce', validators=[
