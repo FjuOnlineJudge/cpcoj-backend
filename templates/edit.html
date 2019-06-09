@@ -1,60 +1,64 @@
 {% extends 'base.html' %}
 
 {% block Css %}
+<link rel="stylesheet" type="text/css" href="/static/css/common.css">
 <link rel="stylesheet" type="text/css" href="/static/css/edit.css">
 {% endblock %}
 
 {% block title %}
-edit
+Edit userinfo
 {% endblock %}
 
 {% block main %}
-
 <div class="edit_block_cover edit_top_dis">
 	<div class="form-container">
 		<h3 class="page-title">Edit</h3>
 		<form method="POST" accept="utf-8" autocomplete="off" role=form class="form-horizontal">
 			{{ form.csrf_token }}
-			<div class="form_group" style="margin-bottom: 0rem;">
+			<div class="form_group" style="no-margin-bottom">
 				<label for="username" class="page-text">Username</label>
-				{{ form.username(readonly=true, class="form-control", id="username", type="text", placeholder=current_user.username)  }}
+				{{ form.username(readonly=true, class="form-control", id="username", type="text", placeholder=target.username)  }}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
 				<label for="nickname" class="page-text">Nickname</label>
-				{{ form.nickname(class="form-control", id="nickname", type="text", placeholder=current_user.nickname)}}
+				{{ form.nickname(class="form-control", id="nickname", type="text", placeholder=target.nickname)}}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
 				<label for="Email" class="page-text">Email</label>
-				{{ form.email(class="form-control", id="Email", type="email", placeholder=current_user.email) }}
+				{{ form.email(class="form-control", id="Email", type="email", placeholder=target.email) }}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
-				<label for="current_password" class="page-text">Current_Password</label>
-				{{ form.current_password(class="form-control", id="password", placeholder="current_password") }}
+				<label for="current_password" class="page-text">Current Password</label>
+				{{ form.current_password(class="form-control", id="password", placeholder="Current password") }}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
-				<label for="password" class="page-text">Password</label>
-				{{ form.password(class="form-control", id="password", placeholder="password") }}
+				<label for="password" class="page-text">New Password</label>
+				{{ form.password(class="form-control", id="password", placeholder="Password") }}
 			</div>
 			<div class="form-group" style="margin-bottom: 0rem;">
-				<label for="confirm" class="page-text">Confirm</label>
-				{{ form.confirm(class="form-control", id="confirm", placeholder="password") }}
+				<label for="confirm" class="page-text">Confirm New Password</label>
+				{{ form.confirm(class="form-control", id="confirm", placeholder="Password") }}
 			</div>
-
+			{% if get_flashed_messages() or form.errors %}
+				<ul>
+					{% for i in form.errors.values() %}
+					{% for msg in i %}
+						<li class="text-danger msg-margin" style="font-size: 0.5em;">
+							{{ msg }}
+						</li>
+					{% endfor %}
+					{% endfor %}
+					{% for cat, msg in get_flashed_messages(with_categories=true) %}
+					<li class="text-{{cat}} msg-margin" style="font-size: 0.5em;">
+						{{ msg }}
+					</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
 			<div class="form-group text-right" style="margin-top: 1rem; padding-left: 4.2rem;">
-				{% with messages = get_flashed_messages() %}
-					{% if messages %}
-						{% for messages in messages %}
-							<li class="text_small">
-								{{ messages }}
-							</li>
-						{% endfor %}
-					{% endif %}
-				{% endwith %}
 				{{ form.submit(id="submit", class="btn btn-primary",  value="Edit")}}
 			</div>
 		</form>
 	</div>
 </div>
-
 {% endblock %}
-
