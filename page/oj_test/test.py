@@ -87,10 +87,7 @@ class FormTestDB_prob(FlaskForm):
 			validators.DataRequired()
 		])
 
-	info = TextAreaField('info'
-		, validators=[
-			validators.DataRequired()
-		])
+	info = TextAreaField('info')
 	
 	tag = SelectMultipleField('Tag', choices="")
 	

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, escape
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, login_required, LoginManager, logout_user
 import datetime, json
 
 from form import *
 from exts import db
-from models import Problem, Account, Submission, Tag
+from models import Problem, Account, Submission, Tag, Announce
 import config
 
 # Dealing with the path problem
@@ -17,6 +17,21 @@ sys.path.append('judger')
 LISTEN_ALL = True
 
 from ext_app import app
+
+# Test for custom filter
+## ref:http://flask.pocoo.org/snippets/28/
+import re
+from jinja2 import evalcontextfilter, Markup, escape
+_paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+@app.template_filter()
+@evalcontextfilter
+def nl2br(eval_ctx, value):
+    result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br>\n')
+                          for p in _paragraph_re.split(escape(value)))
+    if eval_ctx.autoescape:
+        result = Markup(result)
+    return result
+###
 
 # Register blueprints
 from submit import submit
@@ -112,10 +127,49 @@ def problem(pid):
 def submission_detail():
 	return render_template('sub_detail.html')
 
+
+@app.route('/announce', methods=['GET', 'POST'])
+@login_required
+def announce():
+	form = FormAnnounce()
+	date_time = datetime.datetime.now()
+
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			announce = Announce(title=form.title.data
+								, name=form.name.data
+								, content=form.content.data
+								, time=date_time)
+			db.session.add(announce)
+			db.session.commit()
+			flash('success')
+
+	return render_template('announce.html', form=form)
+
+
+@app.route('/announce/<int:aid>', methods=['GET'])
+def announce_id(aid):
+	ann = Announce.query.filter(Announce.announce_id == aid).first()
+	print(ann)
+	if ann:
+		# ann.content = escape(ann.content)
+		return render_template('announce_show.html', announce=ann)
+	else:
+		# TODO: make a redirect page for waiting
+		return redirect(url_for('index'))
+
+
+@app.route('/announce_list', methods=['GET', 'POST'])
+def announce_list():
+	announce = Announce.query.order_by(Announce.time.desc()).all()
+	return render_template('announce_list.html', announce=announce)
+
 @app.route('/')
 def index():
 	# TODO: refactoring
 	# 公告
+	announce = Announce.query.order_by(Announce.time.desc()).all()
+
 
 	# 最新問題，目前列出前五個最新的問題
 	author = []
@@ -139,7 +193,8 @@ def index():
 	# real_ac sort
 	ranklist.sort(key=lambda tup: tup[4], reverse=True)
 
-	return render_template('index.html', questions=questions,
+	return render_template('index.html', announce=announce,
+										 questions=questions,
 										 name=author,
 										 ranklist=ranklist)
 
