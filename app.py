@@ -143,20 +143,18 @@ def announce():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			announce = Announce(title=form.title.data
-								, name=form.name.data
+								, name=current_user.username
 								, content=form.content.data
 								, time=date_time)
 			db.session.add(announce)
 			db.session.commit()
-			flash('success')
+			flash('發布成功', 'success')
 
 	return render_template('announce.html', form=form)
-
 
 @app.route('/announce/<int:aid>', methods=['GET'])
 def announce_id(aid):
 	ann = Announce.query.filter(Announce.announce_id == aid).first()
-	# print(ann)
 	if ann:
 		# ann.content = escape(ann.content)
 		return render_template('announce_show.html', announce=ann)
@@ -164,18 +162,39 @@ def announce_id(aid):
 		# TODO: make a redirect page for waiting
 		return redirect(url_for('index'))
 
-
 @app.route('/announce_list', methods=['GET', 'POST'])
 def announce_list():
 	announce = Announce.query.order_by(Announce.time.desc()).all()
 	return render_template('announce_list.html', announce=announce)
+
+@app.route('/announce_edit/<int:aidd>', methods=['GET', 'POST'])
+@login_required
+def announce_edit(aidd):
+	form = FormAnnounce()
+	date_time = datetime.datetime.now()
+	ann = Announce.query.filter(Announce.announce_id == aidd).first()
+
+	if current_user.permLevel <= 0:
+		if request.method == 'POST':
+			if form.validate_on_submit():
+				if form.validate_on_submit():
+					ann.title = form.title.data
+					ann.content = form.content.data
+					ann.time = date_time
+					db.session.commit()
+					flash('更改成功', 'success')
+			else:
+				# TODO(roy4801): Add form.error to flash in template
+				flash('更改失敗', 'danger')
+		return render_template('announce_edit.html', form=form, ann=ann)
+	else:
+		return redirect(url_for('announce'))
 
 @app.route('/')
 def index():
 	# TODO: refactoring
 	# 公告
 	announce = Announce.query.order_by(Announce.time.desc()).all()
-
 
 	# 最新問題，目前列出前五個最新的問題
 	author = []
