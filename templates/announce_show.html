@@ -79,6 +79,11 @@
             <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
                 <input type="button" class="btn btn-secondary" value="Back to Announce List" onclick="location.href='{{url_for('announce_list')}}'">
             </div>
+            
+            <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+                <button class="btn btn-dark" value="edit" onclick="location.href='/announce_edit/{{ announce.announce_id }}'">edit</button>
+            </div>
+            
         </div>
     </div>
 </div>

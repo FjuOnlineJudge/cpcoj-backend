@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-公告
+編輯公告
 {% endblock %}
 
 {% block Css %}
@@ -20,17 +20,17 @@
                     {% if messages == "success" %}
                         <div class="alert alert-success">
                             <div class="row">
-                                    <strong>{{ messages }}!</strong>
+                                <strong>{{ messages }}!</strong>
                             </div>
                         </div>
-                    {% else %}
+                        {% else %}
                         <div class="alert alert-danger">
                             <div class="row">
                                 <strong>{{ messages }}!</strong>
                             </div>
                         </div>
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
             </div>
         {% endif %}
     {% endwith %}
@@ -46,7 +46,7 @@
                             Title
                         </div>
                         <!-- <input type="text" id="problemName" name="problemName" class="form-control"> -->
-                        {{ form.title(class='form-control') }}
+                        {{ form.title(class='form-control', placeholder=ann.title) }}
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
@@ -55,7 +55,7 @@
                             Name
                         </div>
                         <!-- <input type="text" id="tags" name="tags" class="form-control"> -->
-                        {{ form.name(class='form-control', placeholder='') }}
+                        {{ form.name(class='form-control', placeholder=ann.name) }}
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
@@ -67,17 +67,16 @@
                             Content
                         </div>
                         <!-- <textarea class="form-control" id="description" name="description" rows="10"></textarea> -->
-                        {{ form.content(class='form-control', rows='10') }}
+                        {{ form.content(class='form-control', placeholder=ann.content , rows='10') }}
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
                 <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
                 <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
-                    {{ form.submit(id="submit", class="btn btn-primary",  value="發佈")}}
+                    {{ form.submit(id="submit", class="btn btn-primary",  value="更新")}}
                 </div>
 
-                
-                
+
             </div>
         </form>
     </div>
