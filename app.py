@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from form import FormRegister
-from models import Problem, Account, Submission, Tag
+from models import Problem, Account, Submission, Tag, Announce
 import datetime
 from exts import db
 from form import *
@@ -113,13 +113,57 @@ def question(pid):
 def submission_detail():
 	return render_template('sub_detail.html')
 
+
+@app.route('/announce', methods=['GET', 'POST'])
+@login_required
+def announce():
+	form = FormAnnounce()
+	date_time = datetime.datetime.now()
+
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			announce = Announce(title=form.title.data
+								, name=form.name.data
+								, content=form.content.data
+								, time=date_time)
+			db.session.add(announce)
+			db.session.commit()
+			flash('success')
+
+
+	return render_template('announce.html', form=form)
+
+
+@app.route('/announce/<int:aid>', methods=['GET', 'POST'])
+@login_required
+def announce_id(aid):
+	goal = Announce.query.filter(Announce.announce_id == aid).first()
+	print(goal)
+	if goal:
+		return render_template('announce_show.html', goal=goal)
+	else:
+		return 'No this announce'
+
+
+@app.route('/announce_list', methods=['GET', 'POST'])
+def announce_list():
+	announce = Announce.query.order_by(Announce.time.desc()).all()
+	return render_template('announce_list.html', announce=announce)
+	
+
+
+	
+
 @app.route('/')
 def index():
 	# 公告
+	announce = Announce.query.order_by(Announce.time.desc()).all()
+
 
 	# 最新問題，目前列出前五個最新的問題
 	uid_change_name = []
 	questions = Problem.query.order_by(Problem.uid.desc()).all()
+
 	for ques_iter in questions:
 		Account_search = Account.query.filter(Account.uid == ques_iter.uid).first()
 		if Account_search:
@@ -139,7 +183,8 @@ def index():
 	# real_ac sort
 	ranklist.sort(key=lambda tup: tup[4], reverse=True)
 
-	return render_template('index.html', questions=questions,
+	return render_template('index.html', announce=announce,
+										 questions=questions,
 										 name=uid_change_name,
 										 ranklist=ranklist)
 

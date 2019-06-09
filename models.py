@@ -139,3 +139,16 @@ class Submission(db.Model):
 		info += utils.str_row('code', '')
 		info += self.code
 		return info
+
+
+# announce
+class Announce(db.Model):
+	__tablename__ = 'announce'
+	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
+	
+	announce_id = db.Column(db.Integer, primary_key=True, nullable=False) #公告編號
+	title = db.Column(db.String(100), nullable=False) 			  # 標題
+	name = db.Column(db.String(100), nullable=False)              # 作者名字
+	content = db.Column(db.Text, nullable=False)                  # 內容
+	time = db.Column(db.DateTime, nullable=False)                 # 發布時間
+

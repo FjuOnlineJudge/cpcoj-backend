@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+公告
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+
+{% block main %}
+
+<div class="container-fluid topdis">
+    <div class="row">
+
+        <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+        <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>announce_id</th>
+                        <th>title</th>
+                        <th>name</th>
+                        <th>time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in announce %}
+                    <tr>
+                        <td><a href="./announce/{{ i.announce_id }}">{{ i.announce_id }}</a></td>
+                        <td><a href="./announce/{{ i.announce_id }}">{{ i.title }}</a></td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.time }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

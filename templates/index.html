@@ -45,28 +45,24 @@ Home Page
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>
-									<a href="./ICEJJ.html">ICEJJ</a>
-								</td>
-								<td>999999999999</td>
-								<td>lpc0503</td>
-							</tr>
-							<tr>
-								<td>r0y</td>
-								<td>100000000</td>
-								<td>roy4801</td>
-							</tr>
-							<tr>
-								<td>halloworld</td>
-								<td>22222222</td>
-								<td>william32131231</td>
-							</tr>
-							<tr>
-								<td>suntalk</td>
-								<td>0</td>
-								<td>????????????</td>
-							</tr>
+							{% if announce|length < 5 %}
+								{% for i in range(0, announce|length) %}
+								<tr>
+									<td><a href="./announce/{{ announce[i].announce_id }}">{{ announce[i].title }}</a></td>
+									<td>{{ announce[i].time }}</td>
+									<td>{{ announce[i].name }} </td>
+								</tr>
+								{% endfor %}
+							{% else %}
+								{% for i in range(0,5) %}
+								<tr>
+									<td><a href="./announce/{{ announce[i].announce_id }}">{{ announce[i].title }}</a></td>
+									<td>{{ announce[i].time }}</td>
+									<td>{{ announce[i].name }} </td>
+								</tr>
+								{% endfor %}
+							{% endif %}
+							
 						</tbody>
 					</table>
 				</div>

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+公告
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+
+{% block main %}
+    <div class="test registerdis">
+        <div class="form-container">
+            <form id="edit_problem" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
+                        <div class="card">
+                            <div class="card-header title" style="text-align: center;">
+                                Title
+                            </div>
+                            <!-- <input type="text" id="problemName" name="problemName" class="form-control"> -->
+                            {{ form.title(class='form-control') }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+                        <div class="card">
+                            <div class="card-header title" style="text-align: center;">
+                                Name
+                            </div>
+                            <!-- <input type="text" id="tags" name="tags" class="form-control"> -->
+                            {{ form.name(class='form-control', placeholder='') }}
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                    <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+                        <div class="card">
+                            <div class="card-header title" style="text-align: center;">
+                                Content
+                            </div>
+                            <!-- <textarea class="form-control" id="description" name="description" rows="10"></textarea> -->
+                            {{ form.content(class='form-control', rows='10') }}
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+                        {{ form.submit(id="submit", class="btn btn-primary",  value="發佈")}}
+                    </div>
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for messages in messages %}
+                                    <li class="text_small text-rightt">
+                                        {{ messages }}
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
