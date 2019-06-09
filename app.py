@@ -357,6 +357,6 @@ def userinfo(name):
 
 if __name__ == '__main__':
 	if LISTEN_ALL:
-		app.run(host='0.0.0.0')
+		app.run(host='0.0.0.0', port=80)
 	else:
 		app.run()

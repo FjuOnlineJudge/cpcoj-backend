@@ -1,6 +1,6 @@
 import os
 
-DEBUG = True
+DEBUG = False
 SESSION_PROTECTION = 'strong'
 SECRET_KEY = os.urandom(24)
 # WTF_CSRF_SECRET_KEY = os.urandom(24)
