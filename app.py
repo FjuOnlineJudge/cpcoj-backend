@@ -336,12 +336,7 @@ def userinfo(name):
     
     # print("fucker")
     # for i in real_ac:
-    # 	print(i)
-<<<<<<< HEAD
-=======
-
-
->>>>>>> aea7b12411d78a4d0f26271f64a957175df6d2b7
+    # print(i)
     # print("AC:{}".format(len(real_ac)))
     # print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
     # print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
