@@ -63,7 +63,7 @@ Problem_list
 							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 							{% if tag|length %}
 							<div class="row">
-								<div class="btn-group-toggle" data-toggle="buttons">
+								<div class="btn-group-toggle" data-toggle="buttons" style="margin-left: 0.4em;">
 								{% for i in range(0, tag|length) %}
 									<label class="btn btn-light">
 										<input type="checkbox" name="{{ tag[i].tag_name }}" id="tag" autocomplete="off"> {{ tag[i].tag_name }}
