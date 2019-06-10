@@ -334,23 +334,15 @@ def userinfo(name):
     tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
     real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.problem_id).all()
     
-    print("fucker")
-    for i in real_ac:
-    	print(i)
-
-
+    # print("fucker")
+    # for i in real_ac:
+    # 	print(i)
     # print("AC:{}".format(len(real_ac)))
     # print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
     # print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
-
     wrong = []
-    wrong = list(set(tried).difference(set(real_ac)))
-    # for tri in tried:
-	# 	if real.problem_id != tri.problem_id:
-	# 		wrong.append(tri)
-
-    print(wrong)
-
+    wrong = list(set(tried) - set(real_ac))
+    # print(wrong)
     if target:
         return render_template('userinfo.html', info=target
                                               , total_submit=total_submit
