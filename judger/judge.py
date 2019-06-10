@@ -58,7 +58,7 @@ def get_isolate_arg(box_id, time, wall_time, wall_mem, fsize, proc_num, bind_dir
 
 	arg_list.append('-e')
 	arg_list.append('--meta={}'.format(meta_path))
-	
+
 	if stdin:
 		arg_list.append('--stdin={}'.format(stdin))
 	if stdout:
@@ -67,7 +67,7 @@ def get_isolate_arg(box_id, time, wall_time, wall_mem, fsize, proc_num, bind_dir
 		arg_list.append('--stderr={}'.format(stderr))
 	if redir:
 		arg_list.append('--stderr-to-stdout')
-		
+
 	return arg_list
 
 
@@ -78,7 +78,7 @@ def get_compile_arg_cpp(box_id, lang_spec='c++11'
 	arg_list.append('--run')
 	arg_list.append('--')
 	arg_list += '/usr/bin/env g++ {} -I{} -Wall -Wshadow -Wno-unused-result -static -O2 -std={} -o {}'.format(code_file, inc_path, lang_spec, exe_path).split()
-	
+
 	return arg_list
 
 def get_run_arg(box_id, cur_case, time_lim, mem_lim, in_file, out_file):
@@ -164,7 +164,7 @@ class Isolate:
 			mkdir(res_path(self.box_id))
 
 		# debug
-		print(self.NOW_BOX)
+		# print(self.NOW_BOX)
 
 	def release_box(self):
 		box_id = self.box_id
@@ -372,22 +372,27 @@ class Judger:
 		with open(res_path(i, 'compile_out'), 'r') as f:
 			self.out['compile_out'] = ''.join(f.readlines())
 
-	def run(self, cur_case, time_lim, mem_lim, inp, outp,):
+	def run(self, cur_case, time_lim, mem_lim, inp, outp):
 		box = self.box
 		i = box.get_cur_box_id()
 
 		log.debug(debug_out(i, 'run', 'Copy the testdata {} in'.format(cur_case)))
 		# Copy the in data
 		copy('{}'.format(res_path(i, inp)), '{}/{}'.format(box_path(i), inp))
-		
+
 		log.debug(debug_out(i, 'run', 'Run'))
 		# Run the program
 		cmd = ['isolate'] + get_run_arg(i, cur_case, time_lim, mem_lim, inp, outp)
 		runCmd(cmd)
-		
+
 		log.debug(debug_out(i, 'run', 'Copy the output {} out'.format(cur_case)))
 		# Copy the out data
 		copy('{}/{}'.format(box_path(i), outp), '{}'.format(res_path(i, outp)))
+
+		# Copy the out to the self.out['run_out_X]
+		log.debug(debug_out(i, 'run', 'Copy the {}'.format(outp)))
+		with open(res_path(i, outp), 'r') as f:
+			self.out[outp] = ''.join(f.readlines())
 
 	def check_ans(self, cur_case, prog_in, prog_out, ac_out):
 		box = self.box

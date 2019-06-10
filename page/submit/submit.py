@@ -35,7 +35,7 @@ def submit_handle():
 					, account=current_user, problem=prob)
 			db.session.add(sub)
 			db.session.commit()
-			# print(sub)
+
 			log.debug('Add problem pid={} subid={}'.format(prob.problem_id, sub.submit_id))
 
 			manage.add_judger(sub.submit_id, prob.problem_id, judge.JUDGE_CPP, code, 3.0, 65536, num_td)
