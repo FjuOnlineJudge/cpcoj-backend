@@ -216,7 +216,7 @@ def index():
         total_submit = all_user[idx].submission.order_by(Submission.problem_id).count()
         total_ac = all_user[idx].submission.filter_by(result='AC').count()
         tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).count()
-        real_ac = all_user[idx].submission.filter_by(result='AC').order_by(Submission.problem_id).group_by(Submission.account_id).count()
+        real_ac = all_user[idx].submission.filter_by(result='AC').order_by(Submission.problem_id).group_by(Submission.problem_id).count()
         ranklist.append((all_user[idx].username , total_submit, total_ac, tried, real_ac))
 
     # real_ac sort
@@ -332,16 +332,24 @@ def userinfo(name):
     total_submit = target.submission.order_by(Submission.problem_id).all()
     total_ac = target.submission.filter_by(result = "AC").all()
     tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
-    real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.account_id).all()
+    real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.problem_id).all()
+    
+    print("fucker")
+    for i in real_ac:
+    	print(i)
+
 
     # print("AC:{}".format(len(real_ac)))
     # print("Try-and-no-AC:{}".format( len(tried)-len(real_ac) ))
     # print("AC-Rate:{}/{}".format(len(total_ac), len(total_submit)))
+
     wrong = []
-    for tri in tried:
-        for real in real_ac:
-            if real.problem_id != tri.problem_id:
-                wrong.append(tri)
+    wrong = list(set(tried).difference(set(real_ac)))
+    # for tri in tried:
+	# 	if real.problem_id != tri.problem_id:
+	# 		wrong.append(tri)
+
+    print(wrong)
 
     if target:
         return render_template('userinfo.html', info=target
