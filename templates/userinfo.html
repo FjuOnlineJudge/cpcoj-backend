@@ -3,7 +3,6 @@
 {% block javascript %}
 <script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js" ></script>
 <script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js.map" ></script>
-<script type="text/javascript" src="../static/js/jdenticon-2.1.1.js" ></script>
 {% endblock %}
 
 {% block Css %}
@@ -19,7 +18,7 @@ Userinfo
 	<div class="row">
 
 		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
-			<canvas width="200" height="200" data-jdenticon-value="HereIsName"></canvas>
+			<canvas width="300" height="300" data-jdenticon-value="{{info.username}}"></canvas>
 			<br>
 			<br>
 			<!--Username-->

@@ -334,9 +334,9 @@ def userinfo(name):
     tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
     real_ac = target.submission.filter_by(result = "AC").order_by(Submission.problem_id).group_by(Submission.problem_id).all()
     
-    print("fucker")
-    for i in real_ac:
-    	print(i)
+    # print("fucker")
+    # for i in real_ac:
+    # 	print(i)
 
 
     # print("AC:{}".format(len(real_ac)))
