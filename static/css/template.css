@@ -39,6 +39,11 @@ body{
 
 }
 
+.error_pos{
+
+	padding-left: 0.67em;
+}
+
 .checkbox_pos{
 
 	padding-left: 0.37em;
@@ -54,6 +59,16 @@ body{
 	font-size: 1.4em;
 }
 
+.text_small {
+	font-size: 0.5em;
+	color: red;
+}
+
+.clear_margin{
+
+	margin-bottom: 0rem;
+}
+
 .bardis{
 
 	margin: -0.5em;
@@ -67,4 +82,9 @@ body{
 .topdis{
 
 	margin-top:5em;
+}
+
+.registerdis{
+
+	margin-top: 5em;
 }

@@ -1,0 +1,21 @@
+{% macro problem_edit_alert(msg, type) %}
+    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+    <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+        <div class="alert alert-{{ type }}" role="alert" style="margin-bottom: 0px;">
+            {{ msg }}
+        </div>
+    </div>
+    <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+{% endmacro %}
+
+{% macro problem_edit_warning(msg) %}
+    {{ problem_edit_alert(msg, 'warning') }}
+{% endmacro %}
+
+{% macro problem_edit_danger(msg) %}
+    {{ problem_edit_alert(msg, 'danger') }}
+{% endmacro %}
+
+{% macro problem_edit_success(msg) %}
+    {{ problem_edit_alert(msg, 'success') }}
+{% endmacro %}

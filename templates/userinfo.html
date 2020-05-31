@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+<script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js" ></script>
+<script type="text/javascript" src="../static/js/jdenticon-2.1.1.min.js.map" ></script>
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/setting.css">
+{% endblock %}
+
+{% block title %}
+Userinfo
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid topdis">
+	<div class="row">
+
+		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3">
+			<canvas width="300" height="300" data-jdenticon-value="{{info.username}}"></canvas>
+			<br>
+			<br>
+			<!--Username-->
+			<h5 class="username">{{ info.username }}</h5>
+			<!--Nickname-->
+			<h6 class="nickname">{{ info.nickname }}</h6>
+			<br>
+
+			<div class="row">
+				<div class="col-md-7 col-sm-7 col-lg-7 col-xl-7 text font_bold clear_right_padding">
+					Tried and Accept
+					<br>
+					Tried but not solved
+					<br>
+					AC Rate
+				</div>
+
+				<div class="col-md-3 text clear_left_padding">
+					{% if total_ac|length > 0 %}
+						{{ real_ac|length }}
+						<br>
+						{{ tried|length }}
+						<br>
+						{{ total_ac|length / total_submit|length * 10000 // 1 / 100 }}% ({{ total_ac|length }}/{{ total_submit|length }})
+					{% else %}
+						{{ real_ac|length }}
+						<br>
+						{{ tried|length }}
+						<br>
+						0.0%(0/0)
+					{% endif %}
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row">
+				<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 text font_bold">
+					Email
+					<br>
+					Admin
+				</div>
+				<div class="col-md-8 text">
+					{{ info.email }}
+					<br>
+					{% if info.permLevel <= 0 %}
+						True
+					{% else %}
+						False
+					{% endif %}
+				</div>
+			</div>
+
+			<br>
+			Sign up at : {{ info.signUpTime }}
+			<br>
+			Last sign in : {{ info.lastLoginTime }}
+			<br>
+			<br>
+
+			{% if current_user.is_authenticated and current_user.username == info.username %}
+			<a class="btn btn-primary" href="{{ url_for('edit') }}">Edit Profile</a>
+			{% endif %}
+
+		</div>
+		<div class="col-md-9 col-sm-9 col-lg-9 col-xl-9">
+			<table class="table table-condensed" style="margin-top: 1em;">
+					<h3>Tried and accept</h3>
+					<thead>
+						{% for i in range(0, real_ac|length) %}
+						<th></th>
+						{% endfor %}
+					</thead>
+					<tbody class="font_green">
+						<tr>
+							{% for i in range(0, real_ac|length) %}
+								<td>{{ real_ac[i].problem_id }}</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+			</table>
+			<br>
+			<table class="table table-condensed">
+					<h3>Tried but not yet solved</h3>
+					<thead>
+						{% for i in range(0, wrong|length) %}
+							<th></th>
+						{% endfor %}
+					</thead>
+					<tbody class="font_red">
+						<tr>
+							{% for i in range(0, wrong|length) %}
+							<td>{{ wrong[i].problem_id }}</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

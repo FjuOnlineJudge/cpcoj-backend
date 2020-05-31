@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Problem
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/common.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid topdis">
+	<div class="row">
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
+			<h1>{{problem.problem_id}} . {{problem.problemName}}</h1>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+			{% if editable %}
+			<div class="list-group">
+				<a href="{{url_for('edit_problem_page.problem_edit', pid=problem.problem_id)}}" class="list-group-item list-group-item-action list-group-item-primary">Edit</a>
+			</div>
+			{% endif %}
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+			<div class="list-group">
+				<a href="/submit" class="list-group-item list-group-item-action list-group-item-success">Submit</a>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+			<div class="list-group">
+				<a href="/submissions" class="list-group-item list-group-item-action list-group-item-warning">Status</a>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+			<div class="card">
+				<div class="card-header title align-center" style="text-align: center;">
+					<h3 class="no-margin">Author</h3>
+				</div>
+				<div class="card-body text">
+					{% if author %}
+						{{ author.username }}
+					{% else %}
+						None
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">AC Rate</h3>
+				</div>
+				<div class="card-body text">
+					{% if subinfo[1] != 0 %}
+						{{ subinfo[0]/subinfo[1]*100 }}%({{subinfo[0]}}/{{subinfo[1]}})
+					{% else %}
+						0%
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Tag</h3>
+				</div>
+				<div class="card-body text">
+					{% for t in tags %}
+						<a href="#" class="btn btn-xs btn-outline-primary">{{ t.tag_name }}</a>
+					{% endfor%}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Description</h3>
+				</div>
+				<div class="card-body text">
+					{% if 'description' in info %}
+						{{ info['description']|nl2br }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Input Format</h3>
+				</div>
+				<div class="card-body text">
+					{% if 'input_format' in info %}
+						{{ info['input_format']|nl2br }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Output Format</h3>
+				</div>
+				<div class="card-body text">
+					{% if 'output_format' in info %}
+						{{ info['output_format']|nl2br }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Sample Input</h3>
+				</div>
+				<div class="card-body text">
+					{% if 'sample_input' in info %}
+						<pre>{{ info['sample_input'] }}</pre>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 dis">
+			<div class="card">
+				<div class="card-header title" style="text-align: center;">
+					<h3 class="no-margin">Sample Output</h3>
+				</div>
+				<div class="card-body text">
+					{% if 'sample_output' in info %}
+						<pre>{{ info['sample_output'] }}</pre>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+	</div>
+</div>
+{% endblock %}

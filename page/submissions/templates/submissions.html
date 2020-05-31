@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% from "_submissions_macro.html" import render_submissions_table, render_pagination %}
+
+{% block title %}
+提交紀錄
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/submission.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid submission_dis">
+	<h4 class="title_submission">提交紀錄</h4>
+
+	<div class="row">
+	<form class="form-inline" method="POST" action="{{ url_for('.submissions_handle') }}">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+		<div class="form-group" style="margin-left: 1em;">
+			<input id="filter_username" name="username" class="form-control input-sm flat" type="text" placeholder="Enter Username">
+		</div>
+		<div class="form-group" style="margin-left: 1em;">
+			<input id="filter_problem" name="pid" type="number" class="form-control input-sm flat" placeholder="Enter PID" min="1">
+		</div>
+		<div class="form-group" style="margin-left: 1em;">
+			<input type="submit" value="Filter" class="btn btn-primary">
+		</div>
+	</form>
+	{% if get_flashed_messages() %}
+		<ul>
+		{% for i in get_flashed_messages() %}
+			<li class="filter_msg_color">{{ i }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	</div>
+
+	<table class="table table-hover table-striped" style="margin-top: 1em;">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>PID</th>
+				<th>Submitter</th>
+				<th>Time(ms)</th>
+				<th>Memory</th>
+				<th>Verdict</th>
+				<th>Lang</th>
+				<th>Code Length</th>
+				<th>Score</th>
+				<th>Submit Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if sub_list %}
+				{% for i in sub_list %}
+					{{ render_submissions_table(i) }}
+				{% endfor %}
+			{% endif %}
+		</tbody>
+	</table>
+	<div class="container-fluid">
+	{{ render_pagination(pagin) }}
+	</div>
+</div>
+{% endblock %}

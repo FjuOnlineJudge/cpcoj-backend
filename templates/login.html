@@ -9,11 +9,9 @@ Login
 {% endblock %}
 
 {% block main %}
-	<!-- Optional content you want to persist between sections -->
-
 <div class="test">
-	<form method="POST" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizonal">	
-		{{ form.csrf_token }}
+	<form method="POST" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizonal">
+		{{ form.hidden_tag() }}
 		<div class="form-group">
 			<label for="username">Username</label>
 			{{ form.username(class="form-control", id="username", type="text", placeholder="Username") }}
@@ -22,10 +20,23 @@ Login
 			<label for="password">Password</label>
 			{{ form.password(class="form-control", id="password", placeholder="password") }}
 		</div>
-		
-		<div class="row checkbox_pos">		
+
+		<div class="row error_pos">
+					<ul>
+					{% for messages in get_flashed_messages() %}
+						<li class="text_small text-left">{{ messages }}</li>
+					{% endfor %}
+					{% for m in form.errors.values() %}
+						{% for i in m %}
+						<li class="text_small text-left">{{ i }}</li>
+						{% endfor %}
+					{% endfor %}
+					</ul>
+		</div>
+
+		<div class="row checkbox_pos">
 			<div class="custom-control form-control-lg custom-checkbox">
-				
+
 				{{ form.remember_me(class_="custom-control-input")}}
 				<label class="custom-control-label" type="checkbox" for="remember_me">
 					Remember me

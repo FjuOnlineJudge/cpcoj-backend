@@ -1,0 +1,39 @@
+.edit_block_cover{
+
+	position: relative;
+	box-sizing: border-box;
+	display: block;
+	/* font-size: 2.5em; */
+	padding: 0.2em;
+	width: 20em;
+	/*height: 20em;*/
+	top: 50%;
+	left: 50%;
+	/*font-weight: bold;*/
+	/*text-align: center;*/
+	background: #fff;
+	color: #000;
+	mix-blend-mode: normal;
+	z-index: 1000;
+	background-color: rgba(255, 255, 230, 0.5);
+	transform: translate3d(-50%, -10%, 0);
+	/*overflow-y: auto;*/
+}
+
+.edit_top_dis{
+	margin-top: 5em;
+}
+
+.page-title{
+	text-align: center;
+	font-size: 1.2em;
+	color: #000000;
+}
+
+.page-text{
+	font-size: 0.8em;
+}
+
+.msg-margin {
+	margin-top: 0.3em;
+}

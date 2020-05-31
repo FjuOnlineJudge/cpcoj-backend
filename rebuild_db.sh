@@ -1,3 +1,5 @@
-python3 manage.py db init
-python3 manage.py db migrate
-python3 manage.py db upgrade
+#!/bin/sh
+mysql -u root -proot << EOFMYSQL
+drop database oj_0;
+create database oj_0;
+EOFMYSQL

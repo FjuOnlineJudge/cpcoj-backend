@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+編輯公告
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+
+{% block main %}
+<div class="container-fluid topdis">
+    <div class="row">
+        <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+        <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+            {% for cat, msg in get_flashed_messages(with_categories=true) %}
+                <div class="alert alert-{{cat}}">
+                    {{ msg }}
+                </div>
+            {% endfor %}
+            {% for m in form.errors.values() %}
+                {% for i in m %}
+                    <div class="alert alert-danger">
+                        {{ i }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+    </div>
+
+    <div class="form-container">
+        <form id="edit_problem" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+                    <div class="card">
+                        <div class="card-header title" style="text-align: center;">
+                            Title
+                        </div>
+                        {{ form.title(class='form-control', value=ann.title) }}
+                    </div>
+                </div>
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+                    <div class="card">
+                        <div class="card-header title" style="text-align: center;">
+                            Content
+                        </div>
+                        {{ form.content(class='form-control', rows='10') }}
+                    </div>
+                </div>
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+                <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
+                    {{ form.submit(id="submit", class="btn btn-primary",  value="更新")}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>document.getElementById('content').value="{{ann.content}}";</script>
+{% endblock %}

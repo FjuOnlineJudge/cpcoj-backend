@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+公告
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/common.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+
+{% block main %}
+<div class="registerdis">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6 dis">
+                <div class="card">
+                    <div class="card-header title" style="text-align: center;">
+                        <h3 class="no-margin">Title</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text" style="text-align: center;">
+                            {{ announce.title }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+                <div class="card">
+                    <div class="card-header title" style="text-align: center;">
+                        <h3 class="no-margin">Author</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text" style="text-align: center;">
+                            {{ announce.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+            <div class="col-md-10 col-sm-10 col-lg-10 col-xl-10 dis">
+                <div class="card">
+                    <div class="card-header title" style="text-align: center;">
+                        <h3 class="no-margin">Content</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-text" >
+                            {{ announce.content|nl2br }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 dis">
+                <div class="card">
+                    <div class="card-header title" style="text-align: center;">
+                        <h3 class="no-margin">Posted Time</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-text" style="text-align: center;">
+                            {{ announce.time }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7 col-lg-7 col-xl-7 dis"></div>
+
+            <div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
+            <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+                <input type="button" class="btn btn-secondary" value="Back to Announce List" onclick="location.href='{{url_for('announce_list')}}'">
+            </div>
+            
+            <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 dis">
+                <button class="btn btn-dark" value="edit" onclick="location.href='/announce_edit/{{ announce.announce_id }}'">edit</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
