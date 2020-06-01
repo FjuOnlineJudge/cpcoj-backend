@@ -13,6 +13,8 @@ $ make isolate
 $ sudo make install
 ```
 
+> If you are using mariadb please install `libmariadb-client-lgpl-dev`
+
 ## Setting
 
 `config.py` setting databases connection
