@@ -110,9 +110,6 @@ section {
 }
 
 .one {
-
-	background-image: url(https://i.imgur.com/j4KYCHp.jpg);
-
 	.wrapper:before {
 
 		background: red;
@@ -120,8 +117,6 @@ section {
 }
 
 .two {
-	background-image: url(https://i.imgur.com/e2HHYUE.jpg);
-
 		.wrapper:before {
 		background: #faaa54;
 		mix-blend-mode: difference;
@@ -129,8 +124,6 @@ section {
 }
 
 .three {
-	background-image: url(https://i.imgur.com/sN8xQzU.jpg);
-
 		.wrapper:before {
 		background: #6c320a;
 		mix-blend-mode: screen;
@@ -138,8 +131,6 @@ section {
 }
 
 .four {
-	background-image: url(https://i.imgur.com/EN7Srwp.jpg);
-
 	.wrapper:before {
 		background: #e4135d;
 	}
