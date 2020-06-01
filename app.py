@@ -14,7 +14,8 @@ import sys
 sys.path.append('page')
 sys.path.append('judger')
 
-LISTEN_ALL = True
+LISTEN_ALL = False
+TEST_PORT = 8888
 
 from ext_app import app
 
@@ -348,8 +349,12 @@ def userinfo(name):
         #TODO (halloworld) response 404
         return redirect(url_for('index'))
 
+@app.route('/about', methods=['GET'])
+def about_page():
+    return render_template('about.html')
+
 if __name__ == '__main__':
 	if LISTEN_ALL:
 		app.run(host='0.0.0.0', port=80)
 	else:
-		app.run()
+		app.run(port=TEST_PORT)
