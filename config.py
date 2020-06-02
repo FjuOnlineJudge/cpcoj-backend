@@ -2,7 +2,8 @@ import os
 
 DEBUG = True
 SESSION_PROTECTION = 'strong'
-SECRET_KEY = os.urandom(24)
+# SECRET_KEY = os.urandom(24)
+SECRET_KEY = 'aaa'
 # WTF_CSRF_SECRET_KEY = os.urandom(24)
 # CSRF_SESSION_KEY = os.urandom(24)
 

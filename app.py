@@ -14,7 +14,7 @@ import sys
 sys.path.append('page')
 sys.path.append('judger')
 
-LISTEN_ALL = False
+LISTEN_ALL = True
 TEST_PORT = 8888
 
 from ext_app import app
@@ -352,6 +352,30 @@ def userinfo(name):
 @app.route('/about', methods=['GET'])
 def about_page():
     return render_template('about.html')
+
+@app.route('/ranking', methods=['GET'])
+def ranking_page():
+    #TODO (erichsu1224) finish page
+    target = list()
+
+    query_target = Account.query.filter_by().all()
+
+    for target_user in query_target:
+        total_submit = target_user.submission.order_by(Submission.problem_id).all()
+        total_ac = target_user.submission.filter_by(result = "AC").all()
+
+        user_info = dict()
+
+        user_info['username'] = target_user.username
+        user_info['nickname'] = target_user.nickname
+        user_info['total_ac'] = total_ac
+        user_info['total_submit'] = total_submit
+
+        target.append(user_info)
+    
+    target = sorted(target, key = lambda k: len(k['total_ac']), reverse=True)
+
+    return render_template('rank.html', user_info = target)
 
 if __name__ == '__main__':
 	if LISTEN_ALL:
