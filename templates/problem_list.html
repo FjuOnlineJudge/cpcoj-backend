@@ -121,7 +121,7 @@ Problem_list
 						{% else %}
 							<td>{{ sub_info[i][0] }}</td>
 							<td>{{ sub_info[i][1] }}</td>
-							<td>{{ sub_info[i][0]/sub_info[i][1]*100 }}%</td>
+							<td>{{ "%.2f"|format(sub_info[i][0]/sub_info[i][1]*100) }}%</td>
 						{% endif %}
 					</tr>
 					{% endfor %}
