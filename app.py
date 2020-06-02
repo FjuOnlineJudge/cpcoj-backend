@@ -33,11 +33,14 @@ def nl2br(eval_ctx, value):
 ###
 
 # Register blueprints
+# from page import test
+# app.register_blueprint(test.test_page)
+
+from page import api
+app.register_blueprint(api.api_blueprint)
+
 from page import submit
 app.register_blueprint(submit.submit_page)
-
-from oj_test import test
-app.register_blueprint(test.test_page)
 
 from page import submissions
 app.register_blueprint(submissions.submissions_page)
@@ -100,11 +103,12 @@ def problem_list():
         # real_ac = Submission.query.filter_by(problem_id=pro.problem_id).filter_by(result="AC").group_by(Submission.account_id).all()
         sub_info.append((total_ac, total_submit))
 
-    return render_template('problem_list.html' , tag=tag
-                                                , problem=problem
-                                                   , name=author
-                                                , sub_info=sub_info
-                                                , ranklist=ranklist)
+    return render_template('problem_list.html',
+        tag=tag,
+        problem=problem,
+        name=author,
+        sub_info=sub_info,
+        ranklist=ranklist)
 
 @app.route('/problem/<int:pid>', methods=['GET', 'POST'])
 def problem(pid):

@@ -103,21 +103,27 @@ def get_checkans_arg(box_id, cur_case, in_file, out_file, ans_file):
 def runCmd(cmd, *args, **kwargs):
 	if isinstance(cmd, str):
 		cmd = cmd.split()
+	log.debug('runcmd: {}'.format(cmd))
 	p = sp.run(cmd, stdout=sp.PIPE, stderr=sp.PIPE, *args, **kwargs)
 	return p
 
 def move(fr, to):
-	return not runCmd('mv {} {}'.format(fr, to)).returncode
+	shutil.move(fr, to)
+	return True
 
 def copy(fr, to):
-	# print('RUN cp {} {}'.format(fr, to))
-	return not runCmd('cp {} {}'.format(fr, to)).returncode
+	shutil.copy2(fr, to)
+	return True
 
 def mkdir(path):
-	return not runCmd('mkdir -p {}'.format(path)).returncode
+	Path(path).mkdir()
+	# return not runCmd('mkdir -p {}'.format(path)).returncode
+	return True
 
 def rmrf(path):
-	return not runCmd('rm -rf {}'.format(path)).returncode
+	shutil.rmtree(path)
+	# return not runCmd('rm -rf {}'.format(path)).returncode
+	return True
 
 MAX_ISO = 4096
 class Isolate:
@@ -168,7 +174,7 @@ class Isolate:
 
 	def release_box(self):
 		box_id = self.box_id
-		print('Release box {}'.format(box_id))
+		log.debug('Release box {}'.format(box_id))
 		# isolate --box-id={self.box_id} --cleanup 2>/dev/null >/dev/null
 		ret = runCmd('isolate --box-id={} --cleanup'.format(box_id)).returncode
 		# Failed
@@ -321,6 +327,7 @@ class Judger:
 			self.run(i, time_lim, mem_lim, 'in_'+str(i), 'out_'+str(i))
 			self.parse_meta(META_RUN, i)
 			run_meta = self.meta[run_name]
+			log.info('Run meta case {} = {}'.format(i, run_meta))
 			if ('status' in run_meta and run_meta['status'] == 'TO') or run_meta['time'] > time_lim:
 				res[i] = RES_TLE
 				continue
@@ -398,11 +405,13 @@ class Judger:
 		box = self.box
 		i = box.get_cur_box_id()
 
+		# Copy necessary file for checkans
 		log.debug(debug_out(i, 'checkans', 'Copy files'))
-		# Copy checkans
 		copy(os.path.join(compile_inc_path, 'checkans'), os.path.join(box_path(i), 'checkans'))
 		copy(res_path(i, ac_out), os.path.join(box_path(i), ac_out))
 
+		#TODO(roy4801) check the run perm of `checkans` before actually run it
+		# Run checkans
 		log.debug(debug_out(i, 'checkans', 'Run checkans'))
 		cmd = ['isolate'] + get_checkans_arg(i, cur_case, prog_in, prog_out, ac_out)
 		runCmd(cmd)
