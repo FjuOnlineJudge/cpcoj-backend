@@ -10,7 +10,7 @@
 		<td>{{ sub.resMem }} KiB</td>
 	{% endif %}
 	{% if sub.result == 'Wait' %}
-		<td class="spinner-border spinner-border-sm text-success m-2" role="status"></td>
+		<td><div class="spinner-border text-success" style="width: 1.5rem; height: 1.5rem;" role="status"></div></td>
 	{% else %}
 		{% if sub.result == 'AC' %}
 		<td class="ac-style">{{ sub.result }}</td>
