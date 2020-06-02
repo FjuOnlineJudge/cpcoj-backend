@@ -2,7 +2,7 @@
 <tr>
 	<td>{{ sub.submit_id }}</td>
 	<td>{{ sub.problem_id }}</td>
-	<td>{{ sub.submitter }}</td>
+	<td><a href="{{ url_for('userinfo', name=sub.submitter) }}"</a>{{sub.submitter}}</td>
 	<td>{{ sub.resTime }}</td>
 	{% if sub.resMem > 1000 %}
 		<td>{{ sub.resMem / 1000.0 }} MiB</td>
