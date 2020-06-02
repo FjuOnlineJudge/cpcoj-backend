@@ -351,11 +351,27 @@ def userinfo(name):
 
 @app.route('/about', methods=['GET'])
 def about_page():
+    """
+    Page for the site info.
+
+    Args:
+
+    Returns:
+        render_template('about.html'): Return the page about.html/
+    """
     return render_template('about.html')
 
 @app.route('/ranking', methods=['GET'])
 def ranking_page():
-    #TODO (erichsu1224) finish page
+    #TODO (erichsu1224) Add motto, Select Pagez
+    """
+    Query user's info from database. And return page rank.html from templetes.
+
+    Args:
+
+    Returns:
+        render_template('rank.html', user_info=target): Return the page rank.html and paremeter target(user_info) to html.
+    """
     target = list()
 
     query_target = Account.query.filter_by().all()
@@ -372,7 +388,7 @@ def ranking_page():
         user_info['total_submit'] = total_submit
 
         target.append(user_info)
-    
+
     target = sorted(target, key = lambda k: len(k['total_ac']), reverse=True)
 
     return render_template('rank.html', user_info = target)

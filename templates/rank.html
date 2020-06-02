@@ -29,7 +29,7 @@ Rank
                 <tbody>
 					{% for i in range(user_info|length) %}
 					<tr>
-						<td>{{ i+1 }}</td>
+						<td><b>{{ i+1 }}</b></td>
 						<td><a href="./userinfo/{{ user_info[i].username }}">{{ user_info[i].username}}</a></td>
                         <td>{{ user_info[i].nickname }}</a></td>
                         <td></td>
