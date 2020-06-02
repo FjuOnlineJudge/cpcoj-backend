@@ -8,6 +8,11 @@ html, body{
 	overflow-y: auto;
 }
 
+@font-face{
+	font-family: TaipeiSansTCBeta-Regular;
+	src: url('./../font/TaipeiSansTCBeta-Regular.ttf') format("truetype");
+}
+
 body{
 
 	background-color: #00ff00;
