@@ -69,7 +69,7 @@ class Account(UserMixin, db.Model):
 	permLevel = db.Column(db.Integer, nullable=False)
 	signUpTime = db.Column(db.DateTime, nullable=False) # 註冊時間
 	lastLoginTime = db.Column(db.DateTime, nullable=False) # 最後登入時間
-	icon = db.Column(db.Boolean, nullable=False) # 保留給頭像用
+	icon = db.Column(db.Text, nullable=True) # 保留給頭像用
 
 	# Relation
 	submission = db.relationship('Submission', backref='account', lazy="dynamic") # one to many

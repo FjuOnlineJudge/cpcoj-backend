@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Rank
+{% endblock %}
+
+{% block Css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid topdis">
+	<div class="row justify-content-center">
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 dis">
+			<table class="table table-hover table-striped">
+				<thead >
+					<tr>
+						<th style="width: 5%">Rank</th>
+						<th style="width: 10%">Username</th>
+                        <th style="width: 10%">Nickname</th>
+                        <th style="width: 45%">Comment</th>
+						<th style="width: 10%">Total AC</th>
+						<th style="width: 10%">Total Submit</th>
+						<th style="width: 10%">AC Rate</th>
+					</tr>
+                </thead>
+                <tbody>
+				{% for i in range(user_info|length) %}
+				<tr>
+					<td><b>{{ i+1 }}</b></td>
+					<td><a href="{{ url_for('userinfo', name=user_info[i].username) }}">{{ user_info[i].username}}</a></td>
+					<td>{{ user_info[i].nickname }}</a></td>
+					<td></td>
+					<td >{{ user_info[i].total_ac|length }}</td>
+					<td >{{ user_info[i].total_submit|length }}</td>
+					<td >{{ user_info[i].total_ac|length }}</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -14,9 +14,6 @@ import sys
 sys.path.append('page')
 sys.path.append('judger')
 
-LISTEN_ALL = True
-TEST_PORT = 8888
-
 from ext_app import app
 
 # Test for custom filter
@@ -36,17 +33,20 @@ def nl2br(eval_ctx, value):
 ###
 
 # Register blueprints
-from submit import submit
+from page import submit
 app.register_blueprint(submit.submit_page)
 
 from oj_test import test
 app.register_blueprint(test.test_page)
 
-from submissions import submissions
+from page import submissions
 app.register_blueprint(submissions.submissions_page)
 
-from edit_problem import edit_problem
+from page import edit_problem
 app.register_blueprint(edit_problem.edit_problem_page)
+
+from page import ranking
+app.register_blueprint(ranking.ranking_page)
 
 login = LoginManager(app)
 login.login_view = 'login'
@@ -215,13 +215,20 @@ def index():
 
     for idx in range(0,len(all_user)):
         total_submit = all_user[idx].submission.order_by(Submission.problem_id).count()
-        total_ac = all_user[idx].submission.filter_by(result='AC').count()
-        tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).count()
-        real_ac = all_user[idx].submission.filter_by(result='AC').order_by(Submission.problem_id).group_by(Submission.problem_id).count()
-        ranklist.append((all_user[idx].username , total_submit, total_ac, tried, real_ac))
-
-    # real_ac sort
-    ranklist.sort(key=lambda tup: tup[4], reverse=True)
+        # total_ac = all_user[idx].submission.filter_by(result='AC').count()
+        # tried = all_user[idx].submission.order_by(Submission.problem_id).group_by(Submission.problem_id).count()
+        real_ac = all_user[idx].submission.filter_by(result='AC') \
+                    .order_by(Submission.problem_id)              \
+                    .group_by(Submission.problem_id).count()
+        # calc ac_rate
+        ac_rate = real_ac / total_submit * 100 if total_submit != 0 else 0.0
+        ranklist.append({
+            'name': all_user[idx].username,
+            'real_ac': real_ac,
+            'ac_rate': ac_rate
+        })
+    # sort the ranklist with total_ac
+    ranklist.sort(key=lambda x: x['real_ac'], reverse=True)
 
     return render_template('index.html', announce=announce,
                                          questions=questions,
@@ -330,6 +337,11 @@ def edit():
 def userinfo(name):
     # TODO(roy4801): refactoring
     target = Account.query.filter_by(username=name).first()
+
+    if not target:
+        #TODO (halloworld) response 404
+        return redirect(url_for('index'))
+
     total_submit = target.submission.order_by(Submission.problem_id).all()
     total_ac = target.submission.filter_by(result = "AC").all()
     tried = target.submission.order_by(Submission.problem_id).group_by(Submission.problem_id).all()
@@ -337,17 +349,14 @@ def userinfo(name):
 
     wrong = []
     wrong = list(set(tried) - set(real_ac))
-    # print(wrong)
-    if target:
-        return render_template('userinfo.html', info=target
-                                              , total_submit=total_submit
-                                              , total_ac=total_ac
-                                              , tried=tried
-                                              , real_ac=real_ac
-                                              , wrong=wrong)
-    else:
-        #TODO (halloworld) response 404
-        return redirect(url_for('index'))
+
+    return render_template('userinfo.html',
+        info=target,
+        total_submit=total_submit,
+        total_ac=total_ac,
+        tried=tried,
+        real_ac=real_ac,
+        wrong=wrong)
 
 @app.route('/about', methods=['GET'])
 def about_page():
@@ -361,40 +370,14 @@ def about_page():
     """
     return render_template('about.html')
 
-@app.route('/ranking', methods=['GET'])
-def ranking_page():
-    #TODO (erichsu1224) Add motto, Select Pagez
-    """
-    Query user's info from database. And return page rank.html from templetes.
+import click
 
-    Args:
-
-    Returns:
-        render_template('rank.html', user_info=target): Return the page rank.html and paremeter target(user_info) to html.
-    """
-    target = list()
-
-    query_target = Account.query.filter_by().all()
-
-    for target_user in query_target:
-        total_submit = target_user.submission.order_by(Submission.problem_id).all()
-        total_ac = target_user.submission.filter_by(result = "AC").all()
-
-        user_info = dict()
-
-        user_info['username'] = target_user.username
-        user_info['nickname'] = target_user.nickname
-        user_info['total_ac'] = total_ac
-        user_info['total_submit'] = total_submit
-
-        target.append(user_info)
-
-    target = sorted(target, key = lambda k: len(k['total_ac']), reverse=True)
-
-    return render_template('rank.html', user_info = target)
+@click.command()
+@click.option('-p', '--port', default=80, help='Port number')
+@click.option('-l', '--listen', default='0.0.0.0', help='Listen address')
+@click.option('-d', '--debug', is_flag=True, help='Debug mode')
+def runserver(port, listen, debug):
+    app.run(host=listen, port=port, debug=debug)
 
 if __name__ == '__main__':
-	if LISTEN_ALL:
-		app.run(host='0.0.0.0', port=80)
-	else:
-		app.run(port=TEST_PORT)
+    runserver()
