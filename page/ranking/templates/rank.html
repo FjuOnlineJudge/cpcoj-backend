@@ -33,9 +33,9 @@ Rank
 					<td><a href="{{ url_for('userinfo', name=user_info[i].username) }}">{{ user_info[i].username}}</a></td>
 					<td>{{ user_info[i].nickname }}</a></td>
 					<td></td>
-					<td >{{ user_info[i].total_ac|length }}</td>
-					<td >{{ user_info[i].total_submit|length }}</td>
-					<td >{{ user_info[i].total_ac|length }}</td>
+					<td >{{ user_info[i].real_ac }}</td>
+					<td >{{ user_info[i].total_submit }}</td>
+					<td >{{ "%.2f" |format(user_info[i].ac_rate) }}%</td>
 				</tr>
 				{% endfor %}
 				</tbody>

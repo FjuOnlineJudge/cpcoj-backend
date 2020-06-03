@@ -28,18 +28,23 @@ def ranking_page_view():
 
     for target_user in query_target:
         total_submit = target_user.submission.order_by(
-            Submission.problem_id).all()
-        total_ac = target_user.submission.filter_by(result="AC").all()
+            Submission.problem_id).count()
+        real_ac = target_user.submission.filter_by(result='AC') \
+                    .order_by(Submission.problem_id)              \
+                    .group_by(Submission.problem_id).count()
+        
+        print(type(real_ac), type(total_submit))
+        ac_rate = real_ac / total_submit * 100 if total_submit != 0 else 0.0
+        
 
-        user_info = {}
+        target.append({
+            'username': target_user.username,
+            'nickname': target_user.nickname,
+            'real_ac': real_ac,
+            'total_submit': total_submit,
+            'ac_rate': ac_rate
+        })
 
-        user_info['username'] = target_user.username
-        user_info['nickname'] = target_user.nickname
-        user_info['total_ac'] = total_ac
-        user_info['total_submit'] = total_submit
-
-        target.append(user_info)
-
-    target = sorted(target, key=lambda k: len(k['total_ac']), reverse=True)
+    target = sorted(target, key=lambda k: k['real_ac'], reverse=True)
 
     return render_template('rank.html', user_info=target)

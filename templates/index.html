@@ -133,7 +133,7 @@ Home Page
 									<td>{{ i+1 }}</td>
 									<td><a href="{{ url_for('userinfo', name=ranklist[i]['name']) }}">{{ ranklist[i]['name'] }}</a></td>
 									<td>{{ ranklist[i]['real_ac'] }}</td>
-									<td>{{ ranklist[i]['ac_rate'] }}%</td>
+									<td>{{ "%.2f"|format(ranklist[i]['ac_rate']) }}%</td>
 								</tr>
 							{% endfor %}
 						{% endwith %}
