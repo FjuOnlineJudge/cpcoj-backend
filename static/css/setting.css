@@ -1,68 +1,56 @@
-.col-md-3 img{
-
-	width: 70%;
-}
-.col-sm-3 img{
-
-	width: 70%;
-}
-.col-lg-3 img{
-
-	width: 70%;
-}
-.col-xl-3 img{
-
+.col-md-3 img {
 	width: 70%;
 }
 
-.username{
+.col-sm-3 img {
+	width: 70%;
+}
 
+.col-lg-3 img {
+	width: 70%;
+}
+
+.col-xl-3 img {
+	width: 70%;
+}
+
+.username {
 	font-size: 2.5em;
 	font-weight: bold;
 }
 
-.nickname{
-
+.nickname {
 	font-size: 1.5em;
 }
 
-.font_bold{
-
+.font_bold {
 	font-weight: bold;
 }
 
-.col-md-5 .clear_left_padding{
-
+.col-md-5 .clear_left_padding {
 	padding-left: 0;
 }
 
-.col-sm-5 .clear_left_padding{
-
+.col-sm-5 .clear_left_padding {
 	padding-left: 0;
 }
 
-.col-lg-5 .clear_left_padding{
-
+.col-lg-5 .clear_left_padding {
 	padding-left: 0;
 }
 
-.col-xl-5 .clear_left_padding{
-
+.col-xl-5 .clear_left_padding {
 	padding-left: 0;
 }
 
-.clear_right_padding{
-
+.clear_right_padding {
 	padding-right: 0 !important;
 }
 
-.font_red{
-
+.font_red {
 	color: red;
 }
 
-.font_green{
-
+.font_green {
 	color: #2ecc71;
 }
-

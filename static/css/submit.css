@@ -1,5 +1,4 @@
-.submit_block_cover{
-
+.submit_block_cover {
 	position: relative;
 	box-sizing: border-box;
 	display: block;
@@ -20,19 +19,16 @@
 	/*overflow-y: auto;*/
 }
 
-.page-title{
-
+.page-title {
 	/*text-align: center;*/
 	font-size: 0.7em;
 	color: #000000;
 }
 
-.submitdis{
-
+.submitdis {
 	margin-top: 5em;
 }
 
-.option_text{
-
+.option_text {
 	font-size: 0.6em;
 }

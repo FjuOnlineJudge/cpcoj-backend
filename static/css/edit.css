@@ -1,5 +1,4 @@
-.edit_block_cover{
-
+.edit_block_cover {
 	position: relative;
 	box-sizing: border-box;
 	display: block;
@@ -20,17 +19,17 @@
 	/*overflow-y: auto;*/
 }
 
-.edit_top_dis{
+.edit_top_dis {
 	margin-top: 5em;
 }
 
-.page-title{
+.page-title {
 	text-align: center;
 	font-size: 1.2em;
 	color: #000000;
 }
 
-.page-text{
+.page-text {
 	font-size: 0.8em;
 }
 

@@ -1,26 +1,23 @@
-.submission_dis{
-
+.submission_dis {
 	margin-top: 6em;
 	/*margin-bottom: 5em;*/
 }
 
-.btn-Custom-color{
-
+.btn-Custom-color {
 	color: #000 !important;
-/*	background-color: rgba(179, 255, 255, 1);
+	/*	background-color: rgba(179, 255, 255, 1);
 	border-color: rgba(179, 255, 255, 1);*/
 	background-color: rgba(102, 163, 255, 0.5) !important;
 	border-color: rgba(102, 163, 255, 0.5) !important;
 }
 
 .btn-Custom-color:hover {
-
 	color: #fff !important;
 	background-color: #00cccc !important;
 	border-color: #009999 !important;
 }
 
-.title_submission{
+.title_submission {
 	font-size: 2.5em;
 }
 
@@ -42,7 +39,9 @@
 	/*border: 1px solid #4CAF50;*/
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {
+	background-color: #ddd;
+}
 
 .pagination a:first-child {
 	border-top-left-radius: 2.5em;
@@ -50,8 +49,8 @@
 }
 
 .pagination a:last-child {
- 	border-top-right-radius: 2.5em;
- 	border-bottom-right-radius: 2.5em;
+	border-top-right-radius: 2.5em;
+	border-bottom-right-radius: 2.5em;
 }
 
 .ac-style {
