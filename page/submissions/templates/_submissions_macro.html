@@ -1,8 +1,11 @@
 {% macro render_submissions_table(sub) %}
 <tr>
+	{% if sub.rejudge_link %}
+	<td><a href="{{ sub.rejudge_link }}"><button type="button" class="btn btn-secondary btn-sm">Rejudge</button></a></td>
+	{% endif %}
 	<td>{{ sub.submit_id }}</td>
 	<td>{{ sub.problem_id }}</td>
-	<td><a href="{{ url_for('userinfo', name=sub.submitter) }}"</a>{{sub.submitter}}</td>
+	<td><a href="{{ url_for('userinfo', name=sub.username) }}"</a>{{sub.submitter}}</td>
 	<td>{{ sub.resTime }}</td>
 	{% if sub.resMem > 1000 %}
 		<td>{{ sub.resMem / 1000.0 }} MiB</td>
