@@ -1,27 +1,29 @@
 {% macro render_submissions_table(sub) %}
 <tr>
 	{% if sub.rejudge_link %}
-	<td><a href="{{ sub.rejudge_link }}"><button type="button" class="btn btn-secondary btn-sm">Rejudge</button></a></td>
+	<td><button type="button" class="btn btn-secondary btn-sm" id="rejudge-{{sub.submit_id}}" name="rejudge" value="{{ sub.rejudge_link }}">Rejudge</button></td>
 	{% endif %}
-	<td>{{ sub.submit_id }}</td>
-	<td>{{ sub.problem_id }}</td>
+	<td id="{{ sub.submit_id }}-submit_id">{{ sub.submit_id }}</td>
+	<td id="{{ sub.submit_id }}-problem_id">{{ sub.problem_id }}</td>
 	<td><a href="{{ url_for('userinfo', name=sub.username) }}"</a>{{sub.submitter}}</td>
-	<td>{{ sub.resTime }}</td>
+	<td id="{{ sub.submit_id }}-runtime">{{ sub.resTime }}</td>
+	<td id="{{ sub.submit_id }}-memory">
 	{% if sub.resMem > 1000 %}
-		<td>{{ sub.resMem / 1000.0 }} MiB</td>
+		{{ sub.resMem / 1000.0 }} MiB
 	{% else %}
-		<td>{{ sub.resMem }} KiB</td>
+		{{ sub.resMem }} KiB
 	{% endif %}
+	</td>
 	{% if sub.result == 'Wait' %}
-		<td><div class="spinner-border text-success" style="width: 1.5rem; height: 1.5rem;" role="status"></div></td>
+		<td id="{{ sub.submit_id }}-result" ><div class="spinner-border text-success" style="width: 1.5rem; height: 1.5rem;" role="status"></div></td>
 	{% else %}
 		{% if sub.result == 'AC' %}
-		<td class="ac-style">{{ sub.result }}</td>
+		<td id="{{ sub.submit_id }}-result" class="ac-style">{{ sub.result }}</td>
 		{% elif sub.result == 'WA' %}
-		<td class="wa-style">{{ sub.result }}</td>
+		<td id="{{ sub.submit_id }}-result" class="wa-style">{{ sub.result }}</td>
 		{% elif sub.result == 'CE' %}
-		<td class="ce-style" data-toggle="modal" data-target="#CEModal-{{sub.submit_id}}">{{ sub.result }}</td>
-
+		<td id="{{ sub.submit_id }}-result" class="ce-style" data-toggle="modal" data-target="#CEModal-{{sub.submit_id}}">{{ sub.result }}</td>
+		<!-- CE Modal content -->
 		<div class="modal fade" id="CEModal-{{sub.submit_id}}" tabindex="-1" role="dialog" aria-labelledby="CEModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -42,13 +44,13 @@
 			</div>
 		</div>
 		{% else %}
-		<td>{{ sub.result }}</td>
+		<td id="{{ sub.submit_id }}-result" >{{ sub.result }}</td>
 		{% endif %}
 	{% endif %}
-	<td>{{ sub.lang }}</td>
-	<td>{{ sub.codeLen }}</td>
-	<td>{{ sub.score }}</td>
-	<td>{{ sub.time}}</td>
+	<td id="{{ sub.submit_id }}-lang">{{ sub.lang }}</td>
+	<td id="{{ sub.submit_id }}-codeLen">{{ sub.codeLen }}</td>
+	<td id="{{ sub.submit_id }}-score">{{ sub.score }}</td>
+	<td id="{{ sub.submit_id }}-date">{{ sub.time}}</td>
 </tr>
 {% endmacro %}
 

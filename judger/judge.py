@@ -121,8 +121,10 @@ def mkdir(path):
 	return True
 
 def rmrf(path):
-	shutil.rmtree(path)
-	# return not runCmd('rm -rf {}'.format(path)).returncode
+	try:
+		shutil.rmtree(path)
+	except FileNotFoundError as e:
+		log.error(e);
 	return True
 
 MAX_ISO = 4096

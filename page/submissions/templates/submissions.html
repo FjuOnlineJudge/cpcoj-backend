@@ -9,30 +9,60 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/submission.css') }}">
 {% endblock %}
 
+{% block javascript %}
+<script>
+$(document).ready(function () {
+	let rejudgeBtns = $('button[name="rejudge"]').click(function() {
+		let id = $(this).attr('id').replace(/rejudge-/, '');
+		let result = $(`#${id}-result`);
+		$.ajax({
+			type: "GET",
+			url: $(this).val(),
+			dataType: "json"
+		})
+		.done(function(json) {
+			console.log(json);
+			result.empty();
+			result.append(`<div class="spinner-border text-success" style="width: 1.5rem; height: 1.5rem;" role="status">`);
+		})
+		.fail(function(xhr, status, err) {
+			console.error(`Error: ${err}`);
+			console.error(`Status: ${status}`);
+			console.dir(xhr);
+		})
+		.always(function(xhr, status) {
+		});
+	});
+})
+</script>
+{% endblock %}
+
 {% block main %}
 <div class="container-fluid submission_dis">
 	<h4 class="title_submission">提交紀錄</h4>
 	<!-- Filter -->
 	<div class="row">
-	<form class="form-inline" method="POST" action="{{ url_for('.submissions_handle') }}">
-		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-		<div class="form-group" style="margin-left: 1em;">
-			<input id="filter_username" name="username" class="form-control input-sm flat" type="text" placeholder="Enter Username">
-		</div>
-		<div class="form-group" style="margin-left: 1em;">
-			<input id="filter_problem" name="pid" type="number" class="form-control input-sm flat" placeholder="Enter PID" min="1">
-		</div>
-		<div class="form-group" style="margin-left: 1em;">
-			<input type="submit" value="Filter" class="btn btn-primary">
-		</div>
-	</form>
-	{% if get_flashed_messages() %}
+		<form class="form-inline" method="POST" action="{{ url_for('.submissions_handle') }}">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+			<div class="form-group" style="margin-left: 1em;">
+				<input id="filter_username" name="username" class="form-control input-sm flat" type="text"
+					placeholder="Enter Username">
+			</div>
+			<div class="form-group" style="margin-left: 1em;">
+				<input id="filter_problem" name="pid" type="number" class="form-control input-sm flat"
+					placeholder="Enter PID" min="1">
+			</div>
+			<div class="form-group" style="margin-left: 1em;">
+				<input type="submit" value="Filter" class="btn btn-primary">
+			</div>
+		</form>
+		{% if get_flashed_messages() %}
 		<ul>
-		{% for i in get_flashed_messages() %}
+			{% for i in get_flashed_messages() %}
 			<li class="filter_msg_color">{{ i }}</li>
-		{% endfor %}
+			{% endfor %}
 		</ul>
-	{% endif %}
+		{% endif %}
 	</div>
 
 	<table class="table table-hover table-striped" style="margin-top: 1em;">
@@ -55,14 +85,14 @@
 		</thead>
 		<tbody>
 			{% if sub_list %}
-				{% for i in sub_list %}
-					{{ render_submissions_table(i) }}
-				{% endfor %}
+			{% for i in sub_list %}
+			{{ render_submissions_table(i) }}
+			{% endfor %}
 			{% endif %}
 		</tbody>
 	</table>
 	<div class="container-fluid">
-	{{ render_pagination(pagin) }}
+		{{ render_pagination(pagin) }}
 	</div>
 </div>
 {% endblock %}
