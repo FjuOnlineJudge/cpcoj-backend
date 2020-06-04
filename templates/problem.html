@@ -28,7 +28,7 @@ Problem
 		</div>
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">
 			<div class="list-group">
-				<a href="/submit" class="list-group-item list-group-item-action list-group-item-success">Submit</a>
+				<a href="{{ url_for('submit_page.submit_handle') }}?pid={{ problem.problem_id }}" class="list-group-item list-group-item-action list-group-item-success">Submit</a>
 			</div>
 		</div>
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis">

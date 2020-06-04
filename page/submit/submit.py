@@ -6,14 +6,13 @@ import utils
 from models import Problem, Submission
 from exts import db
 
-from judger import judge
-from judger import manage
+from judger import judge, manage
 
 log = logging.getLogger('Judger')
 
-submit_page = Blueprint('submit_page'
-						, __name__
-						, template_folder=os.path.join(utils.cur_path(__file__), 'templates'))
+submit_page = Blueprint('submit_page',
+						__name__,
+						template_folder=os.path.join(utils.cur_path(__file__), 'templates'))
 
 @submit_page.route('/submit', methods=['GET','POST'])
 @login_required
@@ -41,5 +40,9 @@ def submit_handle():
 			manage.add_judger(sub.submit_id, prob.problem_id, judge.JUDGE_CPP, code, 3.0, 65536, num_td)
 
 		return redirect(url_for('submissions_page.submissions_handle'))
+	# pid
+	pid = ''
+	if 'pid' in request.args:
+		pid = request.args['pid']
 	# not if
-	return render_template('submit.html')
+	return render_template('submit.html', problem_id=pid)
