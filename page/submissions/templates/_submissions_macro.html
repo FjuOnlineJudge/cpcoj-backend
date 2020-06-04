@@ -6,7 +6,7 @@
 	<td id="{{ sub.submit_id }}-submit_id">{{ sub.submit_id }}</td>
 	<td id="{{ sub.submit_id }}-problem_id">{{ sub.problem_id }}</td>
 	<td><a href="{{ url_for('userinfo', name=sub.username) }}"</a>{{sub.submitter}}</td>
-	<td id="{{ sub.submit_id }}-runtime">{{ sub.resTime }}</td>
+	<td id="{{ sub.submit_id }}-runtime">{{ '{:.2f}'.format(sub.resTime) }}</td>
 	<td id="{{ sub.submit_id }}-memory">
 	{% if sub.resMem > 1000 %}
 		{{ sub.resMem / 1000.0 }} MiB

@@ -11,7 +11,9 @@ log = logging.getLogger('Submission')
 
 submissions_page = Blueprint('submissions_page'
 						, __name__
-						, template_folder=os.path.join(utils.cur_path(__file__), 'templates'))
+						, template_folder=os.path.join(utils.cur_path(__file__), 'templates')
+						, static_folder=os.path.join(utils.cur_path(__file__), 'static')
+						, static_url_path='/submissions/static')
 
 def gen_random_str(size=4):
 	return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))

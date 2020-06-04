@@ -40,13 +40,16 @@ def submission_info(submission_id):
         mem_usage = '{} KiB'.format(submission.resMem)
     return {
         'result': 'success',
-        'submit_id': submission.submit_id,
-        'problem_id': username,
-        'username': nickname,
-        'runtime': submission.resTime,
-        'memory': mem_usage,
-        'result': submission.result,
-        'lang': submission.lang,
-        'code_length': '{} KiB'.format(len(submission.code)/1000),
-        'date': submission.time.strftime("%Y-%m-%d %H:%M:%S")
+        'data': {
+            'submit_id': submission.submit_id,
+            'problem_id': username,
+            'username': nickname,
+            'runtime': submission.resTime,
+            'memory': mem_usage,
+            'result': submission.result,
+            'result_msg': submission.result_msg,
+            'lang': submission.lang,
+            'code_length': '{} KiB'.format(len(submission.code)/1000),
+            'date': submission.time.strftime("%Y-%m-%d %H:%M:%S")
+        }
     }, 200
