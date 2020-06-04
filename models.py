@@ -172,3 +172,5 @@ class Contest(db.Model):
 	end_time = db.Column(db.DateTime, nullable=False)
 	# Contest Paticipant
 	paticipant = db.Column(db.String(200), nullable=True)
+	# Contest Status
+	statuc = db.Column(db.Integer, nullable=False)
