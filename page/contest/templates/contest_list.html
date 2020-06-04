@@ -1,70 +1,84 @@
 {% extends 'base.html' %}
-
-{% block title %}
-Rank
-{% endblock %}
+{% block title %}Rank{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" type="text/css" href="../static/css/index.css">
-<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('contest_page.static', filename='css/contest.css') }}">
+<link rel="stylesheet" type="text/css" href="../../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../../static/css/Rish_block.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{# TODO: use url_for #}
+{% block javascript %}
+<script src="{{ url_for('contest_page.static', filename='js/contest.js') }}"></script>
 {% endblock %}
 
 {% block main %}
 <div class="container-fluid topdis">
-    <div class="row d-flex flex-row-reverse bd-highlight col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
-        <div >
-            <div class="">
-                <div class="list-group">
-                    <a href="/submit" class="list-group-item list-group-item-action list-group-item-success">All</a>
-                </div>
-            </div>
-            <div class="">
-                <div class="list-group">
-                    <a href="/submissions" class="list-group-item list-group-item-action list-group-item-success">Scheduled</a>
-                </div>
-            </div>
-        </div>
+    <!-- btns -->
+    <div class="row justify-content-between col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
         <div>
+            <input type="text" id="problem_name_input" onkeyup="problem_name_filter()" placeholder="Search for Title...">
+        </div>
+        <div class="row">
             <div class="">
-                <div class="list-group">
-                    <a href="/submit" class="list-group-item list-group-item-action list-group-item-success">Running</a>
+                <div class="">
+                    <div class="list-group">
+                        <button class="btn btn-secondary" onclick="status_filter(0)">All</button>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="list-group">
+                        <button class="btn btn-secondary" onclick="status_filter(1)">Scheduled</button>
+                    </div>
                 </div>
             </div>
             <div class="">
-                <div class="list-group">
-                    <a href="/submissions" class="list-group-item list-group-item-action list-group-item-success">Ended</a>
+                <div class="">
+                    <div class="list-group">
+                        <button class="btn btn-secondary" onclick="status_filter(2)">Running</button>
+                    </div>
                 </div>
+                <div class="">
+                    <div class="list-group">
+                        <button class="btn btn-secondary" onclick="status_filter(3)">Ended</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <input type="button" value="Create" class="btn btn-primary btn-lg" onclick="location.href='/create_contest'">
             </div>
         </div>
     </div>
-	<div class="row justify-content-center">
+    <!-- list -->
+    <div class="row justify-content-center">
         <div class="col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
-			<table class="table table-hover table-striped">
-				<thead >
-					<tr>
-						<th style="width: 5%">cid</th>
-						<th style="width: 40%">Title</th>
+            <table class="table table-hover table-striped" id="table_contest">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">cid</th>
+                        <th style="width: 30%">Title</th>
                         <th style="width: 10%">Status</th>
-                        <th style="width: 10%">Start Time</th>
-						<th style="width: 10%">End Time</th>
-						<th style="width: 10%">Remaining Time</th>
-						<th style="width: 10%">Owner</th>
-					</tr>
+                        <th style="width: 15%">Start Time</th>
+                        <th style="width: 15%">End Time</th>
+                        <th style="width: 10%">Remaining Time</th>
+                        <th style="width: 10%">Owner</th>
+                    </tr>
                 </thead>
-                <tbody>
-				{% for i in range(info|length) %}
-				<tr>
-					<td><b>{{ info[i].cid }}</b></td>
-					<td><a href="{{ url_for('contest_page.contest_page_view', cid=info[i].cid) }}">{{ info[i].title }}</a></td>
-					<td>{{ info[i].status }}</a></td>
-					<td >{{ info[i].Start_time }}</td>
-					<td >{{ info[i].End_time }}</td>
-                    <td >{{ info[i].Remaining_time }}</td>
-                    <td>{{ info[i].Owner }}</td>
-				</tr>
-				{% endfor %}
-				</tbody>
+                <tbody id="contest-list">
+                    {% for i in range(info|length) %}
+                    <tr class="{{ info[i].status }}" style="display: ">
+                        <td><b>{{ info[i].cid }}</b></td>
+                        <td><a href="{{ url_for('contest_page.contest_page_view', cid=info[i].cid) }}">{{ info[i].title }}</a></td>
+                        <td>{{ info[i].status }}</a>
+                        </td>
+                        <td>{{ info[i].start_time }}</td>
+                        <td>{{ info[i].end_time }}</td>
+                        <td>{{ info[i].remaining_time }}</td>
+                        <td>{{ info[i].owner }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

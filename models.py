@@ -121,7 +121,7 @@ class Submission(db.Model):
 	lang    = db.Column(db.String(10), nullable=False)               # 語言
 	rank    = db.Column(db.Integer, nullable=False)                  # 排名
 	time    = db.Column(db.DateTime, nullable=False)                 # 繳交時間
-
+	for_test = db.Column(db.Integer, nullable=False)				 # 比賽編號
 	# For debug print
 	def __repr__(self):
 		return "<Submission {}>".format(self.submit_id)
@@ -163,9 +163,11 @@ class Contest(db.Model):
 	# Contest ID
 	contest_id = db.Column(db.Integer, primary_key=True, nullable=False)
 	# Contest Title
+	contest_title = db.Column(db.String(200), nullable=False)
+	# Contest Problems
 	problem_id = db.Column(db.String(50), nullable=False)
 	# Contest Owner - uid
-	owner = db.Column(db.String(50), nullable=False)
+	owner = db.Column(db.Integer, nullable=False)
 	# Contest Start-Time
 	start_time = db.Column(db.DateTime, nullable=False)
 	# Contest End-Time
@@ -173,4 +175,4 @@ class Contest(db.Model):
 	# Contest Paticipant
 	paticipant = db.Column(db.String(200), nullable=True)
 	# Contest Status
-	statuc = db.Column(db.Integer, nullable=False)
+	status = db.Column(db.Integer, nullable=False)
