@@ -51,6 +51,9 @@ app.register_blueprint(edit_problem.edit_problem_page)
 from page import ranking
 app.register_blueprint(ranking.ranking_page)
 
+from page import contest
+app.register_blueprint(contest.contest_page)
+
 login = LoginManager(app)
 login.login_view = 'login'
 
