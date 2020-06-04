@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Rank
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="../static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid topdis">
+    <div class="row d-flex flex-row-reverse bd-highlight col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
+        <div >
+            <div class="">
+                <div class="list-group">
+                    <a href="/submit" class="list-group-item list-group-item-action list-group-item-success">All</a>
+                </div>
+            </div>
+            <div class="">
+                <div class="list-group">
+                    <a href="/submissions" class="list-group-item list-group-item-action list-group-item-success">Scheduled</a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="">
+                <div class="list-group">
+                    <a href="/submit" class="list-group-item list-group-item-action list-group-item-success">Running</a>
+                </div>
+            </div>
+            <div class="">
+                <div class="list-group">
+                    <a href="/submissions" class="list-group-item list-group-item-action list-group-item-success">Ended</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="row justify-content-center">
+        <div class="col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
+			<table class="table table-hover table-striped">
+				<thead >
+					<tr>
+						<th style="width: 5%">cid</th>
+						<th style="width: 40%">Title</th>
+                        <th style="width: 10%">Status</th>
+                        <th style="width: 10%">Start Time</th>
+						<th style="width: 10%">End Time</th>
+						<th style="width: 10%">Remaining Time</th>
+						<th style="width: 10%">Owner</th>
+					</tr>
+                </thead>
+                <tbody>
+				{% for i in range(info|length) %}
+				<tr>
+					<td><b>{{ info[i].cid }}</b></td>
+					<td><a href="{{ url_for('contest_page.contest_page_view', cid=info[i].cid) }}">{{ info[i].title }}</a></td>
+					<td>{{ info[i].status }}</a></td>
+					<td >{{ info[i].Start_time }}</td>
+					<td >{{ info[i].End_time }}</td>
+                    <td >{{ info[i].Remaining_time }}</td>
+                    <td>{{ info[i].Owner }}</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

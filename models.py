@@ -150,3 +150,25 @@ class Announce(db.Model):
 	name = db.Column(db.String(100), nullable=False)              # 作者名字
 	content = db.Column(db.Text, nullable=False)                  # 內容
 	time = db.Column(db.DateTime, nullable=False)                 # 發布時間
+
+# contest
+class Contest(db.Model):
+	"""
+	.. module:: Contest
+		:synopsis: A Database Model for Contest
+	"""
+	__tablename__ = 'contest'
+	__table_args__ = {'mysql_collate': 'utf8_general_ci'}
+
+	# Contest ID
+	contest_id = db.Column(db.Integer, primary_key=True, nullable=False)
+	# Contest Title
+	problem_id = db.Column(db.String(50), nullable=False)
+	# Contest Owner - uid
+	owner = db.Column(db.String(50), nullable=False)
+	# Contest Start-Time
+	start_time = db.Column(db.DateTime, nullable=False)
+	# Contest End-Time
+	end_time = db.Column(db.DateTime, nullable=False)
+	# Contest Paticipant
+	paticipant = db.Column(db.String(200), nullable=True)
