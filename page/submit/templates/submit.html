@@ -14,6 +14,7 @@ Sumbit
 	<div class="container-fluid">
 		{% with msg_list = get_flashed_messages() %}
 		{% if msg_list %}
+		<!-- Flask msg -->
 		<div class="row" style="font-size: 2rem;">
 		<div class="col-md-12">
 			<div class="card">
@@ -36,14 +37,14 @@ Sumbit
 						<label for="probID">
 							Problem ID
 						</label>
-						<input type="text" name="probID" id="probID" class="col-md-2 form-control" >
+						<input type="text" name="probID" id="probID" value="{{ problem_id }}" class="col-md-2 form-control" >
 					</div>
 					<div class="form-group dis page-title">
 						<label>
 							Language
 						</label>
 						<div class="form-check option_text">
-							<input type="radio" name="lang" id="lang_cpp" value="cpp" class="form-check-input" required>
+							<input type="radio" name="lang" id="lang_cpp" value="cpp" class="form-check-input" required checked>
 							<label class="form-check-label" for="lang_cpp">C++</label>
 						</div>
 						<div class="form-check option_text">
