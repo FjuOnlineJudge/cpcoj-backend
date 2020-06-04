@@ -9,7 +9,7 @@ html, body {
 
 @font-face {
 	font-family: TaipeiSansTCBeta-Regular;
-	src: url('./../font/TaipeiSansTCBeta-Regular.ttf') format("truetype");
+	src: url('/font/TaipeiSansTCBeta-Regular.ttf') format("truetype");
 }
 
 body {
