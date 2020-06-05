@@ -22,11 +22,11 @@ function problem_name_filter(){
     let input, filter, tr, td, txtValue;
     input = document.getElementById("problem_name_input");
     filter = input.value.toUpperCase();
-    table = document.getElementById("table_contest");
-    tr = table.getElementsByTagName("tr");
+    tr = $("table tbody tr");
 
     for(let i = 0; i < tr.length; i++){
         td = tr[i].getElementsByTagName("td")[1];
+        console.log(tr[i].getElementsByTagName("td"));
         if(td){
             txtValue = td.textContent || td.innerText;
             if(txtValue.toUpperCase().indexOf(filter) > -1){
@@ -40,4 +40,9 @@ function problem_name_filter(){
 };
 
 $(document).ready(function() {
+
+$("#problem_name_input").keyup(function() {
+    problem_name_filter();
+});
+
 });
