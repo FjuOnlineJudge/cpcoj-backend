@@ -16,43 +16,28 @@
 {% block main %}
 <div class="container-fluid topdis">
     <!-- btns -->
-    <div class="row justify-content-between col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
-        <div>
-            <input type="text" id="problem_name_input" onkeyup="problem_name_filter()" placeholder="Search for Title...">
-        </div>
-        <div class="row">
-            <div class="">
-                <div class="">
-                    <div class="list-group">
-                        <button class="btn btn-secondary" onclick="status_filter(0)">All</button>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="list-group">
-                        <button class="btn btn-secondary" onclick="status_filter(1)">Scheduled</button>
-                    </div>
-                </div>
+    <div class="row justify-content-center">
+    <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
+        <div class="row justify-content-start">
+            <div class="input-group col-4 col-md-4 com-sm-4">
+                <input class="form-control" type="text" id="problem_name_input" placeholder="Search for Title...">
             </div>
-            <div class="">
-                <div class="">
-                    <div class="list-group">
-                        <button class="btn btn-secondary" onclick="status_filter(2)">Running</button>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="list-group">
-                        <button class="btn btn-secondary" onclick="status_filter(3)">Ended</button>
-                    </div>
-                </div>
+            <div class="col-3 col-md-3 com-sm-3">
+                <button class="btn btn-secondary" onclick="status_filter(0)">All</button>
+                <button class="btn btn-secondary" onclick="status_filter(1)">Scheduled</button>
+                <button class="btn btn-secondary" onclick="status_filter(2)">Running</button>
+                <button class="btn btn-secondary" onclick="status_filter(3)">Ended</button>
             </div>
-            <div>
-                <input type="button" value="Create" class="btn btn-primary btn-lg" onclick="location.href='/create_contest'">
+            <div class="col-4 col-md-4 com-sm-4"></div>
+            <div class="col-1 col-md-1 com-sm-1">
+            <input type="button" value="Create Contest" class="btn btn-primary" onclick="location.href='/create_contest'">
             </div>
         </div>
     </div>
+    </div>
     <!-- list -->
     <div class="row justify-content-center">
-        <div class="col-md-11 col-sm-11 col-lg-11 col-xl-11 dis">
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 dis">
             <table class="table table-hover table-striped" id="table_contest">
                 <thead>
                     <tr>
