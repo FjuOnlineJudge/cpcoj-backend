@@ -24,7 +24,6 @@ def contest_list_view():
     
     
     for row, username in db.session.query(Contest, Account.username).join(Account, Contest.owner == Account.uid, isouter=True):
-        print(type(row))
         info.append({
             'cid': row.contest_id,
             'title': row.contest_title,

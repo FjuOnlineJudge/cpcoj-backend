@@ -384,7 +384,7 @@ import click
 @click.option('-l', '--listen', default='0.0.0.0', help='Listen address')
 @click.option('-d', '--debug', is_flag=True, help='Debug mode')
 def runserver(port, listen, debug):
-    app.run(host=listen, port=port, debug=debug)
+    app.run(host=listen, port=8889, debug=debug)
 
 if __name__ == '__main__':
     runserver()
