@@ -1,8 +1,9 @@
 import os
 from flask import Flask, Blueprint, render_template, request
 import logging
+from flask_login import login_user, current_user
 
-from models import Contest, Account
+from models import Contest, Account, Problem
 import utils
 from exts import db
 
@@ -15,7 +16,7 @@ contest_page = Blueprint('contest_page',
     static_url_path='/contest/static')
 # TODO: ?????
 
-@contest_page.route('/contest_list', methods=['GET'])
+@contest_page.route('/contest/list', methods=['GET'])
 def contest_list_view():
     status = ['??', 'Scheduled', 'Running', 'Ended']
     info = []
@@ -38,11 +39,50 @@ def contest_list_view():
     
 @contest_page.route('/contest/<int:cid>', methods=['GET'])
 def contest_page_view(cid):
-
     return render_template('contest.html')
 
 # TODO Finish Create Page -- Erichsu
 # watch out premlevel
-@contest_page.route('/create_contest', methods=['GET'])
+@contest_page.route('/contest/create', methods=['GET', 'POST'])
 def create_contest_view():
+
+    if request.method == 'POST':
+
+        title = request.form['Title']
+        StartDate = request.form['StartDate']
+        EndDate = request.form['EndDate']
+        problem_num = int(request.form['problem_num'])
+        problems = ''
+
+        for i in range(problem_num):
+            tmp = (request.form['problem_'+str(i+1)].split(' '))[0][1:]
+            problems += tmp+','
+
+        query = Contest(contest_title=title,
+                    problem_id=problems,
+                    owner=current_user.uid,
+                    start_time = StartDate,
+                    end_time = EndDate,
+                    status = 1)
+        db.session.add(query)
+        db.session.commit()
+
+        log.debug('Add Contest title={}'.format(title))
+
     return render_template('create_contest.html')
+
+
+@contest_page.route('/contest/getproblem', methods=['GET'])
+def get_problem():
+    problem_info = db.session.query(Problem.problem_id, Problem.problemName).all()
+    print(problem_info)
+    return {
+        'result': 'success',
+        'data': {
+            'problem_info': problem_info,
+        }
+    }, 200
+
+# TODO Default DateTime
+    
+    

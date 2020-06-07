@@ -8,7 +8,61 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
 {% endblock %}
 
-{# TODO: use url_for #}
+
 {% block javascript %}
 <script src="{{ url_for('contest_page.static', filename='js/contest.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid topdis">
+    <form action="/contest/create" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="row form-group justify-content-between">
+            <h4 class="">Create Contest</h4>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+        
+        <div class="form-group">
+            <label for="InputTitle">Contest Title</label>
+            <input type="text" class="form-control" name="Title" placeholder="Enter Title">
+        </div>
+        <div class="form-group">
+            <label for="InputStartdate">Start Time</label>
+            <input type="datetime-local" name="StartDate" class="form-control" id="InputStartdate">
+        </div>
+        <div class="form-group">
+            <label for="InputEnddate">End Time</label>
+            <input type="datetime-local" name="EndDate" class="form-control" id="InputEnddate">
+        </div>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal-Problem" onclick="get_problem()">
+            Add Problem
+        </button>
+          
+        <!-- Modal -->
+        <div class="modal fade" id="Modal-Problem" tabindex="-1" role="dialog" aria-labelledby="Modal-Problem" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modal-Addproblem">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="checked_box()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="form-problem">
+        
+        </div>
+
+    </form>
+</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators, PasswordField, BooleanField, StringField, TextAreaField
+from wtforms import StringField, SubmitField, validators, PasswordField, BooleanField, StringField, TextAreaField, DateTimeField, TimeField
 from wtforms.fields.html5 import EmailField
+from datetime import datetime
 
 class FormRegister(FlaskForm):
     """依照Model來建置相對應的Form
@@ -99,3 +100,37 @@ class FormAnnounce(FlaskForm):
     ])
 
     submit = SubmitField('submit')
+
+# class FormContest(FlaskForm):
+#     """
+#     Form for Create Contest
+#     """
+
+#     title = StringField('Title', validators=[
+#         validators.DataRequired(),
+#         validators.Length(2, 50)
+#     ])
+
+#     start_date = DateTimeField('StartDatetime', format='%Y-%m-%d %H:%M:%S', validators=[
+#         validators.DataRequired(),
+#     ])
+
+#     remaining_time = TimeField('Remainingtime', format='%H:%M:%S', validators=[
+#         validators.DataRequired(),
+#     ])
+
+#     problems = StringField('Problems')
+
+#     submit = SubmitField()
+
+#     def validate_on_StartDate(self):
+#         """
+#         Check if the StartDate is later than currnet Date
+#         """
+
+#         current_datetime = now.strftime("%Y-%m-%d %H:%M:%S")
+
+#         if current_datetime <= self.start_date.data:
+#             return True
+#         else:
+#             return False
