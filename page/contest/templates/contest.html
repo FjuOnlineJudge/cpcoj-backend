@@ -1,15 +1,92 @@
 {% extends 'base.html' %}
+{% from "_submissions_macro.html" import render_submissions_table %}
+
 
 {% block title %}
 Rank
 {% endblock %}
 
 {% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('contest_page.static', filename='css/contest.css') }}">
 <link rel="stylesheet" type="text/css" href="../static/css/index.css">
 <link rel="stylesheet" type="text/css" href="../static/css/Rish_block.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playball">
 {% endblock %}
 
+{% block javascript %}
+<script src="{{ url_for('contest_page.static', filename='js/contest_info.js') }}"></script>
+{% endblock %}
+
 {% block main %}
+<div class="container-fluid topdis">
+    <h2><b>{{ info.title }}</b></h2>
+    <div class="tab">
+        <button class="tablinks" onclick="ChangeTab(event, 'Problems')">Problems</button>
+        <button class="tablinks" onclick="ChangeTab(event, 'Status')">Status</button>
+        <button class="tablinks" onclick="ChangeTab(event, 'Rank')">Rank</button>
+    </div>
+      
+      <!-- Tab content -->
+    <div id="Problems" class="tabcontent">
+        <div class="tab">
+            {% for i in range(info.problem_id|length) %}
+            <button class="tablinks_problem" onclick="ChangeTab_Problem(event, 'Problem_{{ i+1 }}')">Problem {{ i+1 }}</button>
+            {% endfor %}
+        </div>
+        {% block content %}
+        {% for i in range(info.problem_id|length) %}
+            {% if i == 0 %}
+                <div id="Problem_{{ i+1 }}" class="tabcontent_problem" style="display: block">
+            {% else %}
+                <div id="Problem_{{ i+1 }}" class="tabcontent_problem" style="display: none">
+            {% endif %}
+            
+            {{ info.problem_id[i]}}
+    
+            </div>
+        {% endfor %}
+        {% endblock content %}
+    </div>
+      
+    <div id="Rank" class="tabcontent">
+
+    </div>
+      
+    <div id="Status" class="tabcontent">
+        <!-- Submissions -->
+        <table class="table table-hover table-striped" style="margin-top: 1em;">
+            <thead>
+                <tr>
+                    {% if is_admin %}
+                    <th style="width: 5%"></th>
+                    {% endif %}
+                    <th>#</th>
+                    <th>PID</th>
+                    <th>Submitter</th>
+                    <th>Time(ms)</th>
+                    <th>Memory</th>
+                    <th>Verdict</th>
+                    <th>Lang</th>
+                    <th>Code Length</th>
+                    <th>Score</th>
+                    <th>Submit Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if sub_list %}
+                    {% for i in sub_list %}
+                    {{ render_submissions_table(i) }}
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        <!-- Pagination -->
+        <div class="container-fluid">
+            
+        </div>
+    </div>
+
+    
+</div>
 
 {% endblock %}

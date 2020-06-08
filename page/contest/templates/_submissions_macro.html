@@ -1,0 +1,86 @@
+{% macro render_submissions_table(sub) %}
+<tr>
+	{% if sub.rejudge_link %}
+	<td><button type="button" class="btn btn-secondary btn-sm" id="rejudge-{{sub.submit_id}}" name="rejudge" value="{{ sub.rejudge_link }}">Rejudge</button></td>
+	{% endif %}
+	<td id="{{ sub.submit_id }}-submit_id">{{ sub.submit_id }}</td>
+	<td id="{{ sub.submit_id }}-problem_id">{{ sub.problem_id }}</td>
+	<td><a href="{{ url_for('userinfo', name=sub.username) }}"</a>{{sub.submitter}}</td>
+	<td id="{{ sub.submit_id }}-runtime">{{ '{:.2f}'.format(sub.resTime) }}</td>
+	<td id="{{ sub.submit_id }}-memory">
+	{% if sub.resMem > 1000 %}
+		{{ sub.resMem / 1000.0 }} MiB
+	{% else %}
+		{{ sub.resMem }} KiB
+	{% endif %}
+	</td>
+	{% if sub.result == 'Wait' %}
+		<td id="{{ sub.submit_id }}-result" ><div class="spinner-border text-success" style="width: 1.5rem; height: 1.5rem;" role="status"></div></td>
+	{% else %}
+		{% if sub.result == 'AC' %}
+		<td id="{{ sub.submit_id }}-result" class="ac-style">{{ sub.result }}</td>
+		{% elif sub.result == 'WA' %}
+		<td id="{{ sub.submit_id }}-result" class="wa-style">{{ sub.result }}</td>
+		{% elif sub.result == 'CE' %}
+		<td id="{{ sub.submit_id }}-result" class="ce-style" data-toggle="modal" data-target="#CEModal-{{sub.submit_id}}">{{ sub.result }}</td>
+		<!-- CE Modal content -->
+		<div class="modal fade" id="CEModal-{{sub.submit_id}}" tabindex="-1" role="dialog" aria-labelledby="CEModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="CEModalLabel">Submission #{{ sub.submit_id }}</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<pre>{{ sub.result_msg }}</pre>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% else %}
+		<td id="{{ sub.submit_id }}-result" >{{ sub.result }}</td>
+		{% endif %}
+	{% endif %}
+	<td id="{{ sub.submit_id }}-lang">{{ sub.lang }}</td>
+	<td id="{{ sub.submit_id }}-codeLen">{{ sub.codeLen }}</td>
+	<td id="{{ sub.submit_id }}-score">{{ sub.score }}</td>
+	<td id="{{ sub.submit_id }}-date">{{ sub.time}}</td>
+</tr>
+{% endmacro %}
+
+{% macro render_pagination(pagin) %}
+<div class="pagination">
+	<a href="{{ pagin.gen_url(1) }}">&laquo;</a>
+	{% if pagin.cur_page+pagin.next_lim < pagin.total_page %}
+		<a href="#" class="active">{{ pagin.cur_page }}</a>
+		{% for i in range(pagin.cur_page+1, pagin.cur_page+pagin.next_lim+1) %}
+		<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+		{% endfor %}
+	{% else %}
+		{% if pagin.total_page < pagin.next_lim %}
+			{% for i in range(1, pagin.total_page+1) %}
+				{% if i == pagin.cur_page %}
+					<a href="#" class="active">{{ pagin.cur_page }}</a>
+				{% else %}
+					<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% for i in range(pagin.total_page - pagin.next_lim, pagin.total_page+1) %}
+				{% if i == pagin.cur_page %}
+					<a href="#" class="active">{{ pagin.cur_page }}</a>
+				{% else %}
+					<a href="{{ pagin.gen_url(i) }}">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+	<a href="{{ pagin.gen_url(pagin.total_page) }}">&raquo;</a>
+</div>
+{% endmacro %}

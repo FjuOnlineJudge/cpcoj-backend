@@ -114,7 +114,7 @@ function checked_box(){
     $("#form-problem").append(`
         <input type="hidden" value="${ cnt-1 }"  name="problem_num">
     `)
-}
+};
 
 $(document).ready(function() {
 
@@ -122,3 +122,6 @@ $(document).ready(function() {
         problem_name_filter();
     });
 });
+
+
+
