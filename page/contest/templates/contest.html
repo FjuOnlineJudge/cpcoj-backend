@@ -23,7 +23,7 @@ Rank
     <div class="tab">
         <button class="tablinks" onclick="ChangeTab(event, 'Problems')">Problems</button>
         <button class="tablinks" onclick="ChangeTab(event, 'Status')">Status</button>
-        <button class="tablinks" onclick="ChangeTab(event, 'Rank')">Rank</button>
+        <button class="tablinks" onclick="ChangeTab(event, 'Rank'); get_rank({{ info.cid }})">Rank</button>
     </div>
       
       <!-- Tab content -->
@@ -49,7 +49,22 @@ Rank
     </div>
       
     <div id="Rank" class="tabcontent">
-
+        <table class="table table-hover table-striped" style="margin-top: 1em;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>Solved</th>
+                    <th>Time</th>
+                    {% for i in range(info.problem_id|length) %}
+                        <th> {{ i+1 }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody id="table-rank">
+                
+            </tbody>
+        </table>
     </div>
       
     <div id="Status" class="tabcontent">

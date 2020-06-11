@@ -40,6 +40,55 @@ function ChangeTab_Problem(evt, TabName) {
     evt.currentTarget.className += " active";
 };
 
+function get_rank(cid){
+  $.ajax({
+    type: "GET",
+    url: `/contest/getrank/${cid}`,
+    dataType: "json"
+  })
+  .done(function (json) {
+      if(json["result"] != "success") {
+          console.error("Get Rank failed: ", json["message"]);
+      }
+      else {
+        document.getElementById('table-rank').innerHTML = '';
+        rank = json['data'];
+
+        let cnt = 1
+
+        for(let i = 0; i < rank.length; i++){
+            console.log(rank[i].problems)
+            str = `
+            <tr>
+                <td>${ cnt++ }</td>
+                <td>${ rank[i].user_name }</td>
+                <td>${ rank[i].AC_num }</td>
+                <td>${ rank[i].penalty }</td>
+            `;
+            
+            for(let problem in rank[i].problems){
+                if(rank[i].problems[problem].AC_time == '-1'){
+                    if(rank[i].problems[problem].Wrong_num != 0)
+                        str += `<td width=5% style="background-color:#E87272"> ${ rank[i].problems[problem].Wrong_num } try</td>`
+                    else{
+                        `<td width=5%></td>`
+                    }
+                }
+                else{
+                    str += `<td width=5% style="background-color:#60E760"> ${ rank[i].problems[problem].AC_time }/${ rank[i].problems[problem].Wrong_num+1 }</td>`
+                }
+            }
+
+            str += '</tr>';
+            $("#table-rank").append(str);
+        }
+      }
+  })
+  .fail(function (xhr, status, err) {
+
+  })
+}
+
 function setProblems(){
 
 };

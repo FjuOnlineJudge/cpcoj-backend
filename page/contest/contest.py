@@ -2,7 +2,7 @@ import os
 from flask import Flask, Blueprint, render_template, request, url_for
 import logging, random, string
 from flask_login import login_user, current_user, LoginManager
-
+from operator import getitem
 from datetime import datetime
 from models import Contest, Account, Problem, Submission
 import utils
@@ -61,8 +61,6 @@ def contest_page_view(cid):
                     .order_by(Submission.submit_id.desc())\
                     .filter(Submission.for_test == cid)\
                     .all()
-
-
     for i in sub_list:
         # Rejudge button (check if the user is admin)
         if current_user.is_authenticated and current_user.permLevel <= 0:
@@ -139,19 +137,25 @@ def get_problem():
     }, 200
 
 # TODO Default DateTime
-def cmp_items(a, b):
-    if a['penalty'] > b['penalty']:
-        return 1
-    elif a['penalty'] == b['penalty']:
-        return 0
-    else:
-        return -1
+
+class rank_person:
+    def __init__(self, uid, username, penalty, AC_num, problems):
+        self.uid = uid
+        self.user_name = username
+        self.penalty = penalty
+        self.AC_num = AC_num
+        self.problems = problems
+    
+    def __lt__(self, other):
+        if self.AC_num == other.AC_num:
+            return self.penalty < other.penalty
+        return self.AC_num > other.AC_num
+    
     
 @contest_page.route('/contest/getrank/<int:cid>', methods=['GET'])
 def get_rank(cid):
 
     rank_dict = {}
-    problem_dict = {}
 
     contest_info = db.session.query(Contest.paticipant, Contest.problem_id, Contest.start_time)\
                             .filter(Contest.contest_id == cid)\
@@ -160,22 +164,24 @@ def get_rank(cid):
     contest_starttime = datetime.strptime(str(contest_info.start_time), '%Y-%m-%d %H:%M:%S')
 
     contest_pro = contest_info.problem_id.strip(',').split(',')
-    
-    for i in range(len(contest_pro)):
-        problem_dict[int(contest_pro[i])] = {
-            'AC_time': '-1',
-            'Wrong_num': 0
-        }
-    
-
 
     contest_par = contest_info.paticipant.strip(',').split(',')
 
-    for i in range(len(contest_par)): 
-        rank_dict[int(contest_par[i])] = {
+    for i in range(len(contest_par)):
+        participant = contest_par[i]
+        problem_dict = {}
+
+        for i in range(len(contest_pro)):
+            problem_dict[int(contest_pro[i])] = {
+                'AC_time': '-1',
+                'Wrong_num': 0
+            }
+
+        rank_dict[int(participant)] = {
             'user_name':'',
-            'penalty':0,
-            'problems':problem_dict
+            'penalty': 0,
+            'AC_num': 0,
+            'problems':problem_dict,
         }
 
     user_list = Account.query.all()
@@ -189,22 +195,43 @@ def get_rank(cid):
     sub_list = sub_list.filter(Submission.for_test == cid)\
                         .order_by(Submission.submit_id)\
                         .all()
-    from operator import itemgetter, attrgetter, getitem
 
     for sub in sub_list:
         if rank_dict[sub.account_id]['problems'][sub.problem_id]['AC_time'] == '-1':
             if sub.result == 'AC':
                 sub_datetime = datetime.strptime(str(sub.time), '%Y-%m-%d %H:%M:%S')
-                rank_dict[sub.account_id]['problems'][sub.problem_id]['AC_time'] = sub.time
-                rank_dict[sub.account_id]['penalty'] = (sub_datetime-contest_starttime).days + rank_dict[sub.account_id]['problems'][sub.problem_id]['Wrong_num']*20
+                rank_dict[sub.account_id]['problems'][sub.problem_id]['AC_time'] = (sub_datetime-contest_starttime).seconds//60
+                rank_dict[sub.account_id]['penalty'] = (sub_datetime-contest_starttime).seconds//60 + rank_dict[sub.account_id]['problems'][sub.problem_id]['Wrong_num']*20
+                rank_dict[sub.account_id]['AC_num'] += 1
             else:
                 rank_dict[sub.account_id]['problems'][sub.problem_id]['Wrong_num'] += 1
 
-    rank_dict = sorted(rank_dict.items(),key=lambda x:getitem(x[1],'penalty'), reverse=True)
+    
+    rank_dict = sorted(sorted(rank_dict.items(), key = lambda x : getitem(x[1],'AC_num'), reverse=False), key = lambda x : getitem(x[1],'penalty'), reverse=True)
+
+    rank_list = []
+
+    for person in rank_dict:
+        rank_list.append(rank_person(person[0], person[1]['user_name'], person[1]['penalty'], person[1]['AC_num'], person[1]['problems']))
+    
+    rank_list.sort();
+    print(type(rank_list))
+    for i in rank_list:
+        print(i)
+
+    rank_info = []
+
+    for i in range(len(rank_list)):
+        rank_info.append({
+            'user_name': rank_list[i].user_name,
+            'penalty': rank_list[i].penalty,
+            'AC_num': rank_list[i].AC_num,
+            'problems': rank_list[i].problems,
+        })
 
     return {
         'result': 'success',
-        'rank': rank_dict
+        'data': rank_info
         }
 
     

@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, escape
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, login_required, LoginManager, logout_user
-import datetime, json, logging
+import datetime as dt 
+import json, logging
 
 from form import *
 from exts import db
@@ -150,7 +151,7 @@ def submission_detail():
 @login_required
 def announce():
     form = FormAnnounce()
-    date_time = datetime.datetime.now()
+    date_time = dt.datetime.now()
 
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -183,7 +184,7 @@ def announce_list():
 @login_required
 def announce_edit(aidd):
     form = FormAnnounce()
-    date_time = datetime.datetime.now()
+    date_time = dt.datetime.now()
     ann = Announce.query.filter(Announce.announce_id == aidd).first()
 
     if current_user.permLevel <= 0:
@@ -249,7 +250,7 @@ def register():
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            date_time = datetime.datetime.now()
+            date_time = dt.datetime.now()
 
             # user & email collision
             username = Account.query.filter(Account.username == form.username.data).first()
@@ -287,7 +288,7 @@ def login():
             #  當使用者存在資料庫內再核對密碼是否正確。
             if user.check_password(form.password.data):
                 login_user(user, form.remember_me.data)
-                date_time = datetime.datetime.now()
+                date_time = dt.datetime.now()
                 user.lastLoginTime = date_time
                 db.session.commit()
 
