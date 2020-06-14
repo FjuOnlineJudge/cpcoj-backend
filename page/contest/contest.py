@@ -1,12 +1,13 @@
 import os
-from flask import Flask, Blueprint, render_template, request, url_for
+from flask import Flask, Blueprint, render_template, request, url_for, redirect
 import logging, random, string
 from flask_login import login_user, current_user, LoginManager
 from operator import getitem
-from datetime import datetime
+import datetime as dt
 from models import Contest, Account, Problem, Submission
-import utils
+import utils, json
 from exts import db
+from judger import judge, manage
 
 log = logging.getLogger('Contest')
 
@@ -42,8 +43,31 @@ def contest_list_view():
     
     return render_template('contest_list.html', info=info)
     
-@contest_page.route('/contest/<int:cid>', methods=['GET'])
+@contest_page.route('/contest/<int:cid>', methods=['GET', 'POST'])
 def contest_page_view(cid):
+    print(request.method)
+    if request.method == 'POST':
+        print('in')
+        pid = int(request.form['probID'])
+        lang = request.form['lang']
+        code = request.form['code']
+
+        prob = Problem.query.get(pid)
+        if prob:
+            info = json.loads(prob.info)
+            num_td = int(info['td_num'])
+
+            date_time = dt.datetime.now()
+            sub = Submission(result='Wait'
+                    , resTime=-1.0, resMem=-1.0
+                    , code=code, lang=lang, rank=-1, time=date_time
+                    , account=current_user, problem=prob, for_test=cid)
+            db.session.add(sub)
+            db.session.commit()
+
+            log.debug('Add problem pid={} subid={}'.format(prob.problem_id, sub.submit_id))
+
+            manage.add_judger(sub.submit_id, prob.problem_id, judge.JUDGE_CPP, code, 3.0, 65536, num_td)
 
     contest_info = db.session.query(Contest).filter(Contest.contest_id == cid).first()
     
@@ -100,7 +124,6 @@ def contest_page_view(cid):
 def create_contest_view():
 
     if request.method == 'POST':
-
         title = request.form['Title']
         StartDate = request.form['StartDate']
         EndDate = request.form['EndDate']
@@ -128,7 +151,6 @@ def create_contest_view():
 @contest_page.route('/contest/getproblem', methods=['GET'])
 def get_problem():
     problem_info = db.session.query(Problem.problem_id, Problem.problemName).all()
-    print(problem_info)
     return {
         'result': 'success',
         'data': {
@@ -161,7 +183,7 @@ def get_rank(cid):
                             .filter(Contest.contest_id == cid)\
                             .first()
 
-    contest_starttime = datetime.strptime(str(contest_info.start_time), '%Y-%m-%d %H:%M:%S')
+    contest_starttime = dt.datetime.strptime(str(contest_info.start_time), '%Y-%m-%d %H:%M:%S')
 
     contest_pro = contest_info.problem_id.strip(',').split(',')
 
@@ -199,7 +221,7 @@ def get_rank(cid):
     for sub in sub_list:
         if rank_dict[sub.account_id]['problems'][sub.problem_id]['AC_time'] == '-1':
             if sub.result == 'AC':
-                sub_datetime = datetime.strptime(str(sub.time), '%Y-%m-%d %H:%M:%S')
+                sub_datetime = dt.datetime.strptime(str(sub.time), '%Y-%m-%d %H:%M:%S')
                 rank_dict[sub.account_id]['problems'][sub.problem_id]['AC_time'] = (sub_datetime-contest_starttime).seconds//60
                 rank_dict[sub.account_id]['penalty'] = (sub_datetime-contest_starttime).seconds//60 + rank_dict[sub.account_id]['problems'][sub.problem_id]['Wrong_num']*20
                 rank_dict[sub.account_id]['AC_num'] += 1
@@ -234,4 +256,23 @@ def get_rank(cid):
         'data': rank_info
         }
 
-    
+@contest_page.route('/contest/setproblem/<int:cid>', methods=['GET', 'POST'])
+def set_problem(cid):
+    print('setproblem:', request.method)
+    problem_list = (db.session.query(Contest.problem_id).filter(Contest.contest_id == cid).first().problem_id).strip(',').split(',')
+    problem_info = []
+
+    for pid in problem_list:
+        problem = Problem.query.filter_by(problem_id=pid).first()
+        info = json.loads(problem.info)
+
+        problem_info.append({
+            'pid': pid,
+            'problem_name': problem.problemName,
+            'info': info
+        })
+
+    return {
+        'result': 'success',
+        'data': problem_info
+        }

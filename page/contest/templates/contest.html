@@ -14,6 +14,7 @@ Rank
 {% endblock %}
 
 {% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="{{ url_for('contest_page.static', filename='js/contest_info.js') }}"></script>
 {% endblock %}
 
@@ -27,37 +28,27 @@ Rank
     </div>
       
       <!-- Tab content -->
-    <div id="Problems" class="tabcontent">
+    <div id="Problems" class="tabcontent" style="display: block;">
         <div class="tab">
             {% for i in range(info.problem_id|length) %}
             <button class="tablinks_problem" onclick="ChangeTab_Problem(event, 'Problem_{{ i+1 }}')">Problem {{ i+1 }}</button>
             {% endfor %}
         </div>
-        {% block content %}
-        {% for i in range(info.problem_id|length) %}
-            {% if i == 0 %}
-                <div id="Problem_{{ i+1 }}" class="tabcontent_problem" style="display: block">
-            {% else %}
-                <div id="Problem_{{ i+1 }}" class="tabcontent_problem" style="display: none">
-            {% endif %}
+        <div id='contest_problem'>
             
-            {{ info.problem_id[i]}}
-    
-            </div>
-        {% endfor %}
-        {% endblock content %}
+        </div> 
     </div>
       
     <div id="Rank" class="tabcontent">
         <table class="table table-hover table-striped" style="margin-top: 1em;">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Team</th>
-                    <th>Solved</th>
-                    <th>Time</th>
+                    <th width=2.5%>#</th>
+                    <th width=21.5%>Team</th>
+                    <th width=3%>Solved</th>
+                    <th width=3%>Time</th>
                     {% for i in range(info.problem_id|length) %}
-                        <th> {{ i+1 }}</th>
+                        <th width={{ 60/info.problem_id|length }}% style="text-align: center"> {{ i+1 }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -103,5 +94,11 @@ Rank
 
     
 </div>
+
+<script>
+    $(document).ready(function() {
+        setProblems('{{info.cid}}', '{{ csrf_token() }}');
+    });
+</script>
 
 {% endblock %}

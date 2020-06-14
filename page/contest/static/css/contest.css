@@ -35,6 +35,8 @@
 
 /* Style the tab content */
 .tabcontent {
+    margin: auto;
+    width: 100%;
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
