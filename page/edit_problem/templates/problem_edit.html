@@ -55,7 +55,7 @@ function submit_form(s)
 	</div>
 	{% endif %}
 
-	<form id="edit_problem" action="{{ form_action }}" method="POST">
+	<form id="edit_problem" action="{{ form_action }}" method="POST" enctype="multipart/form-data">
 	{{ form.hidden_tag() }}
 	<div class="row">
 		<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 dis"></div>
@@ -142,7 +142,7 @@ function submit_form(s)
 							<h5>Input File</h5>
 						</div>
 						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<input type=file name=file>
+							{{ form.input_data }}
 						</div>
 					</div>
 					<div class="row">
@@ -151,13 +151,13 @@ function submit_form(s)
 							<h5>Output File</h5>
 						</div>
 						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<input type=file name=file>
+							{{ form.output_data }}
 						</div>
 					</div>
 				</div>
 				<div class="list-group">
 					<div class="list-group-item">
-						<input type="submit" class="btn btn-primary code-form-margin-bottom" value="Upload" disabled>
+						<input type="submit" class="btn btn-primary code-form-margin-bottom" value="Upload">
 					</div>
 				</div>
 			</div>

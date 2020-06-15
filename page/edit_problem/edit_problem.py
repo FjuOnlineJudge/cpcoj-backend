@@ -1,8 +1,10 @@
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired
+from werkzeug.utils import secure_filename
 import os, json
 
 import utils
@@ -23,6 +25,8 @@ class EditProblemForm(FlaskForm):
     output_format = TextAreaField('outputFormat')
     sample_input = TextAreaField('sampleInput')
     sample_output = TextAreaField('sampleOutput')
+    input_data = FileField('inputData', validators=[FileRequired()])
+    output_data = FileField('outputData', validators=[FileRequired()])
 
 # TOO(Droy4801): handle the other data (hint, source, td_description, td_num)
 @edit_problem_page.route('/problem_edit/<int:pid>', methods=['GET', 'POST'])
@@ -99,12 +103,21 @@ def new_problem():
     form = EditProblemForm()
     if form.validate_on_submit():
         # tag
-        appen_tag = []
+        '''appen_tag = []
         tags = form.tags.data.split(';')
         for t in tags:
             db_tag = Tag.query.filter_by(tag_name=t).first()
             if db_tag:
-                appen_tag.append(db_tag)
+                appen_tag.append(db_tag)'''
+        
+        input_data = form.input_data.data
+        input_dataName = secure_filename(input_data.filename)
+        input_data.save(os.path.join('tmp', input_dataName))
+
+        output_data = form.output_data.data
+        output_dataName = secure_filename(output_data.filename)
+        output_data.save(os.path.join('tmp', output_dataName))
+
         # info
         info = {'description': '', 'input_format': '', 'output_format': '', 'sample_input': '', 'sample_output': '', 'hint': '', 'source': '', 'td_description': '', 'td_num': 0}
         info['description']   = form.description.data
@@ -112,12 +125,12 @@ def new_problem():
         info['output_format'] = form.output_format.data
         info['sample_input']  = form.sample_input.data
         info['sample_output'] = form.sample_output.data
-        new_prob = Problem(problemName=form.problem_name.data
+        '''new_prob = Problem(problemName=form.problem_name.data
                            , uid=current_user.uid
-                           , info=json.dumps(info))
-        new_prob.problem_tag = appen_tag
-        db.session.add(new_prob)
-        db.session.commit()
+                           , info=json.dumps(info))'''
+        # new_prob.problem_tag = appen_tag
+        # db.session.add(new_prob)
+        # db.session.commit()
         flash('新增成功', 'success')
     return render_template('problem_edit.html'
         , form=form
