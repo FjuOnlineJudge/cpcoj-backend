@@ -25,8 +25,14 @@ class EditProblemForm(FlaskForm):
     output_format = TextAreaField('outputFormat')
     sample_input = TextAreaField('sampleInput')
     sample_output = TextAreaField('sampleOutput')
-    input_data = FileField('inputData', validators=[FileRequired()])
-    output_data = FileField('outputData', validators=[FileRequired()])
+    input_data = FileField('inputData', validators=[
+        FileRequired(),
+        FileAllowed(['in'], 'Input File需要為.in檔案')
+    ])
+    output_data = FileField('outputData', validators=[
+        FileRequired(),
+        FileAllowed(['ans'], 'Output File需要為.ans檔案')
+    ])
 
 # TOO(Droy4801): handle the other data (hint, source, td_description, td_num)
 @edit_problem_page.route('/problem_edit/<int:pid>', methods=['GET', 'POST'])
@@ -103,13 +109,14 @@ def new_problem():
     form = EditProblemForm()
     if form.validate_on_submit():
         # tag
-        '''appen_tag = []
+        appen_tag = []
         tags = form.tags.data.split(';')
         for t in tags:
             db_tag = Tag.query.filter_by(tag_name=t).first()
             if db_tag:
-                appen_tag.append(db_tag)'''
-        
+                appen_tag.append(db_tag)
+
+        # data
         input_data = form.input_data.data
         input_dataName = secure_filename(input_data.filename)
         input_data.save(os.path.join('tmp', input_dataName))
@@ -125,10 +132,10 @@ def new_problem():
         info['output_format'] = form.output_format.data
         info['sample_input']  = form.sample_input.data
         info['sample_output'] = form.sample_output.data
-        '''new_prob = Problem(problemName=form.problem_name.data
+        new_prob = Problem(problemName=form.problem_name.data
                            , uid=current_user.uid
-                           , info=json.dumps(info))'''
-        # new_prob.problem_tag = appen_tag
+                           , info=json.dumps(info))
+        new_prob.problem_tag = appen_tag
         # db.session.add(new_prob)
         # db.session.commit()
         flash('新增成功', 'success')
