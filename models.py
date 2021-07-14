@@ -121,7 +121,7 @@ class Submission(db.Model):
 	lang    = db.Column(db.String(10), nullable=False)               # 語言
 	rank    = db.Column(db.Integer, nullable=False)                  # 排名
 	time    = db.Column(db.DateTime, nullable=False)                 # 繳交時間
-	for_test = db.Column(db.Integer, nullable=False)				 # 比賽編號
+	for_test = db.Column(db.Integer, nullable=False, default=False)	 # 比賽編號
 	# For debug print
 	def __repr__(self):
 		return "<Submission {}>".format(self.submit_id)

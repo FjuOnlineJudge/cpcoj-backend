@@ -12,9 +12,11 @@ def create_app():
 	# Ini the flask app
 	app = Flask(__name__)
 	app.config.from_object(config)
+	# init csrf
 	csrf.init_app(app)
 	# Init the database
 	db.init_app(app)
+	# Init flask_migrate
 	migrate = Migrate(app, db)
 	return app
 
