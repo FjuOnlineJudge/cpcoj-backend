@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
+from flask_migrate import Migrate
 import config
 from exts import db
 
@@ -14,6 +15,7 @@ def create_app():
 	csrf.init_app(app)
 	# Init the database
 	db.init_app(app)
+	migrate = Migrate(app, db)
 	return app
 
 app = create_app()
