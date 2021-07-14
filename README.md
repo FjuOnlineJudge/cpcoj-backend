@@ -37,3 +37,4 @@ Originally developed by [RISH](https://rish.com.tw/). Currently maintaining by F
 * SunTalk
 * halloworld
 * Eric Hsu
+* allem40306
